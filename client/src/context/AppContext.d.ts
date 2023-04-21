@@ -1,4 +1,4 @@
-declare module "./context/AppContext.jsx" {
+declare module "./AppContext" {
   const AppContext: any;
   export default AppContext;
 }
