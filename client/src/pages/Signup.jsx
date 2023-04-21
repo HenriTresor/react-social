@@ -206,6 +206,11 @@ const Signup = () => {
 
                     </Box>
                 </Box>
+                <Link to='/login'>
+                    <Typography>
+                        Already have an account ? Sign in!
+                    </Typography>
+                </Link>
             </Box>
         </Container>
     )

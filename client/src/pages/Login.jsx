@@ -1,6 +1,6 @@
-import { Container, Box, TextField, Button,Snackbar,Checkbox, Typography } from '@mui/material'
-import React, {useState, useReducer, useEffect} from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Container, Box, TextField, Button, Snackbar, Checkbox, Typography } from '@mui/material'
+import React, { useState, useReducer, useEffect } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import { serverLink } from '../utils/links'
 import { LoadingButton } from '@mui/lab'
 
@@ -18,7 +18,7 @@ const reducer = (state, action) => {
     }
 }
 const Login = () => {
-      const navigate = useNavigate()
+    const navigate = useNavigate()
     const [open, setOpen] = useState(false)
     const [{ loading, error, data }, dispatch] = useReducer(reducer, {
         loading: false,
@@ -27,7 +27,7 @@ const Login = () => {
     })
 
 
-    
+
     const [inputValues, setInputValues] = useState({
         email: '',
         password: '',
@@ -38,7 +38,7 @@ const Login = () => {
         })
     }
 
-        const handleSubmit = async () => {
+    const handleSubmit = async () => {
         try {
 
             if (!inputValues.email || !inputValues.password) {
@@ -66,7 +66,7 @@ const Login = () => {
                     localStorage.setItem('access_token', data.access_token)
                     location.assign('/')
                 }
-                
+
             }
         } catch (error) {
             setOpen(true)
@@ -75,8 +75,8 @@ const Login = () => {
     }
 
     useEffect(() => {
-        if(localStorage.getItem('access_token')) return navigate('/')
-    },[])
+        if (localStorage.getItem('access_token')) return navigate('/')
+    }, [])
     return (
         <Container
             sx={{
@@ -148,7 +148,7 @@ const Login = () => {
                             display: 'flex',
                             alignItems: 'center',
                             marginBottom: 2,
-                            justifyContent:'space-between',
+                            justifyContent: 'space-between',
                         }}
                     >
                         {
@@ -158,7 +158,7 @@ const Login = () => {
                                     color='warning'
                                     onClick={handleSubmit}
                                 >
-                                    Create account
+                                    Sign in
                                 </Button>
                             ) :
                                 (
@@ -173,9 +173,15 @@ const Login = () => {
                         }
 
                         <Typography>
-                            Forgot password? 
+                            Forgot password?
                         </Typography>
-                  </Box>
+
+                        <Link to='/signup'>
+                            <Typography>
+                                Don't Have an account? Create one!
+                            </Typography>
+                        </Link>
+                    </Box>
                 </Box>
             </Box>
         </Container>
