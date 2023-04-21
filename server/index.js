@@ -10,6 +10,8 @@ import { v2 as cloudinary } from 'cloudinary'
 import { config } from 'dotenv'
 import multer from 'multer'
 import cors from 'cors'
+import { Server } from 'socket.io'
+import http from 'http'
 
 export const upload = multer({ dest: './uploads/' })
 
@@ -23,24 +25,25 @@ cloudinary.config({
 })
 
 const app = express()
+const server = http.createServer(app)
+const io = new Server(server, {
+    cors: {
+        origin: '*'
+    }
+})
 
 const PORT = process.env.PORT || 8080
 
-const logger = (req, res, next) => {
-    console.log(`${req.url}`);
-    next()
-}
 
 connection.then(() => {
     console.log('connected to mongoose');
 }).then(() => {
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
         console.log(`server listening on port ${PORT}`);
     })
 }).catch(err => console.log(`error connecting to mongoose ${err.message}`));
 
 app.use(cors())
-app.use(logger)
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
@@ -65,6 +68,30 @@ app.all('*', (req, res) => {
 
 app.use((err, req, res, next) => {
     if (err) return res.status(500).json({ status: false, message: err.message });
+})
+
+
+global.onlineUsers = []
+io.on('connection', (socket) => {
+    console.log(`${socket.id}`);
+
+    socket.on('add-user', ({ user }) => {
+        // console.log(user);
+        onlineUsers = [...onlineUsers, { user: user, userId: socket.id }]
+    })
+
+    socket.on('add message', message => {
+        // console.log(message);
+        let receiver = onlineUsers.find(user => user.user._id === message.receiver._id)
+        if (receiver) {
+            console.log('reciver', receiver);
+            socket.to(receiver.userId).emit('new message', message)
+        }
+    })
+    socket.on('disconnect', () => {
+        onlineUsers = onlineUsers.filter(user => user.userId !== socket.id)
+        console.log(`${socket.id} disconnected`);
+    })
 })
 
 export default app

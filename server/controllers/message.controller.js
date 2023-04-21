@@ -6,7 +6,7 @@ export const addMessage = async (req, res, next) => {
         if (!sender || !receiver || !message) return res.status(400).json({ status: false, message: 'sender, receiver and message content are all required' })
 
         let newMsg = new Message({
-            message,
+            message: { text: message },
             users: [sender, receiver],
             sender
         })
@@ -25,7 +25,7 @@ export const getMessages = async (req, res, next) => {
         let { users } = req.body
         if (!users) return res.status(400).json({ status: false, message: 'users are required to get their messages' })
 
-        let messages = await Message.find({ users: { $all: [...users] } })
+        let messages = await Message.find({ users: { $all: [...users] } }).populate('users').populate('sender')
         return res.status(200).json({ status: false, messages })
     } catch (error) {
         console.log('error getting messages', error.message);

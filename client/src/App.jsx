@@ -1,5 +1,5 @@
 import { Box, Grid, List, Button, ListItem, Paper, Typography, ListItemAvatar, ListItemText, ListItemButton } from '@mui/material'
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useRef } from 'react'
 import Header from './components/layout/Header'
 import { PagesOutlined, Newspaper, GroupOutlined, Group } from '@mui/icons-material'
 import { AppData } from './context/AppContext'
@@ -13,10 +13,27 @@ import Signup from './pages/Signup'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Profile from './pages/Profile.jsx'
 import Settings from './pages/Settings'
+import Chats from './pages/Chats'
+import { io } from 'socket.io-client'
 
 const App = () => {
-  let { setUsers, setPages, setCurrentUser, isLoggedIn, setIsLoggedIn }  = useContext(AppData)
+  let { setUsers, setPages, setCurrentUser, currentUser, isLoggedIn, setIsLoggedIn } = useContext(AppData)
 
+  const socket = useRef(null)
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      socket.current = io('http://localhost:8080')
+    }
+  }, [isLoggedIn])
+  
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on('connect', () => {
+      })
+      socket.current.emit('add-user', { user: currentUser })
+    }
+  },[socket.current])
   let navigate = useNavigate()
   let location = useLocation()
   const { data } = useQuery({
@@ -71,12 +88,14 @@ const App = () => {
         isLoggedIn && <Header />
       }
 
+
       <Routes>
         <Route path='/' element={<HomePage />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/me/profile' element={<Profile />} />
         <Route path='/settings' element={<Settings />} />
+        <Route path='/chat-room' element={<Chats socket={socket} />} />
       </Routes>
     </>
   )

@@ -11,7 +11,7 @@ import AppContext from './context/AppContext.jsx'
 const client = new QueryClient()
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <AppContext>
       <QueryClientProvider client={client}>
         <Router>
@@ -19,6 +19,6 @@ root.render(
         </Router>
       </QueryClientProvider>
     </AppContext>
-  </React.StrictMode>
+  // </React.StrictMode>
 
 )

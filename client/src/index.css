@@ -1,4 +1,6 @@
-
+*{
+  scroll-behavior: smooth;
+}
 .body{
   height: 100dvh;
 }
@@ -24,4 +26,43 @@
   align-items: center;
   padding: 1em;
   justify-content: space-around;
+}
+
+.modal{
+  color: black !important;
+  width: 70dvw;
+  position: fixed;
+  bottom: 1em;
+  box-shadow: 0px 0px 20px grey;
+  height: 10dvh;
+  background: rgb(254, 254, 254);
+}
+
+
+.message-body{
+  clear: both;
+  width:30%;
+  word-wrap: break-word;
+  padding: 1em;
+}
+
+.message-body.sender{
+  float: left;
+}
+
+.message-body.receiver{
+  float: right;
+}
+
+.message-body.sender .message{
+  background: rgb(124, 247, 218);
+}
+
+.message-body .message{
+  padding: 1em;
+  border-radius: 15px;
+  box-shadow: 0px 0px 30px rgba(182, 182, 182, 0.264);
+}
+.message-body.receiver .message{
+  background: lightgray;
 }
