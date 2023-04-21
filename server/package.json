@@ -18,6 +18,9 @@
     "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
     "mongoose": "^7.0.4",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+  },
+  "engines": {
+    "node": ">=14.20.1"
   }
 }
