@@ -147,6 +147,8 @@ const Login = () => {
                         sx={{
                             display: 'flex',
                             alignItems: 'center',
+                            flexDirection: 'column',
+                            gap:3,
                             marginBottom: 2,
                             justifyContent: 'space-between',
                         }}
