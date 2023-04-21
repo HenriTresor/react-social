@@ -2,3 +2,5 @@
 
 
 ### Users can register, find friends and chat!
+
+### Made with NodeJS, ReactJs and MUI
