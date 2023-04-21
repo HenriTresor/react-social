@@ -56,6 +56,7 @@ const Chats = ({ socket }) => {
                 ]
             })
 
+            setMessage('')
             socket.current.emit('add message', newMsg)
         } catch (err) {
             console.log(err);
