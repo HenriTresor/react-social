@@ -1,13 +1,11 @@
 import { Box, Grid, List, Button, ListItem, Paper, Typography, ListItemAvatar, ListItemText, ListItemButton } from '@mui/material'
 import React, { useEffect, useContext } from 'react'
 import Header from './components/layout/Header'
-import Body from './components/layout/Body'
-import Aside from './components/layout/Aside'
 import { PagesOutlined, Newspaper, GroupOutlined, Group } from '@mui/icons-material'
 import { AppData } from './context/AppContext'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
-import { serverLink } from './utils/links'
+import { serverLink } from './utils/links.js'
 import { Route, Routes } from 'react-router-dom'
 import HomePage from './pages/Homepage'
 import Login from './pages/Login'
@@ -15,12 +13,13 @@ import Signup from './pages/Signup'
 import { useNavigate, useLocation } from 'react-router-dom'
 import Profile from './pages/Profile.jsx'
 import Settings from './pages/Settings'
+
 const App = () => {
-  let { setUsers, setPages, currentUser, setCurrentUser, isLoggedIn, setIsLoggedIn } = useContext(AppData)
+  let { setUsers, setPages, setCurrentUser, isLoggedIn, setIsLoggedIn }  = useContext(AppData)
 
   let navigate = useNavigate()
   let location = useLocation()
-  const { isLoading, isError, data } = useQuery({
+  const { data } = useQuery({
     queryKey: ['users'],
     queryFn: async function () {
       const usersRes = await axios.get(`${serverLink}/users`)
