@@ -3,7 +3,7 @@ import React, { useReducer, useState } from 'react'
 import { LoadingButton } from '@mui/lab'
 import axios from 'axios'
 import { serverLink } from '../utils/links'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, Outlet } from 'react-router-dom'
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -74,145 +74,149 @@ const Signup = () => {
         }
     }
     return (
-        <Container
-            sx={{
-                padding: 2,
-                display: 'grid',
-                placeContent: 'center',
-                minHeight: '100dvh'
-            }}
-        >
-
-            <Snackbar
-                open={open}
-                autoHideDuration={1}
-                message={error}
-            >
-
-            </Snackbar>
-
-            <Box
+        <>
+            <Container
                 sx={{
                     padding: 2,
-                    boxShadow: '0px 0px 30px rgb(0,0,0, .3)',
-                    borderRadius: 3
+                    display: 'grid',
+                    placeContent: 'center',
+                    minHeight: '100dvh'
                 }}
             >
-                <Typography component='h1' variant='h5'>
-                    Create a new account
-                </Typography>
+
+                <Snackbar
+                    open={open}
+                    autoHideDuration={1}
+                    message={error}
+                >
+
+                </Snackbar>
 
                 <Box
                     sx={{
-                        marginTop: 3
+                        padding: 2,
+                        boxShadow: '0px 0px 30px rgb(0,0,0, .3)',
+                        borderRadius: 3
                     }}
                 >
-                    <Grid container spacing={2}>
-                        <Grid item xs={6}>
-                            <TextField
-                                sx={{ marginBottom: 3 }}
-                                fullWidth
-                                label={'enter your email address'}
-                                name='email'
-                                value={inputValues.email}
-                                id='email'
-                                required
-                                onChange={(e) => handleChange(e)}
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                sx={{ marginBottom: 3 }}
-                                fullWidth
-                                label={'enter full names'}
-                                value={inputValues.names}
-                                required
-                                name='names'
-                                onChange={(e) => handleChange(e)}
-                                id='names'
-                            />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <TextField
-                                sx={{ marginBottom: 3 }}
-                                fullWidth
-                                label={'create password'}
-                                name='password'
-                                id='password'
-                                type='password'
-                                required
-                                value={inputValues.password}
-                                onChange={(e) => handleChange(e)}
-                            />
-                        </Grid>
+                    <Typography component='h1' variant='h5'>
+                        Create a new account
+                    </Typography>
 
-                        <Grid item xs={6}>
-                            <FormControl
-                                fullWidth
-                            >
-                                <InputLabel>
-                                    Choose your gender
-                                </InputLabel>
-                                <Select
-                                    required
-                                    name='gender'
-                                    value={inputValues.gender}
-                                    onChange={(e) => handleChange(e)}
-                                    fullWidth
-                                >
-                                    <MenuItem value='male'>Male</MenuItem>
-                                    <MenuItem value='female'>Female</MenuItem>
-                                    <MenuItem value='custom'>Custom</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                    </Grid>
-
-                    <Box sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginBottom: 2
-                    }}>
-
-                    </Box>
                     <Box
                         sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            marginBottom: 2,
-                            justifyContent: 'space-between',
+                            marginTop: 3
                         }}
                     >
-                        {
-                            !loading ? (
-                                <Button
-                                    variant='contained'
-                                    color='warning'
-                                    onClick={handleSubmit}
-                                >
-                                    Create account
-                                </Button>
-                            ) :
-                                (
-                                    <LoadingButton
-                                        loading
-                                        variant='outlined'
-                                        color='warning'
-                                    >
-                                        submit
-                                    </LoadingButton>
-                                )
-                        }
+                        <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                                <TextField
+                                    sx={{ marginBottom: 3 }}
+                                    fullWidth
+                                    label={'enter your email address'}
+                                    name='email'
+                                    value={inputValues.email}
+                                    id='email'
+                                    required
+                                    onChange={(e) => handleChange(e)}
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    sx={{ marginBottom: 3 }}
+                                    fullWidth
+                                    label={'enter full names'}
+                                    value={inputValues.names}
+                                    required
+                                    name='names'
+                                    onChange={(e) => handleChange(e)}
+                                    id='names'
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    sx={{ marginBottom: 3 }}
+                                    fullWidth
+                                    label={'create password'}
+                                    name='password'
+                                    id='password'
+                                    type='password'
+                                    required
+                                    value={inputValues.password}
+                                    onChange={(e) => handleChange(e)}
+                                />
+                            </Grid>
 
+                            <Grid item xs={6}>
+                                <FormControl
+                                    fullWidth
+                                >
+                                    <InputLabel>
+                                        Choose your gender
+                                    </InputLabel>
+                                    <Select
+                                        required
+                                        name='gender'
+                                        value={inputValues.gender}
+                                        onChange={(e) => handleChange(e)}
+                                        fullWidth
+                                    >
+                                        <MenuItem value='male'>Male</MenuItem>
+                                        <MenuItem value='female'>Female</MenuItem>
+                                        <MenuItem value='custom'>Custom</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                        </Grid>
+
+                        <Box sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            marginBottom: 2
+                        }}>
+
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                marginBottom: 2,
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            {
+                                !loading ? (
+                                    <Button
+                                        variant='contained'
+                                        color='warning'
+                                        onClick={handleSubmit}
+                                    >
+                                        Create account
+                                    </Button>
+                                ) :
+                                    (
+                                        <LoadingButton
+                                            loading
+                                            variant='outlined'
+                                            color='warning'
+                                        >
+                                            submit
+                                        </LoadingButton>
+                                    )
+                            }
+
+                        </Box>
                     </Box>
+                    <Link to='/login'>
+                        <Typography>
+                            Already have an account ? Sign in!
+                        </Typography>
+                    </Link>
                 </Box>
-                <Link to='/login'>
-                    <Typography>
-                        Already have an account ? Sign in!
-                    </Typography>
-                </Link>
-            </Box>
-        </Container>
+            </Container>
+
+            <Outlet />
+        </>
     )
 }
 

@@ -1,6 +1,6 @@
 import { Container, Box, TextField, Button, Snackbar, Checkbox, Typography } from '@mui/material'
 import React, { useState, useReducer, useEffect } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, Outlet } from 'react-router-dom'
 import { serverLink } from '../utils/links'
 import { LoadingButton } from '@mui/lab'
 
@@ -78,115 +78,119 @@ const Login = () => {
         if (localStorage.getItem('access_token')) return navigate('/')
     }, [])
     return (
-        <Container
-            sx={{
-                padding: 2,
-                display: 'grid',
-                placeContent: 'center',
-                minHeight: '100dvh'
-            }}
-        >
-            <Snackbar
-                open={open}
-                autoHideDuration={1}
-                message={error}
-            >
-
-            </Snackbar>
-
-            <Box
+        <>
+            <Container
                 sx={{
                     padding: 2,
-                    boxShadow: '0px 0px 30px rgb(0,0,0, .3)',
-                    borderRadius: 3
+                    display: 'grid',
+                    placeContent: 'center',
+                    minHeight: '100dvh'
                 }}
             >
-                <Typography component='h1' variant='h5'>
-                    Sign in
-                </Typography>
+                <Snackbar
+                    open={open}
+                    autoHideDuration={1}
+                    message={error}
+                >
+
+                </Snackbar>
 
                 <Box
                     sx={{
-                        marginTop: 3
+                        padding: 2,
+                        boxShadow: '0px 0px 30px rgb(0,0,0, .3)',
+                        borderRadius: 3
                     }}
                 >
-                    <TextField
-                        sx={{ marginBottom: 3 }}
-                        fullWidth
-                        label={'email address'}
-                        name='email'
-                        onChange={(e) => handleChange(e)}
-                        value={inputValues.email}
-                        id='email'
-                        required
-                    />
-                    <TextField
-                        sx={{ marginBottom: 3 }}
-                        fullWidth
-                        label={'password'}
-                        onChange={(e) => handleChange(e)}
-                        value={inputValues.password}
-                        name='password'
-                        id='password'
-                        required
-                    />
+                    <Typography component='h1' variant='h5'>
+                        Sign in
+                    </Typography>
 
-                    <Box sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        marginBottom: 2
-                    }}>
-                        <Checkbox
-
-                        />
-                        <Typography>
-                            Remember me
-                        </Typography>
-                    </Box>
                     <Box
                         sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            flexDirection: 'column',
-                            gap:3,
-                            marginBottom: 2,
-                            justifyContent: 'space-between',
+                            marginTop: 3
                         }}
                     >
-                        {
-                            !loading ? (
-                                <Button
-                                    variant='contained'
-                                    color='warning'
-                                    onClick={handleSubmit}
-                                >
-                                    Sign in
-                                </Button>
-                            ) :
-                                (
-                                    <LoadingButton
-                                        loading
-                                        variant='outlined'
-                                        color='warning'
-                                    >
-                                        submit
-                                    </LoadingButton>
-                                )
-                        }
+                        <TextField
+                            sx={{ marginBottom: 3 }}
+                            fullWidth
+                            label={'email address'}
+                            name='email'
+                            onChange={(e) => handleChange(e)}
+                            value={inputValues.email}
+                            id='email'
+                            required
+                        />
+                        <TextField
+                            sx={{ marginBottom: 3 }}
+                            fullWidth
+                            label={'password'}
+                            onChange={(e) => handleChange(e)}
+                            value={inputValues.password}
+                            name='password'
+                            id='password'
+                            required
+                        />
 
-                        <Typography>
-                            Forgot password?
-                        </Typography>
+                        <Box sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            marginBottom: 2
+                        }}>
+                            <Checkbox
 
-                        <Link to='/signup'>
+                            />
                             <Typography>
-                                Don't Have an account? Create one!
+                                Remember me
                             </Typography>
-                        </Link>
+                        </Box>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                flexDirection: 'column',
+                                gap: 3,
+                                marginBottom: 2,
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            {
+                                !loading ? (
+                                    <Button
+                                        variant='contained'
+                                        color='warning'
+                                        onClick={handleSubmit}
+                                    >
+                                        Sign in
+                                    </Button>
+                                ) :
+                                    (
+                                        <LoadingButton
+                                            loading
+                                            variant='outlined'
+                                            color='warning'
+                                        >
+                                            submit
+                                        </LoadingButton>
+                                    )
+                            }
+
+                            <Typography>
+                                Forgot password?
+                            </Typography>
+
+                            <Link to='/signup'>
+                                <Typography>
+                                    Don't Have an account? Create one!
+                                </Typography>
+                            </Link>
+                        </Box>
                     </Box>
                 </Box>
-            </Box>
-        </Container>
+            </Container>
+
+            <Outlet />
+        </>
     )
 }
 

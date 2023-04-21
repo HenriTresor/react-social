@@ -8,7 +8,7 @@ import { AppData } from '../context/AppContext'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { serverLink } from '../utils/links'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Outlet } from 'react-router-dom'
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -321,6 +321,8 @@ const HomePage = () => {
                     </Aside >
                 </Grid>
             </Grid >
+
+            <Outlet />
         </>
 
     )
