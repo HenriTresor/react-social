@@ -1,0 +1,27 @@
+
+.body{
+  height: 100dvh;
+}
+
+.user-paper{
+  padding: 1em;
+  margin-bottom: 0.4em;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+  display: flex;
+}
+
+.user-paper img, .profile-image{
+  width: 100px;
+  border: 50%;
+  height: 100%;
+}
+
+.setting-box{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 1em;
+  justify-content: space-around;
+}
