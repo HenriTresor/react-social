@@ -3,7 +3,7 @@ import React, { useReducer, useState } from 'react'
 import { LoadingButton } from '@mui/lab'
 import axios from 'axios'
 import { serverLink } from '../utils/links'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 const reducer = (state, action) => {
     switch (action.type) {
