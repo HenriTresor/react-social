@@ -1,7 +1,7 @@
-import { Box, Grid, List, Button, ListItem, Paper, Typography, ListItemAvatar, ListItemText, ListItemButton } from '@mui/material'
-import React, { useEffect, useContext, useRef } from 'react'
+import { Box, Grid, List, Button, Badge, ListItem, Paper, Typography, ListItemAvatar, ListItemText, ListItemButton, Snackbar } from '@mui/material'
+import React, { useEffect, useContext, useRef, useState } from 'react'
 import Header from './components/layout/Header'
-import { PagesOutlined, Newspaper, GroupOutlined, Group } from '@mui/icons-material'
+import { PagesOutlined, Newspaper, GroupOutlined, CloseRounded, Group, Notifications } from '@mui/icons-material'
 import { AppData } from './context/AppContext'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -20,7 +20,43 @@ const App = () => {
   let { setUsers, setPages, setCurrentUser, currentUser, isLoggedIn, setIsLoggedIn } = useContext(AppData)
 
   const socket = useRef(null)
-
+  const [globalSnackBarOpen, setGlobalSnackBarOpen] = useState(false)
+  const [globalSnackBarMsg, setGlobalSnackBarMsg] = useState('')
+  const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false)
+  let [notifications, setNotifications] = useState([
+    {
+      title: 'new message',
+      time: Date.now()
+    },
+    {
+      title: 'new post',
+      time: Date.now()
+    },
+    {
+      title: 'new message',
+      time: Date.now()
+    },
+    {
+      title: 'new post',
+      time: Date.now()
+    },
+    {
+      title: 'new message',
+      time: Date.now()
+    },
+    {
+      title: 'new post',
+      time: Date.now()
+    },
+    {
+      title: 'new message',
+      time: Date.now()
+    },
+    {
+      title: 'new post',
+      time: Date.now()
+    },
+  ])
   useEffect(() => {
     if (isLoggedIn) {
       socket.current = io('https://sociala-server-gxvy.onrender.com')
@@ -85,17 +121,106 @@ const App = () => {
     <>
 
       {
-        isLoggedIn && <Header />
+        isNotificationPanelOpen && (
+
+          <Box
+            className='notifications'
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: 1,
+                borderBottom: '2px solid grey',
+                position: 'fixed',
+                width: '50dvw',
+                background:'white'
+              }}
+            >
+              <Button
+                onClick={() => setIsNotificationPanelOpen(false)}
+                color='warning'
+                variant='contained'
+              >
+                <CloseRounded />
+              </Button>
+              <Typography>
+                Notifications
+              </Typography>
+              <Badge color='primary' badgeContent={3}>
+                <Notifications />
+              </Badge>
+            </Box>
+
+            <Box
+              sx={{
+                marginTop: 2,
+               
+              }}
+            >
+              {
+                notifications?.map(notification => {
+                  return (
+                    <Paper
+                      elevation={6}
+                      key={notification?.time}
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: 2,
+                        cursor: 'pointer',
+                        marginBottom:2
+                    }}
+                    >
+                      <Typography>
+                        {notification?.title}
+                      </Typography>
+                      <Typography>
+                        {new Date(notification?.time).toLocaleTimeString()}, {new Date(notification?.time).toLocaleDateString()}
+                      </Typography>
+                    </Paper>
+                  )
+                })
+              }
+             
+            </Box>
+          </Box>
+        )
       }
 
+      {
+        isLoggedIn && <Header
+          isNotificationPanelOpen={isNotificationPanelOpen}
+          setIsNotificationPanelOpen={setIsNotificationPanelOpen}
+        />
+      }
+
+      {
+        globalSnackBarOpen && (
+          <Snackbar
+            open={globalSnackBarOpen}
+            autoHideDuration={7000}
+            onClose={() => setGlobalSnackBarOpen(false)}
+            message={globalSnackBarMsg}
+          >
+
+          </Snackbar>
+        )
+      }
 
       <Routes>
-        <Route path='/' element={<HomePage />} />
+        <Route path='/' element={<HomePage
+          isNotificationPanelOpen={isNotificationPanelOpen}
+          setIsNotificationPanelOpen={setIsNotificationPanelOpen} />} />
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/me/profile' element={<Profile />} />
         <Route path='/settings' element={<Settings />} />
-        <Route path='/chat-room' element={<Chats socket={socket} />} />
+        <Route path='/chat-room' element={<Chats socket={socket}
+          setGlobalSnackBarMsg={setGlobalSnackBarMsg}
+          setGlobalSnackBarOpen={setGlobalSnackBarOpen} />} />
       </Routes>
     </>
   )

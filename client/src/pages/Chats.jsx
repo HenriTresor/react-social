@@ -1,11 +1,10 @@
 import { Box, Grid, Drawer, Stack, Typography, Snackbar, Paper, Container, Button, TextField } from '@mui/material'
-import React, { useContext, useEffect, useState, useRef } from 'react'
+import React, { useContext, useEffect, useState, useRef, useReducer } from 'react'
 import { AppData } from '../context/AppContext'
 import { LogoutRounded, SendRounded, ArrowBack, PeopleAltRounded, ContactPage } from '@mui/icons-material'
 import { serverLink } from '../utils/links'
 
-const Chats = ({ socket }) => {
-
+const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
     const { currentUser } = useContext(AppData)
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     const [currentChat, setCurrentChat] = useState(null)
@@ -31,7 +30,8 @@ const Chats = ({ socket }) => {
             return
         }
         try {
-            setIsSnackBarOpen(false)
+            setIsSnackBarOpen(true)
+            setSnackBarMsg('sending message ...')
             const res = await fetch(`${serverLink}/messages/addmsg`, {
                 method: 'POST',
                 headers: {
@@ -41,6 +41,7 @@ const Chats = ({ socket }) => {
             })
 
             const data = await res.json()
+            setSnackBarMsg('message sent!')
             const newMsg = {
                 message: {
                     text: message
@@ -68,6 +69,8 @@ const Chats = ({ socket }) => {
     useEffect(() => {
         if (socket.current) {
             socket.current.on('new message', (message) => {
+                setGlobalSnackBarOpen(true)
+                setGlobalSnackBarMsg(`${message?.sender?.names} messaged you !`)
                 setMessages(prev => {
                     return [
                         ...prev,
@@ -81,6 +84,8 @@ const Chats = ({ socket }) => {
 
     const getMessages = async () => {
         try {
+            setIsSnackBarOpen(true)
+            setSnackBarMsg('loading messages ...')
             const res = await fetch(`${serverLink}/messages`, {
                 method: 'POST',
                 headers: {
@@ -91,6 +96,7 @@ const Chats = ({ socket }) => {
 
             const data = await res.json()
             setMessages(data?.messages)
+            setIsSnackBarOpen(false)
         } catch (err) {
             console.log(err);
         }
@@ -232,8 +238,8 @@ const Chats = ({ socket }) => {
                             >
                                 {
                                     currentChat !== null ?
-
                                         (
+
                                             <>
                                                 <Box
                                                     sx={{
@@ -269,6 +275,7 @@ const Chats = ({ socket }) => {
                                                         logout
                                                     </Button>
                                                 </Box>
+
                                                 <Box
                                                     sx={{
                                                         padding: 1,
@@ -281,6 +288,8 @@ const Chats = ({ socket }) => {
 
                                                     ref={scrollRef}
                                                 >
+
+
 
                                                     {
                                                         messages?.map(message => {
@@ -314,6 +323,7 @@ const Chats = ({ socket }) => {
                                                         })
                                                     }
 
+
                                                 </Box>
                                                 <Box
                                                     sx={{
@@ -337,7 +347,9 @@ const Chats = ({ socket }) => {
                                                     </Button>
                                                 </Box>
                                             </>
-                                        ) : (
+                                        )
+
+                                        : (
                                             <Box
                                                 sx={{
                                                     display: 'grid',

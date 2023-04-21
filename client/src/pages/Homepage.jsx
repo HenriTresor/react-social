@@ -23,7 +23,7 @@ const reducer = (state, action) => {
     }
 }
 
-const HomePage = () => {
+const HomePage = ({ setIsNotificationPanelOpen }) => {
     const [open, setOpen] = useState(false)
     const [{ loading, error, requestData, done, payload }, dispatch] = useReducer(reducer, {
         loading: false,
@@ -137,7 +137,7 @@ const HomePage = () => {
             <Grid>
                 <Grid item xs={12}
                 >
-                    <Header />
+                    <Header setIsNotificationPanelOpen={setIsNotificationPanelOpen} />
                 </Grid>
                 <Grid item xs={3}>
                     <Aside anchor='left'

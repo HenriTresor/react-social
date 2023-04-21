@@ -4,17 +4,17 @@ import { HomeRounded, Notifications, MessageRounded, Settings } from '@mui/icons
 import { Link } from 'react-router-dom'
 import { AppData } from '../../context/AppContext'
 
-const Header = () => {
+const Header = ({ setIsNotificationPanelOpen }) => {
 
-  let { currentUser }: any = useContext(AppData)
+  let { currentUser } = useContext(AppData)
 
- 
+
   return (
     <>
       <AppBar position='fixed'
         sx={{
           padding: 0.8,
-          zIndex: 99999,
+          zIndex: 9999999,
           background: 'white',
           color: 'skyblue',
           display: 'flex',
@@ -63,7 +63,9 @@ const Header = () => {
         </Box>
 
         <Box>
-          <Button>
+          <Button
+          onClick={()=>setIsNotificationPanelOpen(true)}
+          >
             <Notifications />
           </Button>
           <Link to='/chat-room'>
