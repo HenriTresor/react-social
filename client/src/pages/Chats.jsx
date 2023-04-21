@@ -15,6 +15,7 @@ const Chats = ({ socket }) => {
     const [messages, setMessages] = useState([])
     const scrollRef = useRef()
     const [isScrolling, setIsScrolling] = useState(false)
+    const inputRef = useRef(null)
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -57,6 +58,7 @@ const Chats = ({ socket }) => {
             })
 
             setMessage('')
+            inputRef.current?.focus()
             socket.current.emit('add message', newMsg)
         } catch (err) {
             console.log(err);
@@ -321,6 +323,7 @@ const Chats = ({ socket }) => {
                                                     }}
                                                 >
                                                     <TextField
+                                                        inputRef={inputRef}
                                                         value={message}
                                                         onChange={(e) => setMessage(e.target.value)}
                                                         fullWidth
