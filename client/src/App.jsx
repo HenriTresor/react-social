@@ -23,17 +23,17 @@ const App = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      socket.current = io('http://localhost:8080')
+      socket.current = io('https://sociala-server-gxvy.onrender.com')
     }
   }, [isLoggedIn])
-  
+
   useEffect(() => {
     if (socket.current) {
       socket.current.on('connect', () => {
       })
       socket.current.emit('add-user', { user: currentUser })
     }
-  },[socket.current])
+  }, [socket.current])
   let navigate = useNavigate()
   let location = useLocation()
   const { data } = useQuery({
