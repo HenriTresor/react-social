@@ -28,34 +28,7 @@ const App = () => {
       title: 'new message',
       time: Date.now()
     },
-    {
-      title: 'new post',
-      time: Date.now()
-    },
-    {
-      title: 'new message',
-      time: Date.now()
-    },
-    {
-      title: 'new post',
-      time: Date.now()
-    },
-    {
-      title: 'new message',
-      time: Date.now()
-    },
-    {
-      title: 'new post',
-      time: Date.now()
-    },
-    {
-      title: 'new message',
-      time: Date.now()
-    },
-    {
-      title: 'new post',
-      time: Date.now()
-    },
+
   ])
   useEffect(() => {
     if (isLoggedIn) {
@@ -133,9 +106,7 @@ const App = () => {
                 justifyContent: 'space-between',
                 padding: 1,
                 borderBottom: '2px solid grey',
-                position: 'fixed',
-                width: '50dvw',
-                background:'white'
+              
               }}
             >
               <Button
