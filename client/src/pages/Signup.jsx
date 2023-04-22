@@ -1,9 +1,9 @@
 import { Container, Box, TextField, Select, Snackbar, MenuItem, FormControl, InputLabel, Grid, Button, Checkbox, Typography } from '@mui/material'
-import React, { useReducer, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import { LoadingButton } from '@mui/lab'
-import axios from 'axios'
 import { serverLink } from '../utils/links'
 import { useNavigate, Link, Outlet } from 'react-router-dom'
+import axios from 'axios'
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -30,13 +30,42 @@ const Signup = () => {
         email: '',
         names: '',
         password: '',
-        gender: ''
+        gender: '',
+        profile: null
     })
+
+    const [isImageUploaded, setIsImageUploaded] = useState(false)
+    const [isImageUploading, setIsImageUploading] = useState(false)
+    const [profileUrl, setProfileUrl] = useState('')
 
     const handleChange = (e) => {
         setInputValues(prev => {
             return { ...prev, [e.target.name]: e.target.value }
         })
+    }
+
+    const uploadPic = async () => {
+        try {
+            if (inputValues.profile !== null) {
+                setIsImageUploaded(false)
+                setIsImageUploading(true)
+                const formData = new FormData()
+                formData.append('file', inputValues.profile)
+                formData.append('upload_preset', 'gpzxoihy')
+                axios.post('https://api.cloudinary.com/v1_1/djehh7gum/image/upload', formData)
+                    .then(res => {
+                        setProfileUrl(res.data.secure_url)
+                    }).then(() => {
+
+                        setIsImageUploaded(true)
+                    }).then(() => {
+                        setIsImageUploading(false)
+                    })
+
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
     }
     const handleSubmit = async () => {
         try {
@@ -47,17 +76,18 @@ const Signup = () => {
             } else {
                 setOpen(false)
                 dispatch({ type: 'START_FETCHING' })
-                const res = await fetch(`${serverLink}/users`,
-                    {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(inputValues)
-                    })
+
+                let res
+                res = await fetch(`${serverLink}/users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+
+                    body: JSON.stringify({ ...inputValues, profile: profileUrl })
+                })
 
                 const data = await res.json()
-                console.log(data);
                 if (!data.status) {
                     setOpen(true)
                     dispatch({ type: 'ERROR', payload: data.message })
@@ -66,13 +96,17 @@ const Signup = () => {
                     localStorage.setItem('access_token', data.access_token)
                     location.assign('/')
                 }
-                
+
             }
         } catch (error) {
             setOpen(true)
             dispatch({ type: 'ERROR', payload: error.message })
         }
     }
+
+    useEffect(() => {
+        console.log(inputValues);
+    }, [inputValues])
     return (
         <>
             <Container
@@ -166,6 +200,37 @@ const Signup = () => {
                                         <MenuItem value='custom'>Custom</MenuItem>
                                     </Select>
                                 </FormControl>
+                                <Button
+                                    variant='contained'
+                                    sx={{
+                                        cursor: 'pointer',
+                                        margin: '10px auto'
+                                    }}
+                                >
+                                    <label
+                                        style={{
+                                            cursor: 'pointer'
+                                        }}
+                                        htmlFor="profile">
+                                        add optional profile pic
+                                    </label>
+                                </Button>
+                                <input
+                                    style={{
+                                        display: 'none'
+                                    }}
+                                    onChange={(e) => {
+                                        setInputValues(prev => {
+                                            return {
+                                                ...prev,
+                                                profile: e.target.files[0]
+                                            }
+                                        })
+                                    }}
+                                    name='profile'
+                                    id='profile'
+                                    type='file'
+                                />
                             </Grid>
                         </Grid>
 
@@ -184,25 +249,37 @@ const Signup = () => {
                                 justifyContent: 'space-between',
                             }}
                         >
+
+                            {
+                                (inputValues.profile !== null && profileUrl !== null) && (
+                                    <Button
+                                        onClick={uploadPic}
+                                        disabled={isImageUploaded}
+                                    >{!isImageUploaded ? 'upload profile picture' : 'image uploaded!'}</Button>
+                                )
+                            }
+
                             {
                                 !loading ? (
-                                    <Button
-                                        variant='contained'
-                                        color='warning'
-                                        onClick={handleSubmit}
-                                    >
-                                        Create account
-                                    </Button>
-                                ) :
-                                    (
-                                        <LoadingButton
-                                            loading
-                                            variant='outlined'
+                                    <>
+                                        <Button
+                                            onClick={handleSubmit}
+                                            variant='contained'
                                             color='warning'
+                                            disabled={isImageUploading}
                                         >
-                                            submit
-                                        </LoadingButton>
-                                    )
+                                            create account
+                                        </Button>
+                                    </>
+                                ) : (
+                                    <LoadingButton
+                                            loading
+                                            loadingIndicator='Creating account !'
+                                            variant='outlined'
+                                    >
+
+                                    </LoadingButton>
+                                )
                             }
 
                         </Box>

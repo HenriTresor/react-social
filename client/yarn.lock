@@ -1101,6 +1101,11 @@ proxy-from-env@^1.1.0:
   resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.1.0.tgz#e102f16ca355424865755d2c9e8ea4f24d58c3e2"
   integrity sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==
 
+react-cloudinary-upload-widget@^1.7.5:
+  version "1.7.5"
+  resolved "https://registry.yarnpkg.com/react-cloudinary-upload-widget/-/react-cloudinary-upload-widget-1.7.5.tgz#bca3e7b75b0da46c39145fe1e3b23b3994930ad8"
+  integrity sha512-3AzCcsPyDk0Mm6Ox98MeEf31q7/9G2sOys4fAdDQdDK3xEVPZykt4kEtBQvNp9HYIRe1xH/Trr1lA0yyyKmZaw==
+
 react-dom@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"

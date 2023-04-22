@@ -168,6 +168,7 @@ const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                                         }}
                                     >
                                         <img
+                                            className='profile-image'
                                             style={{
                                                 width: '60x',
                                                 height: '60px'
@@ -259,6 +260,7 @@ const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                                                         }}
                                                     >
                                                         <img
+                                                            className='profile-image'
                                                             style={{
                                                                 width: '60x',
                                                                 height: '60px'

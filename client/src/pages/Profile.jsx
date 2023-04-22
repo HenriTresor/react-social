@@ -18,7 +18,9 @@ const Profile = () => {
                           padding: 3
                       }}
                   >
-                      <img src={currentUser?.profile} alt={`${currentUser.names} profile picture`} />
+                      <img
+                      className='profile-image'
+                          src={currentUser?.profile} alt={`${currentUser.names} profile picture`} />
                       <Typography
                           variant='h4'
                           component='h1'
@@ -82,7 +84,9 @@ const Profile = () => {
                                                       alignItems: 'center'
                                                   }}
                                               >
-                                                  <img src={friend?.profile} alt={`${friend?.names} profile pic`} />
+                                                  <img
+                                                      className='profile-image'
+                                                      src={friend?.profile} alt={`${friend?.names} profile pic`} />
                                                   <Typography>
                                                       {friend?.names}
                                                   </Typography>

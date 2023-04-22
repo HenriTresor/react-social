@@ -287,9 +287,14 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
                                 {
                                     isLoading ? 'loading' : (
                                         users?.map(user => {
-                                            if (user._id === currentUser?._id || currentUser?.friends?.includes(user?._id)) {
+                                            if (user._id === currentUser?._id ) {
                                                 return null
                                             }
+                                            currentUser?.friends?.forEach(friend => {
+                                                if (friend?._id === user?._id) {
+                                                    return null
+                                                }
+                                            })
                                             return (
                                                 <Paper key={user?._id} className='user-paper'>
                                                     <img src={user?.profile} />
