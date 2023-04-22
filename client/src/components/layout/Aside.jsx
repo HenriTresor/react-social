@@ -3,7 +3,7 @@ import { Button, Drawer } from '@mui/material'
 import { AppData } from '../../context/AppContext'
 
 const Aside = ({ children, anchor }) => {
-  let { pageWidth, isDrawerOpen, setIsDrawerOpen } = useContext(AppData)
+  let { pageWidth, isDrawerOpen, setIsDrawerOpen, setIsModalOpen } = useContext(AppData)
   return (
       <>
       <Drawer

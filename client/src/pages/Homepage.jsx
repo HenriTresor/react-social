@@ -32,7 +32,7 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
         message: ''
     })
     const navigate = useNavigate()
-    let { users, setUsers, pages, setPages, pageWidth, setIsDrawerOpen, currentUser, posts, setPosts } = useContext(AppData)
+    let { users, setUsers, pages, setPages, pageWidth, setIsDrawerOpen, currentUser, posts, setPosts, setIsModalOpen } = useContext(AppData)
     console.log(currentUser);
     const { isLoading, isError, data } = useQuery({
         queryKey: ['users'],
@@ -162,14 +162,16 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
                                 >
                                     <ArrowBack />
                                 </Button>
-                         }
+                            }
                             <Box
                                 sx={{
                                     display: 'grid',
                                     placeContent: 'center'
                                 }}
                             >
-                                <Button variant='contained'>
+                                <Button
+                                    onClick={() => setIsModalOpen(true)}
+                                    variant='contained'>
                                     create a new post
                                 </Button>
                             </Box>
@@ -331,7 +333,7 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
                             </Aside >
                         </Grid>
                     )
-                        }
+                }
             </Grid >
 
             <Outlet />
