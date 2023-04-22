@@ -1,14 +1,13 @@
 import React, { useContext, useState } from 'react'
 import { AppBar, Box, Button, Typography } from '@mui/material'
-import { HomeRounded, Notifications, MessageRounded, Settings } from '@mui/icons-material'
-import { Link } from 'react-router-dom'
+import { HomeRounded, Notifications, MessageRounded, Settings, Search } from '@mui/icons-material'
+import { Link, useNavigate } from 'react-router-dom'
 import { AppData } from '../../context/AppContext'
 
 const Header = ({ setIsNotificationPanelOpen }) => {
 
-  let { currentUser } = useContext(AppData)
-
-
+  let { currentUser, pageWidth } = useContext(AppData)
+let navigate = useNavigate()
   return (
     <>
       <AppBar position='fixed'
@@ -29,10 +28,18 @@ const Header = ({ setIsNotificationPanelOpen }) => {
             alignItems: 'center'
           }}
         >
-          <Typography
-            variant='h4'
-            component='h1'
-          >Sociala.</Typography>
+          {
+            pageWidth >= 450 ? (
+              <Typography
+                variant='h5'
+                component='h1'
+              >Sociala.</Typography>
+            ) : (
+                <Typography>
+                  S
+                </Typography>
+            )
+         }
           <Box
             sx={{
               display: 'flex',
@@ -40,20 +47,27 @@ const Header = ({ setIsNotificationPanelOpen }) => {
               marginLeft: 2
             }}
           >
-            <input
-              style={{
-                padding: 10,
-                background: 'rgb(205,201,225)',
-                border: 'none',
-                outline: 'none',
-                borderRadius: 15
-              }}
-              placeholder='start typing to search...'
-              type="text"
-            />
+            {
+              pageWidth >= 1150 ? (
+                <input
+                  style={{
+                    padding: 10,
+                    background: 'rgb(205,201,225)',
+                    border: 'none',
+                    outline: 'none',
+                    borderRadius: 15
+                  }}
+                  placeholder='start typing to search...'
+                  type="text"
+                />
+              ) : (
+                  <Search />
+              )
+           }
             <Box>
-              <Link to='/'>
-                <Button>
+              <Link to='/' key='homepage-link'>
+              <Button
+              >
                   <HomeRounded />
                 </Button>
               </Link>
@@ -62,27 +76,42 @@ const Header = ({ setIsNotificationPanelOpen }) => {
 
         </Box>
 
-        <Box>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            padding:0.2
+        }}
+        >
           <Button
           onClick={()=>setIsNotificationPanelOpen(true)}
           >
             <Notifications />
           </Button>
-          <Link to='/chat-room'>
-            <Button
+          <Link to='/chat-room' key='chat-room-link'>
+          <Button
+            onClick={()=> navigate('/chat-room')}
             >
               <MessageRounded />
             </Button>
           </Link>
-          <Link to='/settings'>
-            <Button>
-              <Settings />
-            </Button>
-          </Link>
-          <Link to='/me/profile'>
-            <Button variant='outlined'>
+          {
+            pageWidth >= 1150 && (
+              <Link to='/settings' key='settings-link'>
+                <Button>
+                  <Settings />
+                </Button>
+              </Link>
+            )
+         }
+          <Link to='/me/profile' key='profile-link'>
+            <Button variant='outlined'
+              sx={{
+              padding:0
+            }}
+            >
               {
-                currentUser?.names?.split(' ')[0]
+                pageWidth >= 1150 ? currentUser?.names?.split(' ')[0] : currentUser?.names?.split('')[0]
               }
             </Button>
           </Link>

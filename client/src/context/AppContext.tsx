@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useReducer, ReactNode } from 'react'
-import { useNavigate } from 'react-router-dom'
 
 interface Props {
     children: ReactNode
@@ -12,6 +11,26 @@ const AppContext = (props: Props) => {
     const [pages, setPages] = useState([])
     const [currentUser, setCurrentUser] = useState({})
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [posts, setPosts] = useState([])
+    const [pageWidth, setPageWidth] = useState(0)
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    useEffect(() => {
+        setPageWidth(window.innerWidth)
+    }, [])
+
+    const handleSize = () => {
+        setPageWidth(window.innerWidth)
+    }
+    useEffect(() => {
+        window.addEventListener('resize', handleSize)
+        return () => window.removeEventListener('resize', handleSize)
+    }, [])
+
+    useEffect(() => {
+        console.log(pageWidth);
+
+    }, [pageWidth])
     const values = {
         users,
         isLoggedIn,
@@ -20,7 +39,14 @@ const AppContext = (props: Props) => {
         pages,
         setPages,
         setCurrentUser,
-        setIsLoggedIn
+        setIsLoggedIn,
+        posts,
+        setPosts,
+        pageWidth,
+        isDrawerOpen,
+        setIsDrawerOpen,
+        isModalOpen,
+        setIsModalOpen
     }
 
     return (

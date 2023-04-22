@@ -6,6 +6,7 @@ import friendsRouter from './routes/friends.route.js'
 import messageRouter from './routes/message.route.js'
 import pageRouter from './routes/page.route.js'
 import authRouter from './routes/auth.route.js'
+import postRoute from './routes/post.route.js'
 import { v2 as cloudinary } from 'cloudinary'
 import { config } from 'dotenv'
 import multer from 'multer'
@@ -59,6 +60,7 @@ app.use(`${rootRoute}/friends`, friendsRouter)
 app.use(`${rootRoute}/messages`, messageRouter)
 app.use(`${rootRoute}/pages`, pageRouter)
 app.use(`${rootRoute}/auth`, authRouter)
+app.use(`${rootRoute}/posts`, postRoute)
 
 app.all('*', (req, res) => {
     res.status(400).json({ message: 'resource not found' })

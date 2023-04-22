@@ -1,7 +1,7 @@
 import { Box, Grid, List, Button, Badge, ListItem, Paper, Typography, ListItemAvatar, ListItemText, ListItemButton, Snackbar } from '@mui/material'
 import React, { useEffect, useContext, useRef, useState } from 'react'
 import Header from './components/layout/Header'
-import { PagesOutlined, Newspaper, GroupOutlined, CloseRounded, Group, Notifications } from '@mui/icons-material'
+import { PagesOutlined, Newspaper, Add, GroupOutlined, CloseRounded, Group, Notifications } from '@mui/icons-material'
 import { AppData } from './context/AppContext'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -15,9 +15,11 @@ import Profile from './pages/Profile.jsx'
 import Settings from './pages/Settings'
 import Chats from './pages/Chats'
 import { io } from 'socket.io-client'
+import { Fab } from '@mui/material'
+import Dialog from './components/Dialog'
 
 const App = () => {
-  let { setUsers, setPages, setCurrentUser, currentUser, isLoggedIn, setIsLoggedIn } = useContext(AppData)
+  let { setUsers, setPages, setCurrentUser, currentUser, isModalOpen, setIsModalOpen, isLoggedIn, setIsLoggedIn } = useContext(AppData)
 
   const socket = useRef(null)
   const [globalSnackBarOpen, setGlobalSnackBarOpen] = useState(false)
@@ -92,7 +94,19 @@ const App = () => {
   }, [])
   return (
     <>
-
+      <Fab
+        onClick={() => {
+          setIsModalOpen(true)
+        }}
+        color='primary'
+        sx={{
+          position: 'fixed',
+          bottom: '1em',
+          right: '1em'
+        }}
+      >
+        <Add />
+      </Fab>
       {
         isNotificationPanelOpen && (
 
@@ -106,7 +120,7 @@ const App = () => {
                 justifyContent: 'space-between',
                 padding: 1,
                 borderBottom: '2px solid grey',
-              
+
               }}
             >
               <Button
@@ -127,7 +141,7 @@ const App = () => {
             <Box
               sx={{
                 marginTop: 2,
-               
+
               }}
             >
               {
@@ -142,8 +156,8 @@ const App = () => {
                         justifyContent: 'space-between',
                         padding: 2,
                         cursor: 'pointer',
-                        marginBottom:2
-                    }}
+                        marginBottom: 2
+                      }}
                     >
                       <Typography>
                         {notification?.title}
@@ -155,7 +169,7 @@ const App = () => {
                   )
                 })
               }
-             
+
             </Box>
           </Box>
         )
@@ -193,6 +207,10 @@ const App = () => {
           setGlobalSnackBarMsg={setGlobalSnackBarMsg}
           setGlobalSnackBarOpen={setGlobalSnackBarOpen} />} />
       </Routes>
+      <Dialog
+        setGlobalSnackBarMsg={setGlobalSnackBarMsg}
+        setGlobalSnackBarOpen={setGlobalSnackBarOpen}
+      />
     </>
   )
 }

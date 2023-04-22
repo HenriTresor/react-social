@@ -3,12 +3,13 @@ import React, { useEffect, useContext, useReducer, useState } from 'react'
 import Header from '../components/layout/Header'
 import Body from '../components/layout/Body'
 import Aside from '../components/layout/Aside'
-import { PagesOutlined, Newspaper, GroupOutlined, Group } from '@mui/icons-material'
+import { PagesOutlined, Newspaper, GroupOutlined, Group, Close, ArrowBack } from '@mui/icons-material'
 import { AppData } from '../context/AppContext'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { serverLink } from '../utils/links'
 import { useNavigate, Outlet } from 'react-router-dom'
+import { current } from '@reduxjs/toolkit'
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -31,17 +32,19 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
         message: ''
     })
     const navigate = useNavigate()
-    let { users, setUsers, pages, setPages, currentUser } = useContext(AppData)
+    let { users, setUsers, pages, setPages, pageWidth, setIsDrawerOpen, currentUser, posts, setPosts } = useContext(AppData)
     console.log(currentUser);
     const { isLoading, isError, data } = useQuery({
         queryKey: ['users'],
         queryFn: async function () {
             const usersRes = await axios.get(`${serverLink}/users?currentUserId=${currentUser?._id}`)
+            const postsRes = await axios.get(`${serverLink}/posts`)
             const pageRes = await axios.get(`${serverLink}/pages`)
 
             return {
                 usersRes,
-                pageRes
+                pageRes,
+                postsRes
             }
         }
     })
@@ -49,8 +52,12 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
     useEffect(() => {
         setUsers(data?.usersRes?.data?.users)
         setPages(data?.pageRes?.data?.pages)
+        setPosts(data?.postsRes?.data?.posts)
     }, [data])
 
+    useEffect(() => {
+        console.log(users, currentUser?.friends);
+    }, [users, currentUser?.friends])
 
     const sendRequest = async (id) => {
         try {
@@ -149,6 +156,13 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
                                 padding: 2
                             }}
                         >
+                            {
+                                pageWidth < 1150 && <Button
+                                    onClick={() => setIsDrawerOpen(false)}
+                                >
+                                    <ArrowBack />
+                                </Button>
+                         }
                             <Box
                                 sx={{
                                     display: 'grid',
@@ -160,16 +174,6 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
                                 </Button>
                             </Box>
                             <List>
-                                <ListItem>
-                                    <ListItemButton>
-                                        <ListItemAvatar>
-                                            <Newspaper />
-                                        </ListItemAvatar>
-                                        <ListItemText>
-                                            news feed
-                                        </ListItemText>
-                                    </ListItemButton>
-                                </ListItem>
                                 <ListItem>
                                     <ListItemButton>
                                         <ListItemAvatar>
@@ -198,6 +202,9 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
                                 </Typography>
                                 {
                                     pages?.map(page => {
+                                        if (page?.page_followers.includes(currentUser?._id)) {
+                                            return null
+                                        }
                                         return (
                                             <Paper className='user-paper'>
                                                 <Box>
@@ -209,10 +216,10 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
                                                         {page?.page_followers.length > 1 ? page?.page_followers.length + ' followers' : page?.page_followers.length + ' follower'}
                                                     </Typography>
                                                 </Box>
-                                               
+
                                                 {
                                                     page?.followers?.includes(currentUser) ? (
-                                                    <h2>al</h2>
+                                                        <h2>al</h2>
                                                     ) : (
                                                         <Button
                                                             onClick={(id) => followPage(page?._id)}
@@ -232,69 +239,67 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
                 <Grid item xs={6} md={8} sx={{ marginTop: 9, textAlign: 'center' }}>
                     <Body />
                 </Grid>
-                <Grid item xs={3}>
-                    <Aside anchor='right'>
+                {
+                    pageWidth >= 1150 && (
+                        <Grid item xs={3}>
+                            <Aside anchor='right'>
 
-                        <Box
-                            sx={{
-                                marginTop: 10,
-                                padding: 2
-                            }}
-                        >
-                            <Typography>
-                                Friend Requests ({currentUser?.friendRequests?.length})
-                            </Typography>
+                                <Box
+                                    sx={{
+                                        marginTop: 10,
+                                        padding: 2
+                                    }}
+                                >
+                                    <Typography>
+                                        Friend Requests ({currentUser?.friendRequests?.length})
+                                    </Typography>
 
-                            <Box>
-                                {
-                                    currentUser?.friendRequests?.length === 0 ? (
-                                        <Typography>
-                                            No Requests
-                                        </Typography>
-                                    ) : (
-                                        currentUser?.friendRequests?.map(request => {
-                                            console.log(request);
-                                            return (
-                                                <Paper key={request} className='user-paper'>
-                                                    <img src={request?.profile} />
-                                                    <Typography>
-                                                        {request?.names}
-                                                    </Typography>
-                                                    <Typography>
-                                                        {request?.friends?.length > 1 ? request?.friends.length + ' friends' : request?.friends.length + ' friend'}
-                                                    </Typography>
-                                                    <Button variant='contained'
-                                                        onClick={(id) => acceptRequest(request?._id)}
-                                                    >
-                                                        accept request
-                                                    </Button>
-                                                </Paper>
+                                    <Box>
+                                        {
+                                            currentUser?.friendRequests?.length === 0 ? (
+                                                <Typography>
+                                                    No Requests
+                                                </Typography>
+                                            ) : (
+                                                currentUser?.friendRequests?.map(request => {
+                                                    console.log(request);
+                                                    return (
+                                                        <Paper key={request} className='user-paper'>
+                                                            <img src={request?.profile} />
+                                                            <Typography>
+                                                                {request?.names}
+                                                            </Typography>
+                                                            <Typography>
+                                                                {request?.friends?.length > 1 ? request?.friends.length + ' friends' : request?.friends.length + ' friend'}
+                                                            </Typography>
+                                                            <Button variant='contained'
+                                                                onClick={(id) => acceptRequest(request?._id)}
+                                                            >
+                                                                accept request
+                                                            </Button>
+                                                        </Paper>
+                                                    )
+                                                })
                                             )
-                                        })
-                                    )
-                                }
-                            </Box>
-                        </Box>
-                        <Box
-                            sx={{
-                                marginTop: 3,
-                                padding: 2
-                            }}
-                        >
-                            <h3>Friends suggestions</h3>
+                                        }
+                                    </Box>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        marginTop: 3,
+                                        padding: 2
+                                    }}
+                                >
+                                    <h3>Friends suggestions</h3>
 
-                            <Box>
-                                {
+                                    <Box>
+                                        {/* {
                                     isLoading ? 'loading' : (
                                         users?.map(user => {
-                                            if (user._id === currentUser?._id ) {
+                                            if (user._id === currentUser?._id) {
                                                 return null
                                             }
-                                            currentUser?.friends?.forEach(friend => {
-                                                if (friend?._id === user?._id) {
-                                                    return null
-                                                }
-                                            })
+
                                             return (
                                                 <Paper key={user?._id} className='user-paper'>
                                                     <img src={user?.profile} />
@@ -320,11 +325,13 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
                                             )
                                         })
                                     )
-                                }
-                            </Box>
-                        </Box>
-                    </Aside >
-                </Grid>
+                                } */}
+                                    </Box>
+                                </Box>
+                            </Aside >
+                        </Grid>
+                    )
+                        }
             </Grid >
 
             <Outlet />
