@@ -45,7 +45,7 @@ export const sendFriendRequest = async (req, res, next) => {
         // check if they are already friends
 
         if (user.friends.includes(requestId) || requestedUser.friends.includes(userId)) return res.status(400).json({ status: false, message: 'users are already friends' })
-       
+
         await User.updateOne({ _id: requestedUser._id }, {
             $push: {
                 friendRequests: user._id
@@ -80,7 +80,21 @@ export const acceptRequest = async (req, res, next) => {
         if (!user || !requester) return res.status(404).json({ status: false, message: 'some users were not found' })
 
         // check if they are already friends
-        if (user.friends.includes(requesterId) || requester.friends.includes(userId)) return res.status(400).json({ status: false, message: 'users are already friends' })
+        if (user.friends.includes(requesterId) || requester.friends.includes(userId)) {
+            await User.findByIdAndUpdate(user._id, {
+                $pull: {
+                    friendRequests: requester._id,
+                },
+
+            })
+
+            await User.findByIdAndUpdate(requester._id, {
+                $pull: {
+                    sentRequests: user._id,
+                },
+            })
+            return res.status(400).json({ status: false, message: 'users are already friends' })
+        }
 
         // check if request exists
         if (!user.friendRequests.includes(requesterId) || !requester.sentRequests.includes(userId)) return res.status(400).json({ status: false, message: 'no request between users' })

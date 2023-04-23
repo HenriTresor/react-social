@@ -18,6 +18,7 @@ import { io } from 'socket.io-client'
 import { Fab } from '@mui/material'
 import Dialog from './components/Dialog.jsx'
 import SinglePost from './pages/SinglePost'
+import People from './pages/People'
 
 const App = () => {
   let { setUsers, setPages, setCurrentUser, currentUser, isModalOpen, setIsModalOpen, isLoggedIn, setIsLoggedIn } = useContext(AppData)
@@ -197,19 +198,20 @@ const App = () => {
       }
 
       <Routes>
-        <Route path='/' element={<HomePage
+        <Route exact path='/' element={<HomePage
           setGlobalSnackBarMsg={setGlobalSnackBarMsg}
           setGlobalSnackBarOpen={setGlobalSnackBarOpen}
           isNotificationPanelOpen={isNotificationPanelOpen}
           setIsNotificationPanelOpen={setIsNotificationPanelOpen} />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/me/profile' element={<Profile />} />
-        <Route path='/settings' element={<Settings />} />
-        <Route path='/posts/:id' element={<SinglePost />} />
-        <Route path='/chat-room' element={<Chats socket={socket}
+        <Route exact path='/login' element={<Login />} />
+        <Route exact path='/signup' element={<Signup />} />
+        <Route exact path='/me/profile' element={<Profile />} />
+        <Route exact path='/settings' element={<Settings />} />
+        <Route exact path='/posts/:id' element={<SinglePost />} />
+        <Route exact path='/chat-room' element={<Chats socket={socket}
           setGlobalSnackBarMsg={setGlobalSnackBarMsg}
           setGlobalSnackBarOpen={setGlobalSnackBarOpen} />} />
+        <Route exact path='/people' element={ <People />} />
       </Routes>
       <Dialog
         setGlobalSnackBarMsg={setGlobalSnackBarMsg}

@@ -8,7 +8,7 @@ import { AppData } from '../context/AppContext'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { serverLink } from '../utils/links'
-import { useNavigate, Outlet } from 'react-router-dom'
+import { useNavigate, Outlet, Link } from 'react-router-dom'
 import { current } from '@reduxjs/toolkit'
 import Loading from '../components/Loading'
 
@@ -188,16 +188,19 @@ const HomePage = ({ setIsNotificationPanelOpen, setGlobalSnackBarMsg, setGlobalS
                                         </ListItemText>
                                     </ListItemButton>
                                 </ListItem>
-                                <ListItem>
-                                    <ListItemButton>
-                                        <ListItemAvatar>
-                                            <GroupOutlined />
-                                        </ListItemAvatar>
-                                        <ListItemText>
-                                            find friends
-                                        </ListItemText>
-                                    </ListItemButton>
-                                </ListItem>
+                                <Link to='/people'>
+                                    <ListItem>
+                                        <ListItemButton>
+                                            <ListItemAvatar>
+                                                <GroupOutlined />
+                                            </ListItemAvatar>
+                                            <ListItemText>
+                                                find friends
+                                            </ListItemText>
+                                        </ListItemButton>
+                                    </ListItem>
+                                </Link>
+
                             </List>
 
                             <Box>
@@ -314,6 +317,10 @@ const HomePage = ({ setIsNotificationPanelOpen, setGlobalSnackBarMsg, setGlobalS
                                         users?.map(user => {
                                             if (user._id === currentUser?._id) {
                                                 return null
+                                            }
+                                            if (user?._id === currentUser?._id) return null
+                                            for (let i = 0; i < currentUser?.friends?.length || i < currentUser?.sentRequests?.length; i++) {
+                                                if (user?._id === currentUser?.friends[i]?._id || user?._id === currentUser?.sentRequests[i]?._id) return null
                                             }
 
                                             return (
