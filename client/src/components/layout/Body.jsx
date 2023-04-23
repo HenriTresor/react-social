@@ -65,6 +65,7 @@ const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
       >
         <Menu />
       </Fab>
+    
       {posts?.length === 0 ? (
         <Box
           sx={{
@@ -108,10 +109,10 @@ const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
               >
                 <Avatar
                   sx={{
-                    width: '150px',
-                    height: '150px'
+                    width: '70px',
+                    height: '70px'
                   }}
-                  className='profile-image'
+               
                   src={post?.author?.profile}
                 />
                 <Box
@@ -154,8 +155,8 @@ const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
                   {post?.post_content?.image ? (
                     <Avatar
                       sx={{
-                        width: '150px',
-                        height: '150px'
+                        width: '60px',
+                        height: '60px'
                       }}
                       src={post?.post_content?.image}
                       className='post-image'

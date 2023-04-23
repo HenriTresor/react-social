@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { AppBar, Box, Button, Typography } from '@mui/material'
+import { AppBar, Avatar, Box, Button, Typography } from '@mui/material'
 import { HomeRounded, Notifications, MessageRounded, Settings, Search } from '@mui/icons-material'
 import { Link, useNavigate } from 'react-router-dom'
 import { AppData } from '../../context/AppContext'
@@ -106,23 +106,9 @@ let navigate = useNavigate()
             )
          }
           <Link to='/me/profile' key='profile-link'>
-            {
-              currentUser?.names ? (
-                <Button variant='outlined'
-                  sx={{
-                    padding: 0
-                  }}
-                >
-                  {
-                    pageWidth >= 1150 ? currentUser?.names?.split(' ')[0] : currentUser?.names?.split('')[0]
-                  }
-                </Button>
-              ) : (
-                  <LoadingButton
-                  loading
-                  ></LoadingButton>
-              )
-          }
+            <Avatar
+            src={currentUser?.profile}
+            />
           </Link>
         </Box>
       </AppBar>

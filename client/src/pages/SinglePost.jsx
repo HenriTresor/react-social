@@ -84,8 +84,8 @@ const SinglePost = () => {
                             >
                                 <Avatar
                                     sx={{
-                                        width: '150px',
-                                        height: '150px'
+                                        width: '60px',
+                                        height: '60px'
                                     }}
                                     className='profile-image'
                                     src={post?.author?.profile}
@@ -125,6 +125,10 @@ const SinglePost = () => {
 
                                 {post?.post_content?.image ? (
                                     <Avatar
+                                        sx={{
+                                            width: '100px',
+                                            height:'100px'
+                                        }}
                                         src={post?.post_content?.image}
                                         className='post-image'
                                     />
@@ -233,8 +237,9 @@ const SinglePost = () => {
                                                 >
                                                     <Avatar
                                                         sx={{
-                                                            width: '150px',
-                                                            height: '150px'
+                                                            width: '50px',
+                                                            height: '50px',
+                                                            marginRight:2
                                                         }}
 
                                                         src={comment?.user?.profile}

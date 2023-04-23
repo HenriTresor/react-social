@@ -133,8 +133,9 @@ export const CommentDialog = ({ isCommentModalOpen, setIsCommentModalOpen, thisP
                                         }}
                                     >
                                         <Avatar sx={{
-                                            width: '150px',
-                                            height: '150px'
+                                            width: '60px',
+                                            height: '60px',
+                                            marginRight:3
                                         }}
                                            
                                             src={comment?.user?.profile}

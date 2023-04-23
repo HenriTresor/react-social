@@ -104,19 +104,23 @@ const App = () => {
         setGlobalSnackBarMsg={setGlobalSnackBarMsg}
         setGlobalSnackBarOpen={setGlobalSnackBarOpen} 
       />
-      <Fab
-        onClick={() => {
-          setIsModalOpen(true)
-        }}
-        color='primary'
-        sx={{
-          position: 'fixed',
-          bottom: '1em',
-          right: '1em'
-        }}
-      >
-        <Add />
-      </Fab>
+      {
+        isLoggedIn && (
+          <Fab
+            onClick={() => {
+              setIsModalOpen(true)
+            }}
+            color='primary'
+            sx={{
+              position: 'fixed',
+              bottom: '1em',
+              right: '1em'
+            }}
+          >
+            <Add />
+          </Fab>
+        )
+    }
       {
         isNotificationPanelOpen && (
 
