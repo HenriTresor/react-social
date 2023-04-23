@@ -5,7 +5,7 @@ import { LogoutRounded, SendRounded, ArrowBack, PeopleAltRounded, ContactPage } 
 import { serverLink } from '../utils/links'
 
 const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
-    const { currentUser } = useContext(AppData)
+    const { currentUser, pageWidth } = useContext(AppData)
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     const [currentChat, setCurrentChat] = useState(null)
     const [message, setMessage] = useState('')
@@ -193,7 +193,7 @@ const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
             <Box>
                 <Box>
                     <Stack
-                        direction='row'
+                        direction={pageWidth > 600 ? 'row' : 'column'}
                         spacing={3}
                     >
 
