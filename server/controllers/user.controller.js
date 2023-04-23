@@ -61,7 +61,7 @@ export const getUser = async (req, res, next) => {
     try {
         let { id } = req.params
         if (!id) return res.status(400).json({ status: false, message: 'user id is required' });
-        let user = await User.findById(id).select('-password')
+        let user = await User.findById(id).select('-password').populate('friends')
         if (!user) return res.status(404).json({ status: false, message: 'user was not found' });
         return res.status(200).json({ status: true, user })
 

@@ -218,7 +218,7 @@ const App = () => {
           setIsNotificationPanelOpen={setIsNotificationPanelOpen} />} />
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/signup' element={<Signup />} />
-        <Route exact path='/me/profile' element={<Profile />} />
+        <Route exact path='/profile/:id' element={<Profile />} />
         <Route exact path='/settings' element={<Settings />} />
         <Route exact path='/posts/:id' element={<SinglePost />} />
         <Route exact path='/chat-room' element={<Chats socket={socket}

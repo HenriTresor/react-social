@@ -9,14 +9,19 @@ const checkUser = async (id) => {
 
 export const createNewPost = async (req, res, next) => {
     try {
-        let { author, post_content } = req.body
+        console.log(req.body);
+        let { author, post_content, image } = req.body
         if (!author || !post_content) return res.status(400).json({ status: false, message: 'author and post content is required' })
         let user = await checkUser(author)
         if (!user) return res.status(404).json({ status: 'false', message: 'user was not found' })
 
         let newPost = new Post({
-            post_content,
-            author
+            post_content: {
+                text: post_content.text,
+                image
+            },
+            author,
+
         })
 
         await newPost.save()
@@ -57,7 +62,7 @@ export const getSinglePost = async (req, res, next) => {
                 path: 'post_comments',
                 populate: {
                     path: 'user',
-                    model:'users'
+                    model: 'users'
                 }
             })
         if (!post) return res.status(404).json({ status: false, message: 'post was not found' })

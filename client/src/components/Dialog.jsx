@@ -11,13 +11,40 @@ import {
 } from '@mui/material'
 import { AppData } from '../context/AppContext.tsx'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import { LoadingButton} from '@mui/lab'
 
 const Modal = ({ setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
     let { isModalOpen, setIsModalOpen, currentUser } = useContext(AppData)
     const [postText, setPostText] = useState('')
     const [image, setImage] = useState(null)
+    const [isImageUploading, setIsImageUploading] = useState(false)
+    const [imageUrl, setImageUrl] = useState(null)
+    useEffect(() => {
+        console.log(image);
+    }, [image])
 
     const navigate = useNavigate()
+
+    const uploadImage = async () => {
+        try {
+            if (image) {
+                setIsImageUploading(true)
+                const formData = new FormData()
+                formData.append('file', image)
+                formData.append('upload_preset', 'gpzxoihy')
+                axios.post('https://api.cloudinary.com/v1_1/djehh7gum/image/upload',formData)
+                    .then(data => {
+                        console.log(data);
+                        setImageUrl(data?.data?.secure_url)
+                    }).then(() => {
+                        setIsImageUploading(false)
+                    })
+            }
+        } catch (err) {
+            console.log(err.message);
+        }
+    }
     const createPost = async () => {
         try {
             if (postText === '') {
@@ -29,7 +56,7 @@ const Modal = ({ setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ post_content: { text: postText }, author: currentUser?._id })
+                    body: JSON.stringify({ post_content: { text: postText }, author: currentUser?._id, image: imageUrl })
                 })
 
                 const data = await res.json()
@@ -74,7 +101,7 @@ const Modal = ({ setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                     />
 
                     <Button
-                        variant='outlined'
+                        variant={image ? 'contained' : 'outlined'}
                         sx={{
                             cursor: 'pointer',
                             margin: '10px auto'
@@ -85,20 +112,36 @@ const Modal = ({ setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                                 cursor: 'pointer'
                             }}
                             htmlFor="profile">
-                            add optional  pic
+                            {image ? image?.name?.slice(0, 10) + '...' : 'add optional image'}
                         </label>
                     </Button>
+                    {
+                        image && (
+                            isImageUploading ? (
+                                <LoadingButton
+                                loading
+                                />
+                            ) : imageUrl ? (
+                                <Button
+                                    disabled
+                                >
+                                    uploaded
+                                </Button>
+                            ) : (
+                                <Button
+                                    onClick={uploadImage}
+                                >
+                                    upload
+                                </Button>
+                            )
+                        )
+                    }
                     <input
                         style={{
                             display: 'none'
                         }}
                         onChange={(e) => {
-                            setInputValues(prev => {
-                                return {
-                                    ...prev,
-                                    profile: e.target.files[0]
-                                }
-                            })
+                            setImage(e.target.files[0])
                         }}
                         name='profile'
                         id='profile'

@@ -144,7 +144,11 @@ const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
                     padding: 1,
                     marginTop: 1,
                     borderBottom: '1px solid grey',
-                    textAlign: 'left'
+                    textAlign: 'left',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap:2
                   }}
                   className='post-content'
                 >
@@ -153,10 +157,12 @@ const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
                   </Typography>
 
                   {post?.post_content?.image ? (
-                    <Avatar
-                      sx={{
-                        width: '60px',
-                        height: '60px'
+                    <img
+                      
+                      style={{
+                        width: '50%',
+                        transform: 'scale(1)',
+                        justifySelf:'center'
                       }}
                       src={post?.post_content?.image}
                       className='post-image'

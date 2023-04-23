@@ -1,18 +1,39 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppData } from '../context/AppContext'
 import { Container, Box, Paper, Avatar, Typography, Stack, Button, Divider } from '@mui/material'
-import { Outlet } from 'react-router-dom'
+import { Outlet, Link, useParams, useNavigate } from 'react-router-dom'
 import { serverLink } from '../utils/links'
+
 const Profile = () => {
 
     let { currentUser, pages } = useContext(AppData)
+    const navigate = useNavigate()
+
+    const { id } = useParams()
     const [currentTab, setCurrentTab] = useState(1)
     const [userPosts, setUserPosts] = useState([])
     const [userLikedPages, setUserLikedPages] = useState([])
+    const [user, setUser] = useState({})
 
+    const getUser = async () => {
+        try {
+            const res = await fetch(`${serverLink}/users/${id}`, {
+                method: 'GET'
+            })
+
+            const data = await res.json()
+            setUser(data?.user)
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    useEffect(() => {
+        getUser()
+    }, [])
     const getUserPosts = async () => {
         try {
-            const res = await fetch(`${serverLink}/posts/user/${currentUser?._id}`, {
+            const res = await fetch(`${serverLink}/posts/user/${user?._id}`, {
                 method: 'GET'
             })
 
@@ -25,12 +46,12 @@ const Profile = () => {
     }
 
     useEffect(() => {
-        setUserLikedPages(pages?.filter(page => page?.page_followers?.includes(currentUser?._id)))
-    }, [pages])
+        setUserLikedPages(pages?.filter(page => page?.page_followers?.includes(user?._id)))
+    }, [pages, user])
 
     useEffect(() => {
         getUserPosts()
-    },[])
+    }, [user])
     return (
 
         <>
@@ -43,7 +64,7 @@ const Profile = () => {
                         elevation={4}
                         sx={{
                             padding: 3,
-                            placeContent:'center'
+                            placeContent: 'center'
                         }}
                     >
                         <Box
@@ -51,8 +72,8 @@ const Profile = () => {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignContent: 'center',
-                                alignItems:'center'
-                        }}
+                                alignItems: 'center'
+                            }}
                         >
 
                             <Avatar
@@ -61,7 +82,7 @@ const Profile = () => {
                                     height: '150px'
                                 }}
                                 className='profile-image'
-                                src={currentUser?.profile} alt={`${currentUser.names} profile picture`} />
+                                src={user?.profile} alt={`${user?.names} profile picture`} />
                             <Typography
                                 variant='h4'
                                 component='h1'
@@ -69,13 +90,22 @@ const Profile = () => {
                                     marginTop: 3
                                 }}
                             >
-                                {currentUser?.names}
+                                {user?.names}
                             </Typography>
                             <Typography>
-                                {currentUser?.email}
+                                {user?.email}
                             </Typography>
                         </Box>
-
+                        <Box>
+                            <Button
+                                color='success'
+                                sx={{
+                                marginTop:3
+                            }}
+                            >
+                                edit profile
+                            </Button>
+                        </Box>
                         <Stack
                             sx={{
                                 display: 'grid',
@@ -95,7 +125,7 @@ const Profile = () => {
                                 <Button
                                     onClick={() => setCurrentTab(2)}
                                 >
-                                    your contents
+                                    {user?._id === currentUser?._id ? 'your content' : `${user?.names?.split(' ')[0]}'contents`}
                                 </Button>
                                 <Button
                                     onClick={() => setCurrentTab(3)}
@@ -119,91 +149,108 @@ const Profile = () => {
                                 currentTab === 1 ? (
                                     <Box>
                                         {
-                                            currentUser?.friends?.map(friend => {
+                                            user?.friends?.map(friend => {
                                                 return (
-                                                    <Paper key={friend._id}
-                                                        elevation={6}
-                                                        sx={{
-                                                            display: 'flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'space-between',
-                                                            marginBottom: 2,
-                                                            padding: 1
+                                                   
+                                                    <Paper
+                                                        onClick={() => {
+                                                            navigate(`/profile/${friend?._id}`)
+                                                            location.reload()
                                                         }}
-                                                    >
-                                                        <Box
-                                                            sx={{
+                                                            key={friend._id}
+                                                            elevation={6}
+                                                        sx={{
+                                                                cursor:'pointer',
                                                                 display: 'flex',
                                                                 alignItems: 'center',
                                                                 justifyContent: 'space-between',
-                                                                gap:3
+                                                                marginBottom: 2,
+                                                                padding: 1
                                                             }}
                                                         >
-                                                            <Avatar sx={{
-                                                                width: '100px',
-                                                                height: '100px'
-                                                            }}
-                                                                src={friend?.profile} alt={`${friend?.names} profile pic`} />
-                                                            <Typography>
-                                                                {friend?.names}
-                                                            </Typography>
-                                                        </Box>
-                                                        <Button
-                                                            color='warning'
-                                                            variant='outlined'
-                                                        >
+                                                            <Box
+                                                                sx={{
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'space-between',
+                                                                    gap: 3
+                                                                }}
+                                                            >
+                                                                <Avatar sx={{
+                                                                    width: '100px',
+                                                                    height: '100px'
+                                                                }}
+                                                                    src={friend?.profile} alt={`${friend?.names} profile pic`} />
+                                                                <Typography>
+                                                                    {friend?.names}
+                                                                </Typography>
+                                                            </Box>
+                                                        {
+                                                            currentUser?._id === user?._id && (
+                                                                <Button
+                                                                    color='warning'
+                                                                    variant='outlined'
+                                                                >
 
-                                                            unfriend
-                                                        </Button>
-                                                    </Paper>
+                                                                    unfriend
+                                                                </Button>
+                                                            )
+                                                            }
+                                                        </Paper>
+                                                    
                                                 )
                                             })
                                         }
                                     </Box>
                                 ) : currentTab === 2 ? (
-                                        (
-                                            userPosts?.map((post) => {
-                                                return (
-                                                    <Paper key={post._id}
-                                                        elevation={6}
+                                    (
+                                        userPosts?.map((post) => {
+                                            return (
+                                                <Paper key={post._id}
+                                                    elevation={6}
+                                                    sx={{
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'space-between',
+                                                        marginBottom: 2,
+                                                        padding: 1
+                                                    }}
+                                                >
+                                                    <Box
                                                         sx={{
                                                             display: 'flex',
-                                                            alignItems: 'center',
-                                                            justifyContent: 'space-between',
-                                                            marginBottom: 2,
-                                                            padding: 1
+                                                            alignItems: 'center'
                                                         }}
                                                     >
-                                                        <Box
-                                                            sx={{
-                                                                display: 'flex',
-                                                                alignItems: 'center'
-                                                            }}
-                                                        >
-                                                         
-                                                            <Typography>
-                                                                {post?.post_content?.text}
-                                                            </Typography>
-                                                        </Box>
-                                                        <Box>
-                                                            <Button>
-                                                                <Button
-                                                                    color='primary'
-                                                                    variant='outlined'
-                                                                >
-                                                                    visit
-                                                                </Button>
 
-                                                            </Button>
+                                                        <Typography>
+                                                            {post?.post_content?.text}
+                                                        </Typography>
+                                                    </Box>
+                                                    <Box>
+                                                        <Link
+                                                            to={`/posts/${post?._id}`}
+                                                        >
                                                             <Button
-                                                                color='warning'
+                                                                color='primary'
+                                                                variant='outlined'
                                                             >
-                                                                delete
+                                                                visit
                                                             </Button>
-                                                     </Box>
-                                                    </Paper>
-                                                )
-                                            })
+                                                        </Link>
+                                                        {
+                                                            user?._id === currentUser?._id && (
+                                                                <Button
+                                                                    color='warning'
+                                                                >
+                                                                    delete
+                                                                </Button>
+                                                            )
+                                                       }
+                                                    </Box>
+                                                </Paper>
+                                            )
+                                        })
                                     )
                                 ) : (
                                     userLikedPages?.map((page) => {
@@ -212,9 +259,9 @@ const Profile = () => {
                                                 sx={{
                                                     display: 'flex',
                                                     padding: 1,
-                                                    justifyContent:'space-between'
-                                                    
-                                            }}
+                                                    justifyContent: 'space-between'
+
+                                                }}
                                             >
                                                 <Box
                                                     sx={{
@@ -226,13 +273,26 @@ const Profile = () => {
                                                         {page?.page_name}
                                                     </Typography>
                                                 </Box>
-                                                <Button
-                                                    color='warning'
-                                                    variant='outlined'
-                                                >
+                                                <Box>
+                                                    <Button
+                                                        color='primary'
+                                                        variant='outlined'
+                                                    >
 
-                                                    unfollow
-                                                </Button>
+                                                        Visit
+                                                    </Button>
+                                                    {
+                                                        currentUser?._id === user?._id && (
+                                                            <Button
+                                                                color='warning'
+                                                                variant='outlined'
+                                                            >
+
+                                                                unfollow
+                                                            </Button>
+                                                        )
+                                                    }
+                                               </Box>
                                             </Paper>
                                         )
                                     })

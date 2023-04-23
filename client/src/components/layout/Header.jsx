@@ -8,7 +8,7 @@ import { LoadingButton } from '@mui/lab'
 const Header = ({ setIsNotificationPanelOpen }) => {
 
   let { currentUser, pageWidth } = useContext(AppData)
-let navigate = useNavigate()
+  let navigate = useNavigate()
   return (
     <>
       <AppBar position='fixed'
@@ -36,11 +36,11 @@ let navigate = useNavigate()
                 component='h1'
               >Sociala.</Typography>
             ) : (
-                <Typography>
-                  S
-                </Typography>
+              <Typography>
+                S
+              </Typography>
             )
-         }
+          }
           <Box
             sx={{
               display: 'flex',
@@ -62,13 +62,13 @@ let navigate = useNavigate()
                   type="text"
                 />
               ) : (
-                  <Search />
+                <Search />
               )
-           }
+            }
             <Box>
               <Link to='/' key='homepage-link'>
-              <Button
-              >
+                <Button
+                >
                   <HomeRounded />
                 </Button>
               </Link>
@@ -81,17 +81,17 @@ let navigate = useNavigate()
           sx={{
             display: 'flex',
             alignItems: 'center',
-            padding:0.2
-        }}
+            padding: 0.2
+          }}
         >
           <Button
-          onClick={()=>setIsNotificationPanelOpen(true)}
+            onClick={() => setIsNotificationPanelOpen(true)}
           >
             <Notifications />
           </Button>
           <Link to='/chat-room' key='chat-room-link'>
-          <Button
-            onClick={()=> navigate('/chat-room')}
+            <Button
+              onClick={() => navigate('/chat-room')}
             >
               <MessageRounded />
             </Button>
@@ -104,10 +104,10 @@ let navigate = useNavigate()
                 </Button>
               </Link>
             )
-         }
-          <Link to='/me/profile' key='profile-link'>
+          }
+          <Link to={`/profile/${currentUser?._id}`} key='profile-link'>
             <Avatar
-            src={currentUser?.profile}
+              src={currentUser?.profile}
             />
           </Link>
         </Box>

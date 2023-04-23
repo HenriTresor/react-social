@@ -124,10 +124,10 @@ const SinglePost = () => {
                                 </Typography>
 
                                 {post?.post_content?.image ? (
-                                    <Avatar
-                                        sx={{
-                                            width: '100px',
-                                            height:'100px'
+                                    <img
+                                        style={{
+                                            width: '100%',
+                                            transform:'scale(0.7)'
                                         }}
                                         src={post?.post_content?.image}
                                         className='post-image'
