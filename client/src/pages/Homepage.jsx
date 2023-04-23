@@ -1,9 +1,18 @@
-import { Box, Grid, List, Button, ListItem, Paper, Typography, Snackbar, ListItemAvatar, ListItemText, ListItemButton, CircularProgress } from '@mui/material'
+import {
+    Box,
+    Grid,
+    List,
+    Button,
+    ListItem,
+    Paper,
+    Typography,
+    Snackbar, ListItemAvatar, ListItemText, ListItemButton, CircularProgress
+} from '@mui/material'
 import React, { useEffect, useContext, useReducer, useState } from 'react'
 import Header from '../components/layout/Header'
 import Body from '../components/layout/Body'
 import Aside from '../components/layout/Aside'
-import { PagesOutlined, Newspaper, GroupOutlined, Group, Close, ArrowBack } from '@mui/icons-material'
+import { PagesOutlined, Newspaper, GroupOutlined, NewReleases , Group, Close, ArrowBack } from '@mui/icons-material'
 import { AppData } from '../context/AppContext'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -25,7 +34,7 @@ const reducer = (state, action) => {
     }
 }
 
-const HomePage = ({ setIsNotificationPanelOpen, setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
+const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
     const [open, setOpen] = useState(false)
     const [{ loading, error, requestData, done, payload }, dispatch] = useReducer(reducer, {
         loading: false,
@@ -136,6 +145,7 @@ const HomePage = ({ setIsNotificationPanelOpen, setGlobalSnackBarMsg, setGlobalS
     }
     return (
         <>
+            
             <Snackbar
                 open={open}
                 autoHideDuration={1}
@@ -185,6 +195,18 @@ const HomePage = ({ setIsNotificationPanelOpen, setGlobalSnackBarMsg, setGlobalS
                                         </ListItemAvatar>
                                         <ListItemText>
                                             explore pages
+                                        </ListItemText>
+                                    </ListItemButton>
+                                </ListItem>
+                                <ListItem>
+                                    <ListItemButton
+                                    onClick={()=>setPageModalOpen(true)}
+                                    >
+                                        <ListItemAvatar>
+                                            <NewReleases />
+                                        </ListItemAvatar>
+                                        <ListItemText>
+                                            Create new page
                                         </ListItemText>
                                     </ListItemButton>
                                 </ListItem>
@@ -245,7 +267,7 @@ const HomePage = ({ setIsNotificationPanelOpen, setGlobalSnackBarMsg, setGlobalS
                 </Grid>
                 <Grid item xs={6} md={8} sx={{ marginTop: 9, textAlign: 'center' }}>
                     <Body
-                    
+
                         setGlobalSnackBarMsg={setGlobalSnackBarMsg}
                         setGlobalSnackBarOpen={setGlobalSnackBarOpen}
                     />
@@ -309,46 +331,46 @@ const HomePage = ({ setIsNotificationPanelOpen, setGlobalSnackBarMsg, setGlobalS
                                             isLoading ? <Box
                                                 sx={{
                                                     display: 'grid',
-                                                    placeContent:'center'
-                                            }}
+                                                    placeContent: 'center'
+                                                }}
                                             >
                                                 <CircularProgress />
                                             </Box> : (
-                                        users?.map(user => {
-                                            if (user._id === currentUser?._id) {
-                                                return null
-                                            }
-                                            if (user?._id === currentUser?._id) return null
-                                            for (let i = 0; i < currentUser?.friends?.length || i < currentUser?.sentRequests?.length; i++) {
-                                                if (user?._id === currentUser?.friends[i]?._id || user?._id === currentUser?.sentRequests[i]?._id) return null
-                                            }
-
-                                            return (
-                                                <Paper key={user?._id} className='user-paper'>
-                                                    <img src={user?.profile} />
-                                                    <Typography>
-                                                        {user?.names}
-                                                    </Typography>
-                                                    <Typography>
-                                                        {user?.friends?.length > 1 ? user?.friends.length + ' friends' : user?.friends.length + ' friend'}
-                                                    </Typography>
-                                                    {
-
-                                                        done ? <Button disabled color='success' variant='contained'>
-                                                            request sent
-                                                        </Button> : (
-                                                            <Button
-                                                                onClick={(id) => sendRequest(user?._id)}
-                                                                variant='outlined'>
-                                                                send friend request
-                                                            </Button>
-                                                        )
+                                                users?.map(user => {
+                                                    if (user._id === currentUser?._id) {
+                                                        return null
                                                     }
-                                                </Paper>
+                                                    if (user?._id === currentUser?._id) return null
+                                                    for (let i = 0; i < currentUser?.friends?.length || i < currentUser?.sentRequests?.length; i++) {
+                                                        if (user?._id === currentUser?.friends[i]?._id || user?._id === currentUser?.sentRequests[i]?._id) return null
+                                                    }
+
+                                                    return (
+                                                        <Paper key={user?._id} className='user-paper'>
+                                                            <img src={user?.profile} />
+                                                            <Typography>
+                                                                {user?.names}
+                                                            </Typography>
+                                                            <Typography>
+                                                                {user?.friends?.length > 1 ? user?.friends.length + ' friends' : user?.friends.length + ' friend'}
+                                                            </Typography>
+                                                            {
+
+                                                                done ? <Button disabled color='success' variant='contained'>
+                                                                    request sent
+                                                                </Button> : (
+                                                                    <Button
+                                                                        onClick={(id) => sendRequest(user?._id)}
+                                                                        variant='outlined'>
+                                                                        send friend request
+                                                                    </Button>
+                                                                )
+                                                            }
+                                                        </Paper>
+                                                    )
+                                                })
                                             )
-                                        })
-                                    )
-                                }
+                                        }
                                     </Box>
                                 </Box>
                             </Aside >

@@ -19,6 +19,7 @@ import { Fab } from '@mui/material'
 import Dialog from './components/Dialog.jsx'
 import SinglePost from './pages/SinglePost'
 import People from './pages/People'
+import NewPageDialog from './components/NewPageDialog'
 
 const App = () => {
   let { setUsers, setPages, setCurrentUser, currentUser, isModalOpen, setIsModalOpen, isLoggedIn, setIsLoggedIn } = useContext(AppData)
@@ -26,6 +27,7 @@ const App = () => {
   const socket = useRef(null)
   const [globalSnackBarOpen, setGlobalSnackBarOpen] = useState(false)
   const [globalSnackBarMsg, setGlobalSnackBarMsg] = useState('')
+  const [pageModalOpen, setPageModalOpen] = useState(false)
   const [isNotificationPanelOpen, setIsNotificationPanelOpen] = useState(false)
   let [notifications, setNotifications] = useState([
     {
@@ -96,6 +98,12 @@ const App = () => {
   }, [])
   return (
     <>
+      <NewPageDialog
+        pageModalOpen={pageModalOpen}
+        setPageModalOpen={setPageModalOpen}
+        setGlobalSnackBarMsg={setGlobalSnackBarMsg}
+        setGlobalSnackBarOpen={setGlobalSnackBarOpen} 
+      />
       <Fab
         onClick={() => {
           setIsModalOpen(true)
@@ -199,6 +207,7 @@ const App = () => {
 
       <Routes>
         <Route exact path='/' element={<HomePage
+          setPageModalOpen={setPageModalOpen}
           setGlobalSnackBarMsg={setGlobalSnackBarMsg}
           setGlobalSnackBarOpen={setGlobalSnackBarOpen}
           isNotificationPanelOpen={isNotificationPanelOpen}

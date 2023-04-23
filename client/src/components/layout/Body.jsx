@@ -8,7 +8,7 @@ import { CommentDialog } from '../CommentDialog'
 import { Link } from 'react-router-dom'
 
 const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
-  let { posts, setPosts, pageWidth, setIsDrawerOpen, currentUser } = useContext(AppData)
+  let { posts, setPosts, pageWidth, setIsDrawerOpen, currentUser, setIsModalOpen } = useContext(AppData)
 
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false)
   const [thisPost, setThisPost] = useState({})
@@ -65,7 +65,25 @@ const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
       >
         <Menu />
       </Fab>
-      {
+      {posts?.length === 0 ? (
+        <Box
+          sx={{
+            height: '100dvh',
+            display: 'grid',
+            placeContent: 'center',
+            gap:5
+        }}
+        >
+          <Typography>
+            No posts
+          </Typography>
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            variant='contained'>
+            create a new post
+          </Button>
+      </Box>
+      ) : (
         posts?.map(post => {
           console.log(post);
           let postDate = new Date(post?.createdAt)
@@ -205,6 +223,7 @@ const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
             </Paper>
           )
         })
+      )
       }
     </Box>
   )
