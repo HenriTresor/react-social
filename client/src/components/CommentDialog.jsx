@@ -10,7 +10,8 @@ import {
     DialogContentText,
     DialogTitle,
     Typography,
-    Paper
+    Paper,
+    Avatar
 } from '@mui/material'
 import { AppData } from '../context/AppContext.tsx'
 import { useNavigate } from 'react-router-dom'
@@ -131,12 +132,11 @@ export const CommentDialog = ({ isCommentModalOpen, setIsCommentModalOpen, thisP
                                             flexDirection: 'row'
                                         }}
                                     >
-                                        <img
-                                            style={{
-                                                width: '50px',
-                                                height: '50px',
-                                                marginRight:10
-                                            }}
+                                        <Avatar sx={{
+                                            width: '150px',
+                                            height: '150px'
+                                        }}
+                                           
                                             src={comment?.user?.profile}
                                             className='profile-image'
                                         />

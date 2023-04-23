@@ -4,6 +4,7 @@ import {
     Button,
     Paper,
     Box,
+    Avatar,
     Typography
 } from '@mui/material'
 import React, { useContext, useEffect, useState } from 'react'
@@ -59,7 +60,10 @@ const People = () => {
                                         key={request?._id}
                                         elevation={4}
                                     >
-                                        <img src={request?.profile} />
+                                        <Avatar   sx={{
+                                    width: '150px',
+                                    height: '150px'
+                                }} src={request?.profile} />
                                         <Typography>
                                             {request?.names}
                                         </Typography>
@@ -104,7 +108,10 @@ const People = () => {
                                 <Paper
                                     className='user-paper'
                                 >
-                                    <img src={person?.profile} />
+                                    <Avatar sx={{
+                                        width: '150px',
+                                        height: '150px'
+                                    }} src={person?.profile} />
                                     <Typography>
                                         {person?.names}
                                     </Typography>

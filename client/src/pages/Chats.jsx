@@ -1,4 +1,4 @@
-import { Box, Grid, Drawer, Stack, Typography, Snackbar, Paper, Container, Button, TextField } from '@mui/material'
+import { Box, Grid, Drawer, Stack, Typography, Snackbar, Paper, Container, Button, TextField, Avatar } from '@mui/material'
 import React, { useContext, useEffect, useState, useRef, useReducer } from 'react'
 import { AppData } from '../context/AppContext'
 import { LogoutRounded, SendRounded, ArrowBack, PeopleAltRounded, ContactPage } from '@mui/icons-material'
@@ -167,12 +167,13 @@ const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                                             gap: '1em'
                                         }}
                                     >
-                                        <img
-                                            className='profile-image'
-                                            style={{
-                                                width: '60x',
-                                                height: '60px'
+                                        <Avatar
+                                            sx={{
+                                                width: '50px',
+                                                height: '50px',
+                                                marginRight:1
                                             }}
+                                           
                                             src={friend?.profile}
                                             alt={`${friend?.names} profile pic`} />
                                         <Typography
@@ -259,12 +260,14 @@ const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                                                             alignItems: 'center'
                                                         }}
                                                     >
-                                                        <img
-                                                            className='profile-image'
-                                                            style={{
-                                                                width: '60x',
-                                                                height: '60px'
+                                                        <Avatar
+                                                            sx={{
+                                                                width: '50px',
+                                                                height: '50px',
+                                                                marginRight:3
                                                             }}
+                                                            className='profile-image'
+                                                            
                                                             src={currentChat?.profile}
                                                         />
                                                         <Typography>

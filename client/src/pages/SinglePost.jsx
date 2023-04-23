@@ -1,10 +1,10 @@
-import { Container, Paper, Button, Box, Typography } from '@mui/material'
+import { Container, Paper, Button, Box, Typography, Avatar } from '@mui/material'
 import React, { useEffect, useReducer, useContext, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { serverLink } from '../utils/links'
 import Loading from '../components/Loading'
 import { AppData } from '../context/AppContext'
-import { ThumbUpSharp, CommentRounded, ShareRounded} from '@mui/icons-material'
+import { ThumbUpSharp, CommentRounded, ShareRounded } from '@mui/icons-material'
 
 const reducer = (state, action) => {
 
@@ -57,7 +57,7 @@ const SinglePost = () => {
                 marginTop: 12,
                 display: 'flex',
                 alignItems: 'center',
-                flexDirection:'column'
+                flexDirection: 'column'
             }}
         >
             {
@@ -82,7 +82,11 @@ const SinglePost = () => {
                                     padding: 1,
                                 }}
                             >
-                                <img
+                                <Avatar
+                                    sx={{
+                                        width: '150px',
+                                        height: '150px'
+                                    }}
                                     className='profile-image'
                                     src={post?.author?.profile}
                                 />
@@ -120,7 +124,7 @@ const SinglePost = () => {
                                 </Typography>
 
                                 {post?.post_content?.image ? (
-                                    <img
+                                    <Avatar
                                         src={post?.post_content?.image}
                                         className='post-image'
                                     />
@@ -227,12 +231,12 @@ const SinglePost = () => {
                                                         flexDirection: 'row'
                                                     }}
                                                 >
-                                                    <img
-                                                        style={{
-                                                            width: '50px',
-                                                            height: '50px',
-                                                            marginRight: 10
+                                                    <Avatar
+                                                        sx={{
+                                                            width: '150px',
+                                                            height: '150px'
                                                         }}
+
                                                         src={comment?.user?.profile}
                                                         className='profile-image'
                                                     />

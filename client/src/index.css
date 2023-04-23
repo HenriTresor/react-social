@@ -38,13 +38,6 @@ a{
   display: flex;
 }
 
-.user-paper img, .profile-image{
-  width: 80px;
-  border: 50%;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 50%;
-}
 
 .spinner{
   width: 100px;

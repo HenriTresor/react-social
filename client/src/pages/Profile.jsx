@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { AppData } from '../context/AppContext'
-import { Container, Box, Paper, Typography, Stack, Button, Divider } from '@mui/material'
+import { Container, Box, Paper, Avatar, Typography, Stack, Button, Divider } from '@mui/material'
 import { Outlet } from 'react-router-dom'
 import { serverLink } from '../utils/links'
 const Profile = () => {
@@ -42,24 +42,39 @@ const Profile = () => {
                     <Paper
                         elevation={4}
                         sx={{
-                            padding: 3
+                            padding: 3,
+                            placeContent:'center'
                         }}
                     >
-                        <img
-                            className='profile-image'
-                            src={currentUser?.profile} alt={`${currentUser.names} profile picture`} />
-                        <Typography
-                            variant='h4'
-                            component='h1'
+                        <Box
                             sx={{
-                                marginTop: 3
-                            }}
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignContent: 'center',
+                                alignItems:'center'
+                        }}
                         >
-                            {currentUser?.names}
-                        </Typography>
-                        <Typography>
-                            {currentUser?.email}
-                        </Typography>
+
+                            <Avatar
+                                sx={{
+                                    width: '150px',
+                                    height: '150px'
+                                }}
+                                className='profile-image'
+                                src={currentUser?.profile} alt={`${currentUser.names} profile picture`} />
+                            <Typography
+                                variant='h4'
+                                component='h1'
+                                sx={{
+                                    marginTop: 3
+                                }}
+                            >
+                                {currentUser?.names}
+                            </Typography>
+                            <Typography>
+                                {currentUser?.email}
+                            </Typography>
+                        </Box>
 
                         <Stack
                             sx={{
@@ -119,11 +134,15 @@ const Profile = () => {
                                                         <Box
                                                             sx={{
                                                                 display: 'flex',
-                                                                alignItems: 'center'
+                                                                alignItems: 'center',
+                                                                justifyContent: 'space-between',
+                                                                gap:3
                                                             }}
                                                         >
-                                                            <img
-                                                                className='profile-image'
+                                                            <Avatar sx={{
+                                                                width: '100px',
+                                                                height: '100px'
+                                                            }}
                                                                 src={friend?.profile} alt={`${friend?.names} profile pic`} />
                                                             <Typography>
                                                                 {friend?.names}

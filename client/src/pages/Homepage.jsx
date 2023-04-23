@@ -6,6 +6,7 @@ import {
     ListItem,
     Paper,
     Typography,
+    Avatar,
     Snackbar, ListItemAvatar, ListItemText, ListItemButton, CircularProgress
 } from '@mui/material'
 import React, { useEffect, useContext, useReducer, useState } from 'react'
@@ -299,7 +300,10 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                                                     console.log(request);
                                                     return (
                                                         <Paper key={request} className='user-paper'>
-                                                            <img src={request?.profile} />
+                                                            <Avatar sx={{
+                                                                width: '150px',
+                                                                height: '150px'
+                                                            }} src={request?.profile} />
                                                             <Typography>
                                                                 {request?.names}
                                                             </Typography>
@@ -347,7 +351,10 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
 
                                                     return (
                                                         <Paper key={user?._id} className='user-paper'>
-                                                            <img src={user?.profile} />
+                                                            <Avatar sx={{
+                                                                width: '150px',
+                                                                height: '150px'
+                                                            }} src={user?.profile} />
                                                             <Typography>
                                                                 {user?.names}
                                                             </Typography>

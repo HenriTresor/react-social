@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import { AppData } from '../../context/AppContext'
-import { Container, Paper, Fab, Box, Button, Typography } from '@mui/material'
+import { Container, Paper, Fab, Box, Button, Typography, Avatar } from '@mui/material'
 import { ThumbUpSharp, CommentRounded, ShareRounded, Menu, NewspaperRounded } from '@mui/icons-material'
 import { serverLink } from '../../utils/links'
 import Loading from '../Loading'
@@ -106,7 +106,11 @@ const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
                   padding: 1,
                 }}
               >
-                <img
+                <Avatar
+                  sx={{
+                    width: '150px',
+                    height: '150px'
+                  }}
                   className='profile-image'
                   src={post?.author?.profile}
                 />
@@ -148,7 +152,11 @@ const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
                   </Typography>
 
                   {post?.post_content?.image ? (
-                    <img
+                    <Avatar
+                      sx={{
+                        width: '150px',
+                        height: '150px'
+                      }}
                       src={post?.post_content?.image}
                       className='post-image'
                     />
