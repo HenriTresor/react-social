@@ -3,6 +3,7 @@ import { AppData } from '../../context/AppContext'
 import { Container, Paper, Fab, Box, Button, Typography } from '@mui/material'
 import { ThumbUpSharp, CommentRounded, ShareRounded, Menu, NewspaperRounded } from '@mui/icons-material'
 import { serverLink } from '../../utils/links'
+import Loading from '../Loading'
 
 const Body = () => {
   let { posts, setPosts, pageWidth, setIsDrawerOpen, currentUser } = useContext(AppData)
@@ -24,6 +25,9 @@ const Body = () => {
     } catch (err) {
       console.log(err);
     }
+  }
+  if (!posts) {
+    return <Loading />
   }
   return (
     <Box

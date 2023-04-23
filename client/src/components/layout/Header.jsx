@@ -3,6 +3,7 @@ import { AppBar, Box, Button, Typography } from '@mui/material'
 import { HomeRounded, Notifications, MessageRounded, Settings, Search } from '@mui/icons-material'
 import { Link, useNavigate } from 'react-router-dom'
 import { AppData } from '../../context/AppContext'
+import { LoadingButton } from '@mui/lab'
 
 const Header = ({ setIsNotificationPanelOpen }) => {
 
@@ -105,15 +106,23 @@ let navigate = useNavigate()
             )
          }
           <Link to='/me/profile' key='profile-link'>
-            <Button variant='outlined'
-              sx={{
-              padding:0
-            }}
-            >
-              {
-                pageWidth >= 1150 ? currentUser?.names?.split(' ')[0] : currentUser?.names?.split('')[0]
-              }
-            </Button>
+            {
+              currentUser?.names ? (
+                <Button variant='outlined'
+                  sx={{
+                    padding: 0
+                  }}
+                >
+                  {
+                    pageWidth >= 1150 ? currentUser?.names?.split(' ')[0] : currentUser?.names?.split('')[0]
+                  }
+                </Button>
+              ) : (
+                  <LoadingButton
+                  loading
+                  ></LoadingButton>
+              )
+          }
           </Link>
         </Box>
       </AppBar>
