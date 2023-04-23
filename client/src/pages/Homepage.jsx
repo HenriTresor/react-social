@@ -1,4 +1,4 @@
-import { Box, Grid, List, Button, ListItem, Paper, Typography, Snackbar, ListItemAvatar, ListItemText, ListItemButton } from '@mui/material'
+import { Box, Grid, List, Button, ListItem, Paper, Typography, Snackbar, ListItemAvatar, ListItemText, ListItemButton, CircularProgress } from '@mui/material'
 import React, { useEffect, useContext, useReducer, useState } from 'react'
 import Header from '../components/layout/Header'
 import Body from '../components/layout/Body'
@@ -10,6 +10,7 @@ import axios from 'axios'
 import { serverLink } from '../utils/links'
 import { useNavigate, Outlet } from 'react-router-dom'
 import { current } from '@reduxjs/toolkit'
+import Loading from '../components/Loading'
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -24,7 +25,7 @@ const reducer = (state, action) => {
     }
 }
 
-const HomePage = ({ setIsNotificationPanelOpen }) => {
+const HomePage = ({ setIsNotificationPanelOpen, setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
     const [open, setOpen] = useState(false)
     const [{ loading, error, requestData, done, payload }, dispatch] = useReducer(reducer, {
         loading: false,
@@ -50,6 +51,7 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
     })
 
     useEffect(() => {
+        console.log(posts);
         setUsers(data?.usersRes?.data?.users)
         setPages(data?.pageRes?.data?.pages)
         setPosts(data?.postsRes?.data?.posts)
@@ -239,7 +241,12 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
                     </Aside >
                 </Grid>
                 <Grid item xs={6} md={8} sx={{ marginTop: 9, textAlign: 'center' }}>
-                    <Body />
+                    <Body
+                    
+                        setGlobalSnackBarMsg={setGlobalSnackBarMsg}
+                        setGlobalSnackBarOpen={setGlobalSnackBarOpen}
+                    />
+
                 </Grid>
                 {
                     pageWidth >= 1150 && (
@@ -295,8 +302,15 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
                                     <h3>Friends suggestions</h3>
 
                                     <Box>
-                                        {/* {
-                                    isLoading ? 'loading' : (
+                                        {
+                                            isLoading ? <Box
+                                                sx={{
+                                                    display: 'grid',
+                                                    placeContent:'center'
+                                            }}
+                                            >
+                                                <CircularProgress />
+                                            </Box> : (
                                         users?.map(user => {
                                             if (user._id === currentUser?._id) {
                                                 return null
@@ -327,7 +341,7 @@ const HomePage = ({ setIsNotificationPanelOpen }) => {
                                             )
                                         })
                                     )
-                                } */}
+                                }
                                     </Box>
                                 </Box>
                             </Aside >

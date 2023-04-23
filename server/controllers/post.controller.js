@@ -32,7 +32,13 @@ export const getAllPosts = async (req, res, next) => {
             .sort({ createdAt: -1 })
             .populate('author')
             .populate('post_likes')
-            .populate('post_comments')
+            .populate({
+                path: 'post_comments',
+                populate: {
+                    path: 'user',
+                    model: 'users'
+                }
+            })
 
         return res.status(200).json({ status: true, posts })
     } catch (err) {
@@ -77,7 +83,7 @@ export const getUserPosts = async (req, res, next) => {
 }
 
 
-export const likePost = async (req,res,next) => {
+export const likePost = async (req, res, next) => {
     try {
         let { userId, postId } = req.body
         if (!userId || !postId) return res.status(400).json({ status: false, message: 'person liking and post are required' })
@@ -100,5 +106,44 @@ export const likePost = async (req,res,next) => {
         console.log('error liking message');
         next(err)
 
+    }
+}
+
+
+export const commentOnPosts = async (req, res, next) => {
+
+    try {
+        let { userId, comment } = req.body
+        console.log(req.body);
+        let { postId } = req.params
+
+        if (!userId || !comment || !postId) return res.status(400).json({ status: false, message: 'fill in the required fields' })
+
+        // check if both exists
+
+        let user = await checkUser(userId)
+        if (!user) return res.status(400).json({ status: false, message: 'user was not found' })
+
+        let post = await Post.findById(postId)
+        if (!post) return res.status(400).json({
+            status: false, message: 'post was not found'
+        })
+
+        await Post.updateOne({ _id: post._id }, {
+            $push: {
+                post_comments: {
+                    user: userId,
+                    comment: {
+                        text: comment,
+                        date: new Date(Date.now())
+                    }
+                }
+            }
+        })
+
+        return res.status(201).json({ status: true, message: 'post added successfully' })
+    } catch (err) {
+        console.log('error commenting on post', err.message);
+        next(err)
     }
 }

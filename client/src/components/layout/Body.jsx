@@ -1,13 +1,16 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { AppData } from '../../context/AppContext'
 import { Container, Paper, Fab, Box, Button, Typography } from '@mui/material'
 import { ThumbUpSharp, CommentRounded, ShareRounded, Menu, NewspaperRounded } from '@mui/icons-material'
 import { serverLink } from '../../utils/links'
 import Loading from '../Loading'
+import { CommentDialog } from '../CommentDialog'
 
-const Body = () => {
+const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
   let { posts, setPosts, pageWidth, setIsDrawerOpen, currentUser } = useContext(AppData)
 
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false)
+  const [thisPost, setThisPost] = useState({})
   const likePost = async (postId) => {
     try {
       const res = await fetch(`${serverLink}/posts/like`, {
@@ -38,6 +41,13 @@ const Body = () => {
         alignItems: 'center'
       }}
     >
+      <CommentDialog
+        isCommentModalOpen={isCommentModalOpen}
+        setIsCommentModalOpen={setIsCommentModalOpen}
+        setGlobalSnackBarMsg={setGlobalSnackBarMsg}
+        setGlobalSnackBarOpen={setGlobalSnackBarOpen}
+        thisPost={thisPost}
+      />
 
       <Fab
         size='small'
@@ -159,6 +169,10 @@ const Body = () => {
                     {post?.post_comments.length} comments
                   </Typography>
                   <Button
+                    onClick={() => {
+                      setIsCommentModalOpen(true)
+                      setThisPost(post)
+                    }}
                     startIcon={<CommentRounded />}
                   >
                     comment

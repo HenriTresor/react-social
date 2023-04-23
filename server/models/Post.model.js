@@ -20,8 +20,15 @@ const postSchema = new mongoose.Schema(
         ],
         post_comments: [
             {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'users'
+                user: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'users',
+                    required: true
+                },
+                comment: {
+                    text: String,
+                    date: Date
+                }
             }
         ]
     },

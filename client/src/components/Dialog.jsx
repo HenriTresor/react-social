@@ -9,7 +9,7 @@ import {
     DialogContentText,
     DialogTitle
 } from '@mui/material'
-import { AppData } from '../context/AppContext'
+import { AppData } from '../context/AppContext.tsx'
 import { useNavigate } from 'react-router-dom'
 
 const Modal = ({ setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {

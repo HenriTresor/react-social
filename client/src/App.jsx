@@ -16,7 +16,7 @@ import Settings from './pages/Settings'
 import Chats from './pages/Chats'
 import { io } from 'socket.io-client'
 import { Fab } from '@mui/material'
-import Dialog from './components/Dialog'
+import Dialog from './components/Dialog.jsx'
 
 const App = () => {
   let { setUsers, setPages, setCurrentUser, currentUser, isModalOpen, setIsModalOpen, isLoggedIn, setIsLoggedIn } = useContext(AppData)
@@ -197,6 +197,8 @@ const App = () => {
 
       <Routes>
         <Route path='/' element={<HomePage
+          setGlobalSnackBarMsg={setGlobalSnackBarMsg}
+          setGlobalSnackBarOpen={setGlobalSnackBarOpen}
           isNotificationPanelOpen={isNotificationPanelOpen}
           setIsNotificationPanelOpen={setIsNotificationPanelOpen} />} />
         <Route path='/login' element={<Login />} />

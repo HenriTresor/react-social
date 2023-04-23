@@ -166,19 +166,22 @@ const Profile = () => {
                                                                 {post?.post_content?.text}
                                                             </Typography>
                                                         </Box>
-                                                        <Button>
-                                                            <Button
-                                                                color='primary'
-                                                                variant='outlined'
-                                                            >
-                                                                visit
+                                                        <Box>
+                                                            <Button>
+                                                                <Button
+                                                                    color='primary'
+                                                                    variant='outlined'
+                                                                >
+                                                                    visit
+                                                                </Button>
+
                                                             </Button>
                                                             <Button
-                                                            color='warning'
+                                                                color='warning'
                                                             >
                                                                 delete
                                                             </Button>
-                                                      </Button>
+                                                     </Box>
                                                     </Paper>
                                                 )
                                             })
