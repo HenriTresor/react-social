@@ -17,6 +17,7 @@ import Chats from './pages/Chats'
 import { io } from 'socket.io-client'
 import { Fab } from '@mui/material'
 import Dialog from './components/Dialog.jsx'
+import SinglePost from './pages/SinglePost'
 
 const App = () => {
   let { setUsers, setPages, setCurrentUser, currentUser, isModalOpen, setIsModalOpen, isLoggedIn, setIsLoggedIn } = useContext(AppData)
@@ -205,6 +206,7 @@ const App = () => {
         <Route path='/signup' element={<Signup />} />
         <Route path='/me/profile' element={<Profile />} />
         <Route path='/settings' element={<Settings />} />
+        <Route path='/posts/:id' element={<SinglePost />} />
         <Route path='/chat-room' element={<Chats socket={socket}
           setGlobalSnackBarMsg={setGlobalSnackBarMsg}
           setGlobalSnackBarOpen={setGlobalSnackBarOpen} />} />

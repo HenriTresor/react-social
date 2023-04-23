@@ -53,7 +53,13 @@ export const getSinglePost = async (req, res, next) => {
         let post = await Post.findById(postId)
             .populate('author')
             .populate('post_likes')
-            .populate('post_comments')
+            .populate({
+                path: 'post_comments',
+                populate: {
+                    path: 'user',
+                    model:'users'
+                }
+            })
         if (!post) return res.status(404).json({ status: false, message: 'post was not found' })
         return res.status(200).json({ status: true, post })
     } catch (err) {

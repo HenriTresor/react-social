@@ -5,6 +5,7 @@ import { ThumbUpSharp, CommentRounded, ShareRounded, Menu, NewspaperRounded } fr
 import { serverLink } from '../../utils/links'
 import Loading from '../Loading'
 import { CommentDialog } from '../CommentDialog'
+import { Link } from 'react-router-dom'
 
 const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
   let { posts, setPosts, pageWidth, setIsDrawerOpen, currentUser } = useContext(AppData)
@@ -109,29 +110,35 @@ const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
                   </Typography>
                 </Box>
               </Box>
-
-              <Box
-                sx={{
-                  padding: 1,
-                  marginTop: 1,
-                  borderBottom: '1px solid grey',
-                  textAlign: 'left'
-                }}
-                className='post-content'
+              <Link
+                to={`/posts/${post?._id}`}
               >
-                <Typography>
-                  {post?.post_content?.text}
-                </Typography>
 
-                {post?.post_content?.image ? (
-                  <img
-                    src={post?.post_content?.image}
-                    className='post-image'
-                  />
-                ) : (
-                  <p></p>
-                )}
-              </Box>
+                <Box
+                  sx={{
+                    cursor: 'pointer',
+                    textDecoration:'none',
+                    padding: 1,
+                    marginTop: 1,
+                    borderBottom: '1px solid grey',
+                    textAlign: 'left'
+                  }}
+                  className='post-content'
+                >
+                  <Typography>
+                    {post?.post_content?.text}
+                  </Typography>
+
+                  {post?.post_content?.image ? (
+                    <img
+                      src={post?.post_content?.image}
+                      className='post-image'
+                    />
+                  ) : (
+                    <p></p>
+                  )}
+                </Box>
+              </Link>
 
               <Box
                 className='reaction-content'

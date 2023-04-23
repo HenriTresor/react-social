@@ -15,6 +15,20 @@
   display: grid;
   place-content: center;
 }
+
+a{
+  text-decoration: none;
+  color: rgb(75, 75, 75);
+}
+
+
+.post-content{
+  background: white;
+}
+
+.post-content:hover{
+  background: whitesmoke;
+}
 .user-paper{
   padding: 1em;
   margin-bottom: 0.4em;
