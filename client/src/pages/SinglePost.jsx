@@ -61,211 +61,214 @@ const SinglePost = () => {
             }}
         >
             {
-                loading && <Loading />
-            }
+                loading ? <Loading /> : (
+                    <>
 
-            <Paper
-                elevation={4}
-                sx={{
-                    width: pageWidth >= 1150 ? '55dvw' : '90%',
-                    padding: 1,
-                    marginBottom: 4
-                }}
-            >
-                <Box
-                    className='post-header'
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '1em',
-                        borderBottom: '1px solid grey',
-                        padding: 1,
-                    }}
-                >
-                    <img
-                        className='profile-image'
-                        src={post?.author?.profile}
-                    />
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'self-start'
-                        }}
-                    >
-                        <Typography
-                            component='h1'
-                            variant='h6'
+                        <Paper
+                            elevation={4}
+                            sx={{
+                                width: pageWidth >= 1150 ? '55dvw' : '90%',
+                                padding: 1,
+                                marginBottom: 4
+                            }}
                         >
-                            {post?.author?.names}
-                        </Typography>
-                        <Typography>
-                            {new Date(post?.createdAt).toLocaleString()}
-                        </Typography>
-                    </Box>
-                </Box>
-                <Box
-                    sx={{
-                        cursor: 'pointer',
-                        textDecoration: 'none',
-                        padding: 1,
-                        marginTop: 1,
-                        borderBottom: '1px solid grey',
-                        textAlign: 'left'
-                    }}
-                    className='post-content'
-                >
-                    <Typography>
-                        {post?.post_content?.text}
-                    </Typography>
-
-                    {post?.post_content?.image ? (
-                        <img
-                            src={post?.post_content?.image}
-                            className='post-image'
-                        />
-                    ) : (
-                        <p></p>
-                    )}
-                </Box>
-                <Box
-                    className='reaction-content'
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        padding: 2
-                    }}
-                >
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'end'
-                        }}
-                    >
-                        <Typography>
-                            {post?.post_likes?.length} likes
-                        </Typography>
-                        <Button
-                            // onClick={(postId) => likePost(post?._id)}
-                            startIcon={<ThumbUpSharp />}
-                        >
-                            like
-                        </Button>
-                    </Box>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'end'
-                        }}
-                    >
-                        <Typography>
-                            {post?.post_comments?.length} comments
-                        </Typography>
-                        <Button
-                           
-                            startIcon={<CommentRounded />}
-                        >
-                            comment
-                        </Button>
-                    </Box>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'end'
-                        }}
-                    >
-                        <Typography>
-                            0 Shares
-                        </Typography>
-                        <Button
-                            startIcon={<ShareRounded />}
-                        >
-                            Share
-                        </Button>
-                    </Box>
-                </Box>
-            </Paper>
-
-            <Paper
-                elevation={4}
-                sx={{
-                    width: pageWidth >= 1150 ? '55dvw' : '90%',
-                    padding: 1,
-                    marginBottom: 4
-                }}
-            >
-                <Typography>
-                    Recent comments
-                </Typography>
-
-                <Box>
-                    {
-                        post?.post_comments?.map(comment => {
-                            return (
-                                <Paper
-                                    elevation={3}
+                            <Box
+                                className='post-header'
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '1em',
+                                    borderBottom: '1px solid grey',
+                                    padding: 1,
+                                }}
+                            >
+                                <img
+                                    className='profile-image'
+                                    src={post?.author?.profile}
+                                />
+                                <Box
                                     sx={{
-                                        padding: 3,
-                                        marginBottom: 2,
                                         display: 'flex',
                                         flexDirection: 'column',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-between'
+                                        alignItems: 'self-start'
                                     }}
-                                    key={comment}
                                 >
-                                    <Box
-                                        sx={{
-                                            padding: 1,
-                                            borderRadius: '5px',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            flexDirection: 'row'
-                                        }}
+                                    <Typography
+                                        component='h1'
+                                        variant='h6'
                                     >
-                                        <img
-                                            style={{
-                                                width: '50px',
-                                                height: '50px',
-                                                marginRight: 10
-                                            }}
-                                            src={comment?.user?.profile}
-                                            className='profile-image'
-                                        />
-                                        <Typography>
-                                            {comment?.user?.names}
-                                        </Typography>
+                                        {post?.author?.names}
+                                    </Typography>
+                                    <Typography>
+                                        {new Date(post?.createdAt).toLocaleString()}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                            <Box
+                                sx={{
+                                    cursor: 'pointer',
+                                    textDecoration: 'none',
+                                    padding: 1,
+                                    marginTop: 1,
+                                    borderBottom: '1px solid grey',
+                                    textAlign: 'left'
+                                }}
+                                className='post-content'
+                            >
+                                <Typography>
+                                    {post?.post_content?.text}
+                                </Typography>
+
+                                {post?.post_content?.image ? (
+                                    <img
+                                        src={post?.post_content?.image}
+                                        className='post-image'
+                                    />
+                                ) : (
+                                    <p></p>
+                                )}
+                            </Box>
+                            <Box
+                                className='reaction-content'
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    padding: 2
+                                }}
+                            >
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'end'
+                                    }}
+                                >
+                                    <Typography>
+                                        {post?.post_likes?.length} likes
+                                    </Typography>
+                                    <Button
+                                        // onClick={(postId) => likePost(post?._id)}
+                                        startIcon={<ThumbUpSharp />}
+                                    >
+                                        like
+                                    </Button>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'end'
+                                    }}
+                                >
+                                    <Typography>
+                                        {post?.post_comments?.length} comments
+                                    </Typography>
+                                    <Button
+
+                                        startIcon={<CommentRounded />}
+                                    >
+                                        comment
+                                    </Button>
+                                </Box>
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        justifyContent: 'end'
+                                    }}
+                                >
+                                    <Typography>
+                                        0 Shares
+                                    </Typography>
+                                    <Button
+                                        startIcon={<ShareRounded />}
+                                    >
+                                        Share
+                                    </Button>
+                                </Box>
+                            </Box>
+                        </Paper>
+
+                        <Paper
+                            elevation={4}
+                            sx={{
+                                width: pageWidth >= 1150 ? '55dvw' : '90%',
+                                padding: 1,
+                                marginBottom: 4
+                            }}
+                        >
+                            <Typography>
+                                Recent comments
+                            </Typography>
+
+                            <Box>
+                                {
+                                    post?.post_comments?.map(comment => {
+                                        return (
+                                            <Paper
+                                                elevation={3}
+                                                sx={{
+                                                    padding: 3,
+                                                    marginBottom: 2,
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'space-between'
+                                                }}
+                                                key={comment}
+                                            >
+                                                <Box
+                                                    sx={{
+                                                        padding: 1,
+                                                        borderRadius: '5px',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        flexDirection: 'row'
+                                                    }}
+                                                >
+                                                    <img
+                                                        style={{
+                                                            width: '50px',
+                                                            height: '50px',
+                                                            marginRight: 10
+                                                        }}
+                                                        src={comment?.user?.profile}
+                                                        className='profile-image'
+                                                    />
+                                                    <Typography>
+                                                        {comment?.user?.names}
+                                                    </Typography>
 
 
-                                    </Box>
-                                    <Box>
-                                        <Typography
-                                            sx={{
-                                              
-                                                padding: 1
-                                            }}
-                                        >
-                                            {comment?.comment?.text}
-                                        </Typography>
-                                        <Typography
-                                            variant='body2'
-                                            sx={{
-                                                marginTop: 3
-                                            }}
-                                        >
-                                            {new Date(comment?.comment?.date).toDateString()}
-                                        </Typography>
-                                    </Box>
-                                </Paper>
-                            )
-                        })
-                  }
-                </Box>
-            </Paper>
+                                                </Box>
+                                                <Box>
+                                                    <Typography
+                                                        sx={{
+
+                                                            padding: 1
+                                                        }}
+                                                    >
+                                                        {comment?.comment?.text}
+                                                    </Typography>
+                                                    <Typography
+                                                        variant='body2'
+                                                        sx={{
+                                                            marginTop: 3
+                                                        }}
+                                                    >
+                                                        {new Date(comment?.comment?.date).toDateString()}
+                                                    </Typography>
+                                                </Box>
+                                            </Paper>
+                                        )
+                                    })
+                                }
+                            </Box>
+                        </Paper>
+                    </>
+                )
+            }
         </Container>
     )
 }
