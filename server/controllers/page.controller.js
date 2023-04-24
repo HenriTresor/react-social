@@ -5,6 +5,7 @@ import User from '../models/User.model.js'
 export const getAllPages = async (req, res, next) => {
     try {
         let pages = await Page.find()
+            
         return res.status(200).json({ status: true, pages })
     } catch (error) {
         console.log('error getting all pages', error.message);
