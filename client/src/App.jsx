@@ -20,6 +20,8 @@ import Dialog from './components/Dialog.jsx'
 import SinglePost from './pages/SinglePost'
 import People from './pages/People'
 import NewPageDialog from './components/NewPageDialog'
+import NotFound from './pages/404'
+
 
 const App = () => {
   let { setUsers, setPages, setCurrentUser, currentUser, isModalOpen, setIsModalOpen, isLoggedIn, setIsLoggedIn } = useContext(AppData)
@@ -210,12 +212,7 @@ const App = () => {
       }
 
       <Routes>
-        <Route exact path='/' element={<HomePage
-          setPageModalOpen={setPageModalOpen}
-          setGlobalSnackBarMsg={setGlobalSnackBarMsg}
-          setGlobalSnackBarOpen={setGlobalSnackBarOpen}
-          isNotificationPanelOpen={isNotificationPanelOpen}
-          setIsNotificationPanelOpen={setIsNotificationPanelOpen} />} />
+      
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/signup' element={<Signup />} />
         <Route exact path='/profile/:id' element={<Profile />} />
@@ -225,6 +222,13 @@ const App = () => {
           setGlobalSnackBarMsg={setGlobalSnackBarMsg}
           setGlobalSnackBarOpen={setGlobalSnackBarOpen} />} />
         <Route exact path='/people' element={ <People />} />
+        <Route exact path='*' element={<NotFound />} />
+        <Route exact path='/' element={<HomePage
+          setPageModalOpen={setPageModalOpen}
+          setGlobalSnackBarMsg={setGlobalSnackBarMsg}
+          setGlobalSnackBarOpen={setGlobalSnackBarOpen}
+          isNotificationPanelOpen={isNotificationPanelOpen}
+          setIsNotificationPanelOpen={setIsNotificationPanelOpen} />} />
       </Routes>
       <Dialog
         setGlobalSnackBarMsg={setGlobalSnackBarMsg}

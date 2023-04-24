@@ -9,7 +9,7 @@ const AppContext = (props: Props) => {
 
     const [users, setUsers] = useState([])
     const [pages, setPages] = useState([])
-    const [currentUser, setCurrentUser] = useState({})
+    const [currentUser, setCurrentUser] = useState(null)
     const [isLoggedIn, setIsLoggedIn] = useState(false)
     const [posts, setPosts] = useState([])
     const [pageWidth, setPageWidth] = useState(0)

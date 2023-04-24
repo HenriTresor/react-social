@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useState, useRef, useReducer } from 'reac
 import { AppData } from '../context/AppContext'
 import { LogoutRounded, SendRounded, ArrowBack, PeopleAltRounded, ContactPage } from '@mui/icons-material'
 import { serverLink } from '../utils/links'
+import { hiAvatar } from '../assets/imgLinks'
+import Loading from '../components/Loading'
 
 const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
     const { currentUser, pageWidth } = useContext(AppData)
@@ -13,8 +15,9 @@ const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
     const [snackBarMsg, setSnackBarMsg] = useState('')
     const [messages, setMessages] = useState([])
     const scrollRef = useRef()
-    const [isScrolling, setIsScrolling] = useState(false)
     const inputRef = useRef(null)
+    const [isLoading, setIsLoading] = useState(true)
+    const [isErr, setIsErr] = useState(false)
 
     useEffect(() => {
         if (scrollRef.current) {
@@ -84,6 +87,7 @@ const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
 
     const getMessages = async () => {
         try {
+            setIsLoading(true)
             setIsSnackBarOpen(true)
             setSnackBarMsg('loading messages ...')
             const res = await fetch(`${serverLink}/messages`, {
@@ -95,6 +99,7 @@ const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
             })
 
             const data = await res.json()
+            setIsLoading(false)
             setMessages(data?.messages)
             setIsSnackBarOpen(false)
         } catch (err) {
@@ -146,6 +151,16 @@ const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                     }}
                 >
                     {
+                        currentUser?.friends?.length === 0 && (
+                            <>
+
+                                <Typography>
+                                    Find friends
+                                </Typography>
+                            </>
+                        )
+                    }
+                    {
                         currentUser?.friends?.map(friend => {
                             return (
                                 <Paper
@@ -171,9 +186,9 @@ const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                                             sx={{
                                                 width: '50px',
                                                 height: '50px',
-                                                marginRight:1
+                                                marginRight: 1
                                             }}
-                                           
+
                                             src={friend?.profile}
                                             alt={`${friend?.names} profile pic`} />
                                         <Typography
@@ -264,10 +279,10 @@ const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                                                             sx={{
                                                                 width: '50px',
                                                                 height: '50px',
-                                                                marginRight:3
+                                                                marginRight: 3
                                                             }}
                                                             className='profile-image'
-                                                            
+
                                                             src={currentChat?.profile}
                                                         />
                                                         <Typography>
@@ -293,9 +308,38 @@ const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
 
                                                     ref={scrollRef}
                                                 >
+                                                    {isLoading && <Loading />}
 
-
-
+                                                    {messages?.length === 0 &&
+                                                        (
+                                                            <Box
+                                                                sx={{
+                                                                    display: 'grid',
+                                                                    placeContent: 'center',
+                                                                    minHeight: '100%',
+                                                                    textAlign: 'center',
+                                                                    gap: 3,
+                                                                    wordBreak: 'break-word'
+                                                                }}
+                                                            >
+                                                                <Typography
+                                                                    sx={{
+                                                                        fontFamily: 'verdana'
+                                                                    }}
+                                                                >
+                                                                    This is the start of your lengendary conversation with {currentChat?.names}
+                                                                </Typography>
+                                                                <Typography
+                                                                    variant='h4'
+                                                                    sx={{
+                                                                        fontFamily: 'cursive'
+                                                                    }}
+                                                                >
+                                                                    Try Hi!
+                                                                </Typography>
+                                                            </Box>
+                                                        )
+                                                    }
                                                     {
                                                         messages?.map(message => {
                                                             return (
@@ -357,11 +401,16 @@ const Chats = ({ socket, setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                                         : (
                                             <Box
                                                 sx={{
-                                                    display: 'grid',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
                                                     placeContent: 'center',
-                                                    height: '100%'
+                                                    height: '100%',
+                                                    alignContent: 'center',
+                                                    alignItems: 'center',
+                                                    textAlign: 'center'
                                                 }}
                                             >
+                                                <img src={hiAvatar} />
                                                 <Typography>
                                                     Hey {currentUser?.names}, Select a chat to continue, ...!
                                                 </Typography>

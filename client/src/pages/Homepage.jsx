@@ -13,7 +13,7 @@ import React, { useEffect, useContext, useReducer, useState } from 'react'
 import Header from '../components/layout/Header'
 import Body from '../components/layout/Body'
 import Aside from '../components/layout/Aside'
-import { PagesOutlined, Newspaper, GroupOutlined, NewReleases , Group, Close, ArrowBack } from '@mui/icons-material'
+import { PagesOutlined, Newspaper, GroupOutlined, NewReleases, Group, Close, ArrowBack } from '@mui/icons-material'
 import { AppData } from '../context/AppContext'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -21,6 +21,7 @@ import { serverLink } from '../utils/links'
 import { useNavigate, Outlet, Link } from 'react-router-dom'
 import { current } from '@reduxjs/toolkit'
 import Loading from '../components/Loading'
+import Error from '../components/Error'
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -31,7 +32,7 @@ const reducer = (state, action) => {
             return { ...state, done: true, requestedData: action.payload }
             break;
         case 'ERROR':
-            return { ...state, error: action.payload, loading: false }
+            return { ...state, error: true, loading: false }
     }
 }
 
@@ -146,7 +147,7 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
     }
     return (
         <>
-            
+
             <Snackbar
                 open={open}
                 autoHideDuration={1}
@@ -202,7 +203,7 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                                 </ListItem>
                                 <ListItem>
                                     <ListItemButton
-                                    onClick={()=>setPageModalOpen(true)}
+                                        onClick={() => setPageModalOpen(true)}
                                     >
                                         <ListItemAvatar>
                                             <NewReleases />
@@ -268,11 +269,20 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                     </Aside >
                 </Grid>
                 <Grid item xs={6} md={8} sx={{ marginTop: 9, textAlign: 'center' }}>
-                    <Body
+                    {
+                        error ? (
+                        
+                            <>
+                            <Error />
+                            </>
+                        ): (
+                            <Body
 
-                        setGlobalSnackBarMsg={setGlobalSnackBarMsg}
-                        setGlobalSnackBarOpen={setGlobalSnackBarOpen}
+                        setGlobalSnackBarMsg = { setGlobalSnackBarMsg }
+                        setGlobalSnackBarOpen = { setGlobalSnackBarOpen }
                     />
+                        )
+                   }
 
                 </Grid>
                 {

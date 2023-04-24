@@ -4,6 +4,7 @@ import { Container, Box, Paper, Avatar, Typography, Stack, Button, Divider } fro
 import { Outlet, Link, useParams, useNavigate } from 'react-router-dom'
 import { serverLink } from '../utils/links'
 import Loading from '../components/Loading'
+import { redirect } from 'react-router'
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -181,6 +182,7 @@ const Profile = () => {
                                                                 onClick={() => {
                                                                     navigate(`/profile/${friend?._id}`)
                                                                     location.reload()
+                                                                 
                                                                 }}
                                                                 key={friend._id}
                                                                 elevation={6}
