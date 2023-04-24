@@ -77,115 +77,163 @@ const Profile = () => {
     return (
 
         <>
-            <Container
-                sx={{ marginTop: 15, textAlign: 'center' }}
-                className='container'>
+            {
+                loading ? <Loading /> : (
+                    <Container
+                        sx={{ marginTop: 15, textAlign: 'center' }}
+                        className='container'>
 
-                {
-                    loading && <Loading />
-                }
-                <Box>
-                    <Paper
-                        elevation={4}
-                        sx={{
-                            padding: 3,
-                            placeContent: 'center'
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignContent: 'center',
-                                alignItems: 'center'
-                            }}
-                        >
 
-                            <Avatar
-                                sx={{
-                                    width: '150px',
-                                    height: '150px'
-                                }}
-                                className='profile-image'
-                                src={user?.profile} alt={`${user?.names} profile picture`} />
-                            <Typography
-                                variant='h4'
-                                component='h1'
-                                sx={{
-                                    marginTop: 3
-                                }}
-                            >
-                                {user?.names}
-                            </Typography>
-                            <Typography>
-                                {user?.email}
-                            </Typography>
-                        </Box>
                         <Box>
-                            <Button
-                                color='success'
+                            <Paper
+                                elevation={4}
                                 sx={{
-                                marginTop:3
-                            }}
+                                    padding: 3,
+                                    placeContent: 'center'
+                                }}
                             >
-                                edit profile
-                            </Button>
-                        </Box>
-                        <Stack
-                            sx={{
-                                display: 'grid',
-                                marginTop: 3
-                            }}
-                            direction={'row'}
-                            position={'center'}
-                            spacing={2}
-                            divider={<Divider orientation='vertical' flexItem />}
-                        >
-                            <Box>
-                                <Button
-                                    onClick={() => setCurrentTab(1)}
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignContent: 'center',
+                                        alignItems: 'center'
+                                    }}
                                 >
-                                    Friends
-                                </Button>
-                                <Button
-                                    onClick={() => setCurrentTab(2)}
-                                >
-                                    {user?._id === currentUser?._id ? 'your content' : `${user?.names?.split(' ')[0]}'contents`}
-                                </Button>
-                                <Button
-                                    onClick={() => setCurrentTab(3)}
-                                >
-                                    pages liked
-                                </Button>
-                            </Box>
-                        </Stack>
 
-                        <Stack
-                            sx={{
-                                display: 'grid',
-                                marginTop: 3
-                            }}
-                            direction={'row'}
-                            position={'center'}
-                            spacing={2}
-                            divider={<Divider orientation='vertical' flexItem />}
-                        >
-                            {
-                                currentTab === 1 ? (
+                                    <Avatar
+                                        sx={{
+                                            width: '150px',
+                                            height: '150px'
+                                        }}
+                                        className='profile-image'
+                                        src={user?.profile} alt={`${user?.names} profile picture`} />
+                                    <Typography
+                                        variant='h4'
+                                        component='h1'
+                                        sx={{
+                                            marginTop: 3
+                                        }}
+                                    >
+                                        {user?.names}
+                                    </Typography>
+                                    <Typography>
+                                        {user?.email}
+                                    </Typography>
+                                </Box>
+                                <Box>
+                                    <Button
+                                        color='success'
+                                        sx={{
+                                            marginTop: 3
+                                        }}
+                                    >
+                                        edit profile
+                                    </Button>
+                                </Box>
+                                <Stack
+                                    sx={{
+                                        display: 'grid',
+                                        marginTop: 3
+                                    }}
+                                    direction={'row'}
+                                    position={'center'}
+                                    spacing={2}
+                                    divider={<Divider orientation='vertical' flexItem />}
+                                >
                                     <Box>
-                                        {
-                                            user?.friends?.map(friend => {
-                                                return (
-                                                   
-                                                    <Paper
-                                                        onClick={() => {
-                                                            navigate(`/profile/${friend?._id}`)
-                                                            location.reload()
-                                                        }}
-                                                            key={friend._id}
+                                        <Button
+                                            onClick={() => setCurrentTab(1)}
+                                        >
+                                            Friends
+                                        </Button>
+                                        <Button
+                                            onClick={() => setCurrentTab(2)}
+                                        >
+                                            {user?._id === currentUser?._id ? 'your content' : `${user?.names?.split(' ')[0]}'contents`}
+                                        </Button>
+                                        <Button
+                                            onClick={() => setCurrentTab(3)}
+                                        >
+                                            pages liked
+                                        </Button>
+                                    </Box>
+                                </Stack>
+
+                                <Stack
+                                    sx={{
+                                        display: 'grid',
+                                        marginTop: 3
+                                    }}
+                                    direction={'row'}
+                                    position={'center'}
+                                    spacing={2}
+                                    divider={<Divider orientation='vertical' flexItem />}
+                                >
+                                    {
+                                        currentTab === 1 ? (
+                                            <Box>
+                                                {
+                                                    user?.friends?.map(friend => {
+                                                        return (
+
+                                                            <Paper
+                                                                onClick={() => {
+                                                                    navigate(`/profile/${friend?._id}`)
+                                                                    location.reload()
+                                                                }}
+                                                                key={friend._id}
+                                                                elevation={6}
+                                                                sx={{
+                                                                    cursor: 'pointer',
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    justifyContent: 'space-between',
+                                                                    marginBottom: 2,
+                                                                    padding: 1
+                                                                }}
+                                                            >
+                                                                <Box
+                                                                    sx={{
+                                                                        display: 'flex',
+                                                                        alignItems: 'center',
+                                                                        justifyContent: 'space-between',
+                                                                        gap: 3
+                                                                    }}
+                                                                >
+                                                                    <Avatar sx={{
+                                                                        width: '100px',
+                                                                        height: '100px'
+                                                                    }}
+                                                                        src={friend?.profile} alt={`${friend?.names} profile pic`} />
+                                                                    <Typography>
+                                                                        {friend?.names}
+                                                                    </Typography>
+                                                                </Box>
+                                                                {
+                                                                    currentUser?._id === user?._id && (
+                                                                        <Button
+                                                                            color='warning'
+                                                                            variant='outlined'
+                                                                        >
+
+                                                                            unfriend
+                                                                        </Button>
+                                                                    )
+                                                                }
+                                                            </Paper>
+
+                                                        )
+                                                    })
+                                                }
+                                            </Box>
+                                        ) : currentTab === 2 ? (
+                                            (
+                                                userPosts?.map((post) => {
+                                                    return (
+                                                        <Paper key={post._id}
                                                             elevation={6}
-                                                        sx={{
-                                                                cursor:'pointer',
+                                                            sx={{
                                                                 display: 'flex',
                                                                 alignItems: 'center',
                                                                 justifyContent: 'space-between',
@@ -196,137 +244,93 @@ const Profile = () => {
                                                             <Box
                                                                 sx={{
                                                                     display: 'flex',
-                                                                    alignItems: 'center',
-                                                                    justifyContent: 'space-between',
-                                                                    gap: 3
+                                                                    alignItems: 'center'
                                                                 }}
                                                             >
-                                                                <Avatar sx={{
-                                                                    width: '100px',
-                                                                    height: '100px'
-                                                                }}
-                                                                    src={friend?.profile} alt={`${friend?.names} profile pic`} />
+
                                                                 <Typography>
-                                                                    {friend?.names}
+                                                                    {post?.post_content?.text}
                                                                 </Typography>
                                                             </Box>
-                                                        {
-                                                            currentUser?._id === user?._id && (
-                                                                <Button
-                                                                    color='warning'
-                                                                    variant='outlined'
+                                                            <Box>
+                                                                <Link
+                                                                    to={`/posts/${post?._id}`}
                                                                 >
-
-                                                                    unfriend
-                                                                </Button>
-                                                            )
-                                                            }
+                                                                    <Button
+                                                                        color='primary'
+                                                                        variant='outlined'
+                                                                    >
+                                                                        visit
+                                                                    </Button>
+                                                                </Link>
+                                                                {
+                                                                    user?._id === currentUser?._id && (
+                                                                        <Button
+                                                                            color='warning'
+                                                                        >
+                                                                            delete
+                                                                        </Button>
+                                                                    )
+                                                                }
+                                                            </Box>
                                                         </Paper>
-                                                    
-                                                )
-                                            })
-                                        }
-                                    </Box>
-                                ) : currentTab === 2 ? (
-                                    (
-                                        userPosts?.map((post) => {
-                                            return (
-                                                <Paper key={post._id}
-                                                    elevation={6}
-                                                    sx={{
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        justifyContent: 'space-between',
-                                                        marginBottom: 2,
-                                                        padding: 1
-                                                    }}
-                                                >
-                                                    <Box
+                                                    )
+                                                })
+                                            )
+                                        ) : (
+                                            userLikedPages?.map((page) => {
+                                                return (
+                                                    <Paper key={page?._id}
                                                         sx={{
                                                             display: 'flex',
-                                                            alignItems: 'center'
+                                                            padding: 1,
+                                                            justifyContent: 'space-between'
+
                                                         }}
                                                     >
-
-                                                        <Typography>
-                                                            {post?.post_content?.text}
-                                                        </Typography>
-                                                    </Box>
-                                                    <Box>
-                                                        <Link
-                                                            to={`/posts/${post?._id}`}
+                                                        <Box
+                                                            sx={{
+                                                                display: 'flex',
+                                                                alignItems: 'center'
+                                                            }}
                                                         >
+                                                            <Typography>
+                                                                {page?.page_name}
+                                                            </Typography>
+                                                        </Box>
+                                                        <Box>
                                                             <Button
                                                                 color='primary'
                                                                 variant='outlined'
                                                             >
-                                                                visit
+
+                                                                Visit
                                                             </Button>
-                                                        </Link>
-                                                        {
-                                                            user?._id === currentUser?._id && (
-                                                                <Button
-                                                                    color='warning'
-                                                                >
-                                                                    delete
-                                                                </Button>
-                                                            )
-                                                       }
-                                                    </Box>
-                                                </Paper>
-                                            )
-                                        })
-                                    )
-                                ) : (
-                                    userLikedPages?.map((page) => {
-                                        return (
-                                            <Paper key={page?._id}
-                                                sx={{
-                                                    display: 'flex',
-                                                    padding: 1,
-                                                    justifyContent: 'space-between'
+                                                            {
+                                                                currentUser?._id === user?._id && (
+                                                                    <Button
+                                                                        color='warning'
+                                                                        variant='outlined'
+                                                                    >
 
-                                                }}
-                                            >
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        alignItems: 'center'
-                                                    }}
-                                                >
-                                                    <Typography>
-                                                        {page?.page_name}
-                                                    </Typography>
-                                                </Box>
-                                                <Box>
-                                                    <Button
-                                                        color='primary'
-                                                        variant='outlined'
-                                                    >
-
-                                                        Visit
-                                                    </Button>
-                                                    {
-                                                        currentUser?._id === user?._id && (
-                                                            <Button
-                                                                color='warning'
-                                                                variant='outlined'
-                                                            >
-
-                                                                unfollow
-                                                            </Button>
-                                                        )
-                                                    }
-                                               </Box>
-                                            </Paper>
+                                                                        unfollow
+                                                                    </Button>
+                                                                )
+                                                            }
+                                                        </Box>
+                                                    </Paper>
+                                                )
+                                            })
                                         )
-                                    })
-                                )
-                            }
-                        </Stack>
-                    </Paper>
-                </Box>
-            </Container>
+                                    }
+                                </Stack>
+                            </Paper>
+                        </Box>
+                    </Container>
+
+                )
+            }
+          
             <Outlet />
         </>
 
