@@ -85,7 +85,7 @@ const Header = ({ setIsNotificationPanelOpen }) => {
           }}
         >
           <Button
-            onClick={() => setIsNotificationPanelOpen(true)}
+            
           >
             <Notifications />
           </Button>
@@ -96,20 +96,24 @@ const Header = ({ setIsNotificationPanelOpen }) => {
               <MessageRounded />
             </Button>
           </Link>
-          {
-            pageWidth >= 1150 && (
+  
               <Link to='/settings' key='settings-link'>
                 <Button>
                   <Settings />
                 </Button>
               </Link>
+          {
+
+            currentUser ? (
+              <Link to={`/profile/${currentUser?._id}`} key='profile-link'>
+                <Avatar
+                  src={currentUser?.profile}
+                />
+              </Link>
+            ) : (
+                <Avatar />
             )
-          }
-          <Link to={`/profile/${currentUser?._id}`} key='profile-link'>
-            <Avatar
-              src={currentUser?.profile}
-            />
-          </Link>
+       }
         </Box>
       </AppBar>
 

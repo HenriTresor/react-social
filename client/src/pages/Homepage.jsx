@@ -183,6 +183,7 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                                 }}
                             >
                                 <Button
+                                    disabled={currentUser ? false : true}
                                     onClick={() => setIsModalOpen(true)}
                                     variant='contained'>
                                     create a new post
