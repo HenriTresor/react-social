@@ -52,7 +52,6 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
             const usersRes = await axios.get(`${serverLink}/users?currentUserId=${currentUser?._id}`)
             const postsRes = await axios.get(`${serverLink}/posts`)
             const pageRes = await axios.get(`${serverLink}/pages`)
-
             return {
                 usersRes,
                 pageRes,
@@ -62,7 +61,7 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
     })
 
     useEffect(() => {
-        console.log(posts);
+        // console.log(pages);
         setUsers(data?.usersRes?.data?.users)
         setPages(data?.pageRes?.data?.pages)
         setPosts(data?.postsRes?.data?.posts)
@@ -191,16 +190,18 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                                 </Button>
                             </Box>
                             <List>
-                                <ListItem>
-                                    <ListItemButton>
-                                        <ListItemAvatar>
-                                            <PagesOutlined />
-                                        </ListItemAvatar>
-                                        <ListItemText>
-                                            explore pages
-                                        </ListItemText>
-                                    </ListItemButton>
-                                </ListItem>
+                                <Link to='/pages' key='pages'>
+                                    <ListItem>
+                                        <ListItemButton>
+                                            <ListItemAvatar>
+                                                <PagesOutlined />
+                                            </ListItemAvatar>
+                                            <ListItemText>
+                                                explore pages
+                                            </ListItemText>
+                                        </ListItemButton>
+                                    </ListItem>
+                                </Link>
                                 <ListItem>
                                     <ListItemButton
                                         onClick={() => setPageModalOpen(true)}
