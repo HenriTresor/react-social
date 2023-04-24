@@ -1,28 +1,50 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { AppData } from '../context/AppContext'
 import { Container, Box, Paper, Avatar, Typography, Stack, Button, Divider } from '@mui/material'
 import { Outlet, Link, useParams, useNavigate } from 'react-router-dom'
 import { serverLink } from '../utils/links'
+import Loading from '../components/Loading'
+
+const reducer = (state, action) => {
+    switch (action.type) {
+        case 'FETCHING':
+            return { ...state, loading: true }
+            break;
+        case 'FETCHED':
+            return { ...state, loading: false, user: action.payload }
+            break;
+        case 'ERROR':
+            return { ...state, loading: false, error: true }
+            break;
+        default:
+            return state
+    }
+}
 
 const Profile = () => {
 
     let { currentUser, pages } = useContext(AppData)
     const navigate = useNavigate()
+    const [{ user, loading, error }, dispatch] = useReducer(reducer, {
+        user: {},
+        loading: true,
+        error:false
+    })
 
     const { id } = useParams()
     const [currentTab, setCurrentTab] = useState(1)
     const [userPosts, setUserPosts] = useState([])
     const [userLikedPages, setUserLikedPages] = useState([])
-    const [user, setUser] = useState({})
 
     const getUser = async () => {
         try {
+            dispatch({type:'FETCHING'})
             const res = await fetch(`${serverLink}/users/${id}`, {
                 method: 'GET'
             })
 
             const data = await res.json()
-            setUser(data?.user)
+            dispatch({type:'FETCHED', payload:data?.user})
         } catch (error) {
             console.log(error.message);
         }
@@ -59,6 +81,9 @@ const Profile = () => {
                 sx={{ marginTop: 15, textAlign: 'center' }}
                 className='container'>
 
+                {
+                    loading && <Loading />
+                }
                 <Box>
                     <Paper
                         elevation={4}
