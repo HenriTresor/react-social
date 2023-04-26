@@ -12,7 +12,7 @@ import {
 import { AppData } from '../context/AppContext.tsx'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { LoadingButton} from '@mui/lab'
+import { LoadingButton } from '@mui/lab'
 
 const Modal = ({ setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
     let { isModalOpen, setIsModalOpen, currentUser } = useContext(AppData)
@@ -33,7 +33,7 @@ const Modal = ({ setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                 const formData = new FormData()
                 formData.append('file', image)
                 formData.append('upload_preset', 'gpzxoihy')
-                axios.post('https://api.cloudinary.com/v1_1/djehh7gum/image/upload',formData)
+                axios.post('https://api.cloudinary.com/v1_1/djehh7gum/image/upload', formData)
                     .then(data => {
                         console.log(data);
                         setImageUrl(data?.data?.secure_url)
@@ -62,7 +62,15 @@ const Modal = ({ setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                 const data = await res.json()
                 setGlobalSnackBarOpen(true)
                 setGlobalSnackBarMsg(data?.message)
-                navigate('/')
+                if (data.status) {
+
+                    setImage(null)
+                    setPostText('')
+                    setImageUrl(null)
+                    navigate(`/posts/${data?.post?._id}`)
+                    setIsModalOpen(false)
+                }
+
             }
         } catch (err) {
             console.log(err.message);
@@ -119,7 +127,7 @@ const Modal = ({ setGlobalSnackBarOpen, setGlobalSnackBarMsg }) => {
                         image && (
                             isImageUploading ? (
                                 <LoadingButton
-                                loading
+                                    loading
                                 />
                             ) : imageUrl ? (
                                 <Button
