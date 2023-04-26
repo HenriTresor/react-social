@@ -1,5 +1,5 @@
 import { Box, Grid, List, Button, Badge, ListItem, Paper, Typography, ListItemAvatar, ListItemText, ListItemButton, Snackbar } from '@mui/material'
-import React, { useEffect, useContext, useRef, useState } from 'react'
+import React, { useEffect, useContext, useRef, useState, lazy } from 'react'
 import Header from './components/layout/Header'
 import { PagesOutlined, Newspaper, Add, GroupOutlined, CloseRounded, Group, Notifications } from '@mui/icons-material'
 import { AppData } from './context/AppContext'
@@ -7,21 +7,22 @@ import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { serverLink } from './utils/links.js'
 import { Route, Routes } from 'react-router-dom'
-import HomePage from './pages/Homepage'
-import Login from './pages/Login'
-import Signup from './pages/Signup'
 import { useNavigate, useLocation } from 'react-router-dom'
-import Profile from './pages/Profile.jsx'
-import Settings from './pages/Settings'
-import Chats from './pages/Chats'
 import { io } from 'socket.io-client'
 import { Fab } from '@mui/material'
 import Dialog from './components/Dialog.jsx'
-import SinglePost from './pages/SinglePost'
-import People from './pages/People'
 import NewPageDialog from './components/NewPageDialog'
-import NotFound from './pages/404'
+import Loading from './components/Loading'
 
+const HomePage = lazy(() => import('./pages/Homepage'))
+const Login = lazy(() => import('./pages/Login'))
+const Signup = lazy(() => import('./pages/Signup'))
+const Profile = lazy(() => import('./pages/Profile'))
+const Settings = lazy(() => import('./pages/Settings'))
+const Chats = lazy(() => import('./pages/Chats'))
+const SinglePost = lazy(() => import('./pages/SinglePost'))
+const People = lazy(() => import('./pages/People'))
+const NotFound = lazy(() => import('./pages/404'))
 
 const App = () => {
   let { setUsers, setPages, setCurrentUser, currentUser, isModalOpen, setIsModalOpen, isLoggedIn, setIsLoggedIn } = useContext(AppData)
@@ -211,25 +212,29 @@ const App = () => {
         )
       }
 
-      <Routes>
-      
-        <Route exact path='/login' element={<Login />} />
-        <Route exact path='/signup' element={<Signup />} />
-        <Route exact path='/profile/:id' element={<Profile />} />
-        <Route exact path='/settings' element={<Settings />} />
-        <Route exact path='/posts/:id' element={<SinglePost />} />
-        <Route exact path='/chat-room' element={<Chats socket={socket}
-          setGlobalSnackBarMsg={setGlobalSnackBarMsg}
-          setGlobalSnackBarOpen={setGlobalSnackBarOpen} />} />
-        <Route exact path='/people' element={ <People />} />
-        <Route exact path='*' element={<NotFound />} />
-        <Route exact path='/' element={<HomePage
-          setPageModalOpen={setPageModalOpen}
-          setGlobalSnackBarMsg={setGlobalSnackBarMsg}
-          setGlobalSnackBarOpen={setGlobalSnackBarOpen}
-          isNotificationPanelOpen={isNotificationPanelOpen}
-          setIsNotificationPanelOpen={setIsNotificationPanelOpen} />} />
-      </Routes>
+      <React.Suspense
+      fallback={<Loading />}
+      >
+        <Routes>
+
+          <Route exact path='/login' element={<Login />} />
+          <Route exact path='/signup' element={<Signup />} />
+          <Route exact path='/profile/:id' element={<Profile />} />
+          <Route exact path='/settings' element={<Settings />} />
+          <Route exact path='/posts/:id' element={<SinglePost />} />
+          <Route exact path='/chat-room' element={<Chats socket={socket}
+            setGlobalSnackBarMsg={setGlobalSnackBarMsg}
+            setGlobalSnackBarOpen={setGlobalSnackBarOpen} />} />
+          <Route exact path='/people' element={<People />} />
+          <Route exact path='*' element={<NotFound />} />
+          <Route exact path='/' element={<HomePage
+            setPageModalOpen={setPageModalOpen}
+            setGlobalSnackBarMsg={setGlobalSnackBarMsg}
+            setGlobalSnackBarOpen={setGlobalSnackBarOpen}
+            isNotificationPanelOpen={isNotificationPanelOpen}
+            setIsNotificationPanelOpen={setIsNotificationPanelOpen} />} />
+        </Routes>
+    </React.Suspense>
       <Dialog
         setGlobalSnackBarMsg={setGlobalSnackBarMsg}
         setGlobalSnackBarOpen={setGlobalSnackBarOpen}
