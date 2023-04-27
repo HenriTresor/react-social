@@ -13,7 +13,9 @@ import multer from 'multer'
 import cors from 'cors'
 import { Server } from 'socket.io'
 import http from 'http'
+import { createClient } from 'redis'
 
+const client = createClient({})
 export const upload = multer({ dest: './uploads/' })
 
 config()

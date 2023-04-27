@@ -9,11 +9,11 @@ import {
     Avatar,
     Snackbar, ListItemAvatar, ListItemText, ListItemButton, CircularProgress
 } from '@mui/material'
-import React, { useEffect, useContext, useReducer, useState } from 'react'
+import React, { useEffect, useContext, useReducer, useState, useMemo, useCallback } from 'react'
 import Header from '../components/layout/Header'
 import Body from '../components/layout/Body'
 import Aside from '../components/layout/Aside'
-import { PagesOutlined, Newspaper, GroupOutlined, NewReleases, Group, Close, ArrowBack } from '@mui/icons-material'
+import { PagesOutlined, Newspaper, GroupOutlined, PeopleAltRounded, NewReleases, Group, Close, ArrowBack } from '@mui/icons-material'
 import { AppData } from '../context/AppContext'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
@@ -27,10 +27,8 @@ const reducer = (state, action) => {
     switch (action.type) {
         case 'START_FETCHING':
             return { ...state, loading: true }
-            break;
         case 'FETCHED':
             return { ...state, done: true, requestedData: action.payload }
-            break;
         case 'ERROR':
             return { ...state, error: true, loading: false }
     }
@@ -43,34 +41,51 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
         error: false,
         message: ''
     })
-    const navigate = useNavigate()
     let { users, setUsers, pages, setPages, pageWidth, setIsDrawerOpen, currentUser, posts, setPosts, setIsModalOpen } = useContext(AppData)
-    console.log(currentUser);
-    const { isLoading, isError, data } = useQuery({
+
+    const { isLoading, error: isError, data } = useQuery({
         queryKey: ['users'],
         queryFn: async function () {
-            const usersRes = await axios.get(`${serverLink}/users?currentUserId=${currentUser?._id}`)
-            const postsRes = await axios.get(`${serverLink}/posts`)
-            const pageRes = await axios.get(`${serverLink}/pages`)
-            return {
-                usersRes,
-                pageRes,
-                postsRes
+            try {
+                const usersRes = currentUser && await axios.get(`${serverLink}/users?currentUserId=${currentUser?._id}`)
+                const postsRes = await axios.get(`${serverLink}/posts`)
+                const pageRes = await axios.get(`${serverLink}/pages`)
+                return { usersRes, pageRes, postsRes }
+            } catch (error) {
+                dispatch({ type: 'error', payload: error.message })
             }
+
         }
     })
-
     useEffect(() => {
-        // console.log(pages);
-        setUsers(data?.usersRes?.data?.users)
-        setPages(data?.pageRes?.data?.pages)
-        setPosts(data?.postsRes?.data?.posts)
+        if (data) {
+
+            const { usersRes, pageRes, postsRes } = data
+            setUsers(usersRes?.data?.users)
+            setPages(pageRes?.data?.pages)
+            setPosts(postsRes?.data?.posts)
+        }
     }, [data])
 
     useEffect(() => {
-        console.log(users, currentUser?.friends);
-    }, [users, currentUser?.friends])
-
+        setUsers(prev => {
+            return users?.map(user => {
+                return user = {
+                    ...user,
+                    friendRequestSent: false
+                }
+            })
+        })
+    }, [])
+    useEffect(() => {
+        if (isError) {
+            dispatch({ type: 'ERROR', payload: error.message })
+        } else if (isLoading) {
+            dispatch({ type: 'START_FETCHING' })
+        } else if (data) {
+            dispatch({ type: 'FETCHED', payload: data })
+        }
+    }, [data, isError, isLoading])
     const sendRequest = async (id) => {
         try {
             dispatch({ type: 'START_FETCHING' })
@@ -79,7 +94,7 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                 headers: {
                     'content-type': 'application/json'
                 },
-                body: JSON.stringify({ requestId: id })
+                body: JSON.stringify({ requestId: id?._id })
             })
 
             const data = await res.json()
@@ -87,6 +102,10 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                 setOpen(true)
                 dispatch({ type: 'ERROR', payload: data.message })
             } else {
+                id = {
+                    ...id,
+                    friendRequestSent: true
+                }
                 setOpen(true)
                 dispatch({ type: 'FETCHED', payload: data.message })
             }
@@ -214,6 +233,20 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                                         </ListItemText>
                                     </ListItemButton>
                                 </ListItem>
+                                <ListItem>
+                                    <ListItemButton
+                                        onClick={() => {
+                                            alert('copy the link : https://sociala.onrender.com')
+                                        }}
+                                    >
+                                        <ListItemAvatar>
+                                            <PeopleAltRounded />
+                                        </ListItemAvatar>
+                                        <ListItemText>
+                                            Refer to a friend
+                                        </ListItemText>
+                                    </ListItemButton>
+                                </ListItem>
                                 <Link to='/people'>
                                     <ListItem>
                                         <ListItemButton>
@@ -246,7 +279,7 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                                                     </Typography>
 
                                                     <Typography>
-                                                        {page?.page_followers.length > 1 ? page?.page_followers.length + ' followers' : page?.page_followers.length + ' follower'}
+                                                        {page?.page_followers?.length > 1 ? page?.page_followers?.length + ' followers' : page?.page_followers?.length + ' follower'}
                                                     </Typography>
                                                 </Box>
 
@@ -272,18 +305,18 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                 <Grid item xs={6} md={8} sx={{ marginTop: 9, textAlign: 'center' }}>
                     {
                         error ? (
-                        
+
                             <>
-                            <Error />
+                                <Error />
                             </>
-                        ): (
+                        ) : (
                             <Body
 
-                        setGlobalSnackBarMsg = { setGlobalSnackBarMsg }
-                        setGlobalSnackBarOpen = { setGlobalSnackBarOpen }
-                    />
+                                setGlobalSnackBarMsg={setGlobalSnackBarMsg}
+                                setGlobalSnackBarOpen={setGlobalSnackBarOpen}
+                            />
                         )
-                   }
+                    }
 
                 </Grid>
                 {
@@ -320,7 +353,7 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                                                                 {request?.names}
                                                             </Typography>
                                                             <Typography>
-                                                                {request?.friends?.length > 1 ? request?.friends.length + ' friends' : request?.friends.length + ' friend'}
+                                                                {request?.friends?.length > 1 ? request?.friends?.length + ' friends' : request?.friends?.length + ' friend'}
                                                             </Typography>
                                                             <Button variant='contained'
                                                                 onClick={(id) => acceptRequest(request?._id)}
@@ -351,16 +384,15 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                                                 }}
                                             >
                                                 <CircularProgress />
-                                            </Box> : (
+                                            </Box> : isError || error ? (
+                                                <Error />
+                                            ) : (
                                                 users?.map(user => {
-                                                    if (user._id === currentUser?._id) {
-                                                        return null
-                                                    }
+                                                    // console.log('user', user.friendRequestSent);
                                                     if (user?._id === currentUser?._id) return null
                                                     for (let i = 0; i < currentUser?.friends?.length || i < currentUser?.sentRequests?.length; i++) {
                                                         if (user?._id === currentUser?.friends[i]?._id || user?._id === currentUser?.sentRequests[i]?._id) return null
                                                     }
-
                                                     return (
                                                         <Paper key={user?._id} className='user-paper'>
                                                             <Avatar sx={{
@@ -371,15 +403,15 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                                                                 {user?.names}
                                                             </Typography>
                                                             <Typography>
-                                                                {user?.friends?.length > 1 ? user?.friends.length + ' friends' : user?.friends.length + ' friend'}
+                                                                {user?.friends?.length > 1 ? user?.friends?.length + ' friends' : user?.friends?.length + ' friend'}
                                                             </Typography>
                                                             {
 
-                                                                done ? <Button disabled color='success' variant='contained'>
+                                                                user?.friendRequestSent ? <Button disabled color='success' variant='contained'>
                                                                     request sent
                                                                 </Button> : (
                                                                     <Button
-                                                                        onClick={(id) => sendRequest(user?._id)}
+                                                                        onClick={() => sendRequest(user)}
                                                                         variant='outlined'>
                                                                         send friend request
                                                                     </Button>

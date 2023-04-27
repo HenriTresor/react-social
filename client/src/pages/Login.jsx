@@ -129,6 +129,7 @@ const Login = () => {
                             value={inputValues.password}
                             name='password'
                             id='password'
+                            type='password'
                             required
                         />
 
