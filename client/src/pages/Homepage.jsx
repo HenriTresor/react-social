@@ -303,13 +303,7 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                     </Aside >
                 </Grid>
                 <Grid item xs={6} md={8} sx={{ marginTop: 9, textAlign: 'center' }}>
-                    {
-                        error ? (
-
-                            <>
-                                <Error />
-                            </>
-                        ) : (
+                    { (
                             <Body
 
                                 setGlobalSnackBarMsg={setGlobalSnackBarMsg}
@@ -384,9 +378,7 @@ const HomePage = ({ setIsNotificationPanelOpen, setPageModalOpen, setGlobalSnack
                                                 }}
                                             >
                                                 <CircularProgress />
-                                            </Box> : isError || error ? (
-                                                <Error />
-                                            ) : (
+                                            </Box> : (
                                                 users?.map(user => {
                                                     // console.log('user', user.friendRequestSent);
                                                     if (user?._id === currentUser?._id) return null

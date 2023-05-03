@@ -161,7 +161,6 @@ const Body = ({ setGlobalSnackBarMsg, setGlobalSnackBarOpen }) => {
                       
                       style={{
                         width: '50%',
-                        transform: 'scale(1)',
                         justifySelf:'center'
                       }}
                       src={post?.post_content?.image}
