@@ -1,6 +1,6 @@
 // import React from 'react'
 import './Body.css'
-import { Container } from '@mui/material'
+import { Container, Box } from '@mui/material'
 import useFetch from '../../hooks/useFetch'
 import { rootLink } from '../../utils/links.js'
 import { useEffect, useState } from 'react'
@@ -29,13 +29,15 @@ const Body = () => {
       <Aside >
         <LeftAside />
       </Aside>
-      {
-        posts && posts?.map((post: object) => {
-          return (
-            <Post key={post?._id}  {...post} />
-          )
-        })
-      }
+      <Box>
+        {
+          posts && posts?.map((post: object) => {
+            return (
+              <Post key={post?._id}  {...post} />
+            )
+          })
+        }
+     </Box>
       <Aside >
         <RightAside />
       </Aside>

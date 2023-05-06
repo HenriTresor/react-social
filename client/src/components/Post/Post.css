@@ -2,6 +2,7 @@
     box-shadow: 0px 0px 40px rgba(128, 128, 128, 0.275);
     width: 50vw;
     background: white;
+    margin-bottom: 2em;
     place-self: center;
 }
 

@@ -2,6 +2,7 @@
     /* margin-top: 3em; */
     display: flex;
     justify-content: space-between;
+    flex-direction: row;
     padding: 2em;
     background: rgba(221, 247, 255, 0.359);
 
