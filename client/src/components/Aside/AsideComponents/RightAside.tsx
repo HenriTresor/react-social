@@ -9,7 +9,9 @@ import Contact from '../../Contact/Contact'
 import { author } from '../../Post/Post'
 import Loading from '../../Loading/Loading'
 
-const RightAside = () => {
+const RightAside = ({ allUsers }) => {
+    console.log('all users', allUsers);
+
     const { user, isLoading } = useSelector((state) => state.auth)
     return (
         <>
@@ -40,17 +42,17 @@ const RightAside = () => {
                             </Box>
                         </Box>
                     )
-               }
+                }
 
                 <Box
-                sx={{mt:4, background:'white', p:2}}
+                    sx={{ mt: 4, background: 'white', p: 2 }}
                 >
-                    <Typography  sx={{mb:2}} variant='h6'>
+                    <Typography sx={{ mb: 2 }} variant='h6'>
                         Contacts
                     </Typography>
 
                     {
-                       !isLoading ?  user?.friends?.map((friend: author) => {
+                        !isLoading ? user?.friends?.map((friend: author) => {
 
                             return (
                                 <Contact {...friend} key={friend?._id} />
@@ -59,21 +61,27 @@ const RightAside = () => {
                     }
                 </Box>
                 <Box
-                sx={{mt:4, background:'white', p:2}}
+                    sx={{ mt: 4, background: 'white', p: 2 }}
                 >
-                    <Typography  sx={{mb:2}} variant='h6'>
+                    <Typography sx={{ mb: 2 }} variant='h6'>
                         New People
                     </Typography>
 
                     {
-                       !isLoading ?  user?.friends?.map((friend: author) => {
+                        !isLoading ? allUsers?.users?.map((newUser: author) => {
 
+                            if (newUser?._id === user?._id) return null
+
+                            for (let i = 0; i < user?.friends?.length; i++) {
+                                if (user?.friends[i]._id === newUser?._id) return
+                            }
                             return (
-                                <Contact {...friend} key={friend?._id} />
+                                <Contact {...newUser} key={newUser?._id} />
                             )
                         }) : <Loading />
                     }
                 </Box>
+
             </Box>
         </>
     )

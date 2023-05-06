@@ -14,6 +14,10 @@ import Loading from '../Loading/Loading.js'
 const Body = () => {
   const { data, isLoading, error } = useFetch(`${rootLink}/api/posts`)
   const [posts, setPosts] = useState([])
+  const { data: allUsers } = useFetch(`${rootLink}/api/users`)
+
+  
+  // const { } = useSelector((state) => state.auth)
 
   useEffect(() => {
     if (data?.status) {
@@ -33,8 +37,8 @@ const Body = () => {
       <Box>
         {
           isLoading ? (
-          <>
-          
+            <>
+
               <Skeleton
                 variant='rectangular'
                 width={500}
@@ -42,17 +46,17 @@ const Body = () => {
               <Skeleton
                 variant='rectangular'
                 width={500}
-                sx={{mt:2}}
+                sx={{ mt: 2 }}
                 height={400}
               />
               <Skeleton
                 variant='rectangular'
                 width={500}
-                sx={{mt:2}}
-                // height={}
+                sx={{ mt: 2 }}
+              // height={}
               />
             </>
-          ): posts?.map((post: object) => {
+          ) : posts?.map((post: object) => {
             return (
               <Post key={post?._id}  {...post} />
             )
@@ -60,7 +64,7 @@ const Body = () => {
         }
       </Box>
       <Aside >
-        <RightAside />
+        <RightAside allUsers={allUsers} />
       </Aside>
     </div>
   )

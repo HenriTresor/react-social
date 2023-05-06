@@ -75,15 +75,16 @@ app.use((err, req, res, next) => {
 })
 
 
-global.onlineUsers = []
+let onlineUsers = []
 io.on('connection', (socket) => {
     console.log(`${socket.id}`);
-
-    socket.on('add-user', ({ user }) => {
-        // console.log(user);
-        onlineUsers = [...onlineUsers, { user: user, userId: socket.id }]
+    
+    socket.on('add user', user => {
+        console.log(user);
+        onlineUsers.push({ ...user, socketId: socket.id });
     })
 
+    socket.emit('online users', onlineUsers)
     socket.on('add message', message => {
         // console.log(message);
         let receiver = onlineUsers.find(user => user.user._id === message.receiver._id)
@@ -93,7 +94,7 @@ io.on('connection', (socket) => {
         }
     })
     socket.on('disconnect', () => {
-        onlineUsers = onlineUsers.filter(user => user.userId !== socket.id)
+        onlineUsers = onlineUsers.filter(user => user.socketId !== socket.id)
         console.log(`${socket.id} disconnected`);
     })
 })
