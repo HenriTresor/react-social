@@ -9,6 +9,8 @@ import useFetch from './hooks/useFetch'
 import { rootLink } from './utils/links.js'
 import { login } from './redux/AuthSlice.js'
 import Signup from './pages/Signup/Signup.js'
+import ChatRoom from './pages/Chat/ChatRoom.js'
+import Header from './components/Header/Header.js'
 
 const App: FC = () => {
 
@@ -16,9 +18,6 @@ const App: FC = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  useEffect(() => {
-    localStorage.getItem('access_token') && localStorage.removeItem('access_token')
-  }, [])
   useEffect(() => {
     if (!localStorage.getItem('access_token')) return navigate('/login')
   }, [])
@@ -28,12 +27,16 @@ const App: FC = () => {
     }
   }, [data])
   return (
-    <Routes>
-      <Route path='/login' element={<Login />} />
-      <Route path='/signup' element={<Signup />} />
-      <Route path='/profile' element={<Profile />} />
-      <Route path='/newsfeed' element={<NewsFeed />} />
-    </Routes>
+    <>
+      <Header />
+      <Routes>
+        <Route path='/login' element={<Login />} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/newsfeed' element={<NewsFeed />} />
+        <Route path='/chat-room' element={<ChatRoom />} />
+      </Routes>
+    </>
   )
 }
 

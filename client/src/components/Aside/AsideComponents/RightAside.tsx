@@ -58,6 +58,22 @@ const RightAside = () => {
                         }) : <Loading />
                     }
                 </Box>
+                <Box
+                sx={{mt:4, background:'white', p:2}}
+                >
+                    <Typography  sx={{mb:2}} variant='h6'>
+                        New People
+                    </Typography>
+
+                    {
+                       !isLoading ?  user?.friends?.map((friend: author) => {
+
+                            return (
+                                <Contact {...friend} key={friend?._id} />
+                            )
+                        }) : <Loading />
+                    }
+                </Box>
             </Box>
         </>
     )

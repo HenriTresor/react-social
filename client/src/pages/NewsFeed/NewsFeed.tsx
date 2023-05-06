@@ -7,7 +7,6 @@ import Header from "../../components/Header/Header"
 const NewsFeed = () => {
     return (
         <>
-            <Header />
            <Body />
         </>
     )

@@ -12,23 +12,23 @@ import { LoadingButton } from '@mui/lab'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { login } from '../../redux/AuthSlice.js'
-import { useNavigate ,Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 interface credentials {
   email?: string,
   password?: string
 }
 
-interface error {
+export interface error {
   state?: boolean,
   message?: string
 }
-interface state {
+export interface state {
   loading?: boolean,
   error?: error,
   data?: string
 }
-interface action {
+export interface action {
   payload?: object,
   type?: string
 }
@@ -92,13 +92,14 @@ const Login: FC = () => {
       localStorage.setItem('access_token', data.access_token)
       navigate('/newsfeed')
     } catch (error) {
-
+      console.log(error);
+      
       dispatch({ type: 'LOGIN_ERROR', payload: error.message })
     }
   }
   return (
     <Container
-      sx={{ minHeight: '100dvh', display: 'flex', justifyContent:'center',  alignItems: 'center' }}
+      sx={{ minHeight: '100dvh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
     >
       <Snackbar
         open={error.state || data}

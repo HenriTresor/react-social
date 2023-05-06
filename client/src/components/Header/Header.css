@@ -46,3 +46,8 @@
         font-size: 0.9rem;
     }
 }
+
+
+.active{
+  background: rgba(95, 95, 171, 0.204);
+}

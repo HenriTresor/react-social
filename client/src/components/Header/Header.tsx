@@ -6,6 +6,7 @@ import {
 
 } from '@mui/material'
 import { useSelector } from 'react-redux'
+import { NavLink } from 'react-router-dom'
 
 const Header = () => {
   const { user } = useSelector(state => state.auth)
@@ -38,15 +39,19 @@ const Header = () => {
       </Box>
 
       <Box>
-        <Button>
-          <Home />
-        </Button>
+        <NavLink to='/newsfeed'>
+          <Button>
+            <Home />
+          </Button>
+      </NavLink>
         <Button>
           <Notifications />
         </Button>
-        <Button>
-          <Chat />
-        </Button>
+        <NavLink to='/chat-room'>
+          <Button>
+            <Chat />
+          </Button>
+       </NavLink>
         <Avatar
           src={user?.profile}
         />
