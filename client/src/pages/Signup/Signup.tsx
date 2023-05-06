@@ -47,7 +47,7 @@ const reducer = (state: state, action: action) => {
     }
 }
 const Signup = () => {
-    const { isLoggedIn } = useSelector(state => state.auth)
+    const { isLoggedIn } = useSelector((state: object) => state.auth)
     const navigate = useNavigate()
     useEffect(() => {
         isLoggedIn && navigate('/newsfeed')
@@ -69,7 +69,7 @@ const Signup = () => {
     const reduxDisptacher = useDispatch()
 
     const handleChange = (e: any) => {
-        setInputValues((prev: inputValues) => {
+        setInputValues((prev) => {
             return {
                 ...prev,
                 [e.target?.name]: e.target.value
@@ -122,7 +122,7 @@ const Signup = () => {
                 className="reg-container"
             >
                 <Box
-                sx={{display:'grid', placeContent:'center'}}
+                    sx={{ display: 'grid', placeContent: 'center' }}
                 >
                     <Typography
                         variant='h5'
@@ -139,7 +139,7 @@ const Signup = () => {
                     >
                         Sociala is an online-based social media application. Start now!
                     </Typography>
-                   
+
                 </Box>
                 <Box>
 
@@ -215,7 +215,7 @@ const Signup = () => {
                                     variant='outlined'
                                     onClick={handleSubmit}
                                 >
-                                   create account
+                                    create account
                                 </Button>
                             )
                         }

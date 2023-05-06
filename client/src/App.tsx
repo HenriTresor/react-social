@@ -12,7 +12,7 @@ import Signup from './pages/Signup/Signup.js'
 
 const App: FC = () => {
 
-  const { data, isLoading, error } = useFetch(`${rootLink}/api/users/me/profile`, localStorage.getItem('access_token'))
+  const { data } = useFetch(`${rootLink}/api/users/me/profile`, localStorage.getItem('access_token'))
   const dispatch = useDispatch()
   const navigate = useNavigate()
 

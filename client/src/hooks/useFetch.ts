@@ -1,6 +1,6 @@
 // import  from 'react'
 
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import axios from "axios";
 
 const useFetch = (link: string, token: string): object => {
