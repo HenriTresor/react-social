@@ -1,0 +1,18 @@
+.aside{
+    position: sticky;
+    /* background: rgba(230, 230, 230, 0.606); */
+    width: 30%;
+    top:10em;
+    /* box-shadow: inset 0px 0px 30px rgba(128, 128, 128, 0.424); */
+    padding: 1em;
+    color: rgb(58, 58, 58);
+    height: 100%;
+    -webkit-position:sticky;
+    margin: 0 1.2em;
+}
+
+@media screen and (max-width:900px) {
+    .aside{
+        display: none;
+    }
+}

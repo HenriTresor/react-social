@@ -1,0 +1,8 @@
+.body-container{
+    /* margin-top: 3em; */
+    display: flex;
+    justify-content: space-between;
+    padding: 2em;
+    background: rgba(221, 247, 255, 0.359);
+
+}

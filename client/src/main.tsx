@@ -1,24 +1,18 @@
-import React from 'react';
+import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+import App from './App.tsx'
 import './index.css'
+import store from './redux/store.js'
+import { Provider } from 'react-redux'
 import { HashRouter as Router } from 'react-router-dom'
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import AppContext from './context/AppContext.jsx'
+import '@fontsource/roboto/500.css'
 
-const client = new QueryClient()
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-root.render(
-  // <React.StrictMode>
-    <AppContext>
-      <QueryClientProvider client={client}>
-        <Router>
-          <App />
-        </Router>
-      </QueryClientProvider>
-    </AppContext>
-  // </React.StrictMode>
-
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  <React.StrictMode>
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>
+  </React.StrictMode>,
 )

@@ -1,0 +1,11 @@
+.contact{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 1em;
+    background: rgba(173, 216, 230, 0.123);
+    padding: 0.5em;
+    cursor: pointer;
+    margin-bottom: 1em;
+    text-align: left;
+}

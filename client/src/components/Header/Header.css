@@ -1,0 +1,26 @@
+.header{
+    display: flex;
+    min-width: 100%;
+    /* padding: 0.4em; */
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 10px 30px rgba(128, 128, 128, 0.369);
+    backdrop-filter: blur(40px);
+    background: none;
+    position: sticky;
+    top:0;
+    z-index: 999;
+    /* background: linear-gradient(to left, rgba(111, 111, 152, 0.263), rgba(123, 241, 49, 0.327)); */
+}
+
+.header > *{
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    padding: 1em;
+}
+
+.header button{
+    /* background: m; */
+    margin: 0 1em;
+}
