@@ -17,8 +17,11 @@ const App: FC = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if(!localStorage.getItem('access_token')) navigate('/login')
-  },[])
+    localStorage.getItem('access_token') && localStorage.removeItem('access_token')
+  }, [])
+  useEffect(() => {
+    if (!localStorage.getItem('access_token')) return navigate('/login')
+  }, [])
   useEffect(() => {
     if (data?.status) {
       dispatch(login({ user: data.currentUser }))
