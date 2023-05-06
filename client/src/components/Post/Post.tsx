@@ -78,9 +78,11 @@ const Post = ({ author, createdAt, post_comments, post_likes, post_content }: pr
                 sx={{mt:1, display:'flex', flexDirection:'column', gap:5, p:3}}
                 >
                     {post_content?.text}
-                    <img
-                        src={post_content?.image}
-                    />
+                    {
+                        post_content?.image && (<img
+                            src={post_content?.image}
+                        />)
+                   }
                 </Box>
 
                 <Box

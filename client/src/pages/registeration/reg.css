@@ -23,6 +23,13 @@
     background-image: linear-gradient(rgb(97, 97, 162),#0e9f96);
 }
 
+@media screen and (max-width:786px) {
+    .reg-container > *:nth-child(1){
+   display: none;
+}
+
+}
+
 .reg-container img{
     width: 100%;
     height: 100%;

@@ -98,7 +98,7 @@ const Login: FC = () => {
   }
   return (
     <Container
-      sx={{ minHeight: '100dvh', display: 'flex', alignItems: 'center' }}
+      sx={{ minHeight: '100dvh', display: 'flex', justifyContent:'center',  alignItems: 'center' }}
     >
       <Snackbar
         open={error.state || data}

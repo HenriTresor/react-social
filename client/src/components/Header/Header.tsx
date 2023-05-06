@@ -13,14 +13,16 @@ const Header = () => {
     <Box className='header'>
       <Box>
         <Typography
+          id='header-title'
           variant='h5'
           color='GrayText'
         >
           Sociala
         </Typography>
       </Box>
-      <Box>
+      <Box id='header-input'> 
         <TextField
+        
           sx={{ height: '100%' }}
           label='search...'
           placeholder='hit enter to search'

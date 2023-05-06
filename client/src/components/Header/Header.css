@@ -24,3 +24,25 @@
     /* background: m; */
     margin: 0 1em;
 }
+
+@media screen and (max-width: 768px) {
+    .header #header-input{
+        display: none;
+
+    }   
+  
+}
+
+@media screen and (max-width:600px) {
+      .header > *{
+        padding: 0;
+    }
+
+    .header{
+            padding: 1em;
+        justify-content: center;
+    }
+    .header #header-title{
+        font-size: 0.9rem;
+    }
+}

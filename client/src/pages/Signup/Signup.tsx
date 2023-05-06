@@ -107,7 +107,7 @@ const Signup = () => {
     }
     return (
         <Container
-            sx={{ minHeight: '100dvh', display: 'flex', alignItems: 'center' }}
+            sx={{ minHeight: '100dvh' , display: 'flex', alignItems: 'center', justifyContent:'center' }}
         >
             <Snackbar
                 open={error.state || data}
