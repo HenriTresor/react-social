@@ -1,1 +1,1 @@
-export const rootLink = 'https://sociala.onrender.com'
+export const rootLink = "https://sociala-server-gxvy.onrender.com";
