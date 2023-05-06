@@ -1,17 +1,19 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, lazy, Suspense } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
-import Login from './pages/Login/Login.js'
-import Profile from './pages/Profile'
-import NewsFeed from './pages/NewsFeed/NewsFeed'
 import { useDispatch, useSelector } from 'react-redux'
 import useFetch from './hooks/useFetch'
 import { rootLink } from './utils/links.js'
 import { login } from './redux/AuthSlice.js'
-import Signup from './pages/Signup/Signup.js'
-import ChatRoom from './pages/Chat/ChatRoom.js'
 import Header from './components/Header/Header.js'
 import { io } from 'socket.io-client'
 import { getOnlineUsers } from './redux/Sockets.js'
+import Loading from './components/Loading/Loading.js'
+
+const Signup = lazy(()=>import('./pages/Signup/Signup'))
+const Login = lazy(()=>import('./pages/Login/Login'))
+const Profile = lazy(()=>import('./pages/Profile'))
+const NewsFeed = lazy(()=>import('./pages/NewsFeed/NewsFeed'))
+const ChatRoom = lazy(()=>import('./pages/Chat/ChatRoom'))
 
 const App: FC = () => {
 
@@ -53,13 +55,17 @@ const App: FC = () => {
   return (
     <>
       {isLoggedIn && <Header />}
-      <Routes>
-        <Route path='/login' element={<Login />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/newsfeed' element={<NewsFeed />} />
-        <Route path='/chat-room' element={<ChatRoom socket={socket} />} />
-      </Routes>
+      <Suspense  fallback={<Loading />}>
+        
+        <Routes>
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='/newsfeed' element={<NewsFeed />} />
+          <Route path='/chat-room' element={<ChatRoom />} />
+          <Route path='/' element={<h1>Hello world</h1>} />
+        </Routes>
+     </Suspense>
     </>
   )
 }
