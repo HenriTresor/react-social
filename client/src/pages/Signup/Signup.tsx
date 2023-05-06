@@ -46,6 +46,8 @@ const reducer = (state: state, action: action) => {
             return { ...state, error: { state: false, message: null }, loading: false }
     }
 }
+
+
 const Signup = () => {
     const { isLoggedIn } = useSelector((state: object) => state.auth)
     const navigate = useNavigate()
