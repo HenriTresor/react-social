@@ -7,3 +7,14 @@
     background: rgba(221, 247, 255, 0.359);
 
 }
+
+@media screen  and (min-width:900px){
+    .body-container > *{
+        width: 70dvw;
+    }
+}
+@media screen and (max-width: 768px) {
+    .body-container > *{
+        width: 100%;
+    }
+}
