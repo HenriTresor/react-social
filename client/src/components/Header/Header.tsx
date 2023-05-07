@@ -40,7 +40,7 @@ const Header = () => {
 
       <Box>
         <NavLink to='/newsfeed'>
-          <Button>
+          <Button sx={{borderRadius:40}}>
             <Home />
           </Button>
       </NavLink>

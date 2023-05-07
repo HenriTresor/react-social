@@ -49,5 +49,7 @@
 
 
 .active{
+    border-radius:10em ;
+    margin: 0 1em;
   background: rgba(95, 95, 171, 0.204);
 }

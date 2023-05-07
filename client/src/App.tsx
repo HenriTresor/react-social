@@ -8,6 +8,8 @@ import Header from './components/Header/Header.js'
 import { io } from 'socket.io-client'
 import { getOnlineUsers } from './redux/Sockets.js'
 import Loading from './components/Loading/Loading.js'
+// import Loading from './components/Loading/Loading.js'
+// import ChatRoom from './pages/Chat/ChatRoom'
 
 const Signup = lazy(()=>import('./pages/Signup/Signup'))
 const Login = lazy(()=>import('./pages/Login/Login'))
@@ -55,17 +57,18 @@ const App: FC = () => {
   return (
     <>
       {isLoggedIn && <Header />}
-      <Suspense  fallback={<Loading />}>
+
         
+      <Suspense fallback={<Loading /> }>
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/newsfeed' element={<NewsFeed />} />
           <Route path='/chat-room' element={<ChatRoom />} />
-          <Route path='/' element={<h1>Hello world</h1>} />
+          <Route path='/' element={navigate('/newsfeed')} />
         </Routes>
-     </Suspense>
+       </Suspense>
     </>
   )
 }
