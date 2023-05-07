@@ -8,16 +8,17 @@ import Header from './components/Header/Header.js'
 import { io } from 'socket.io-client'
 import { getOnlineUsers } from './redux/Sockets.js'
 import Loading from './components/Loading/Loading.js'
+import Homepage from './pages/Homepage/Homepage.js'
 // import Loading from './components/Loading/Loading.js'
 // import ChatRoom from './pages/Chat/ChatRoom'
 
-const Signup = lazy(()=>import('./pages/Signup/Signup'))
-const Login = lazy(()=>import('./pages/Login/Login'))
-const Profile = lazy(()=>import('./pages/Profile'))
-const NewsFeed = lazy(()=>import('./pages/NewsFeed/NewsFeed'))
-const ChatRoom = lazy(()=>import('./pages/Chat/ChatRoom'))
+const Signup = lazy(() => import('./pages/Signup/Signup'))
+const Login = lazy(() => import('./pages/Login/Login'))
+const Profile = lazy(() => import('./pages/Profile'))
+const NewsFeed = lazy(() => import('./pages/NewsFeed/NewsFeed'))
+const ChatRoom = lazy(() => import('./pages/Chat/ChatRoom'))
 
-const App: FC = () => {
+const App: FC = ( ) => {
 
   const { data } = useFetch(`${rootLink}/api/users/me/profile`, localStorage.getItem('access_token'))
   const dispatch = useDispatch()
@@ -40,11 +41,11 @@ const App: FC = () => {
 
   useEffect(() => {
     if (socket.current) {
-      socket.current.on('online users', users => {
+      socket.current?.on('online users', users => {
         dispatch(getOnlineUsers({ onlineUsers: users }))
       })
-    }
-  }, [socket.current])
+       }
+  }, [socket?.current])
   useEffect(() => {
     if (!localStorage.getItem('access_token')) return navigate('/login')
   }, [])
@@ -54,21 +55,23 @@ const App: FC = () => {
       dispatch(login({ user: data.currentUser }))
     }
   }, [data])
+
+  
   return (
     <>
       {isLoggedIn && <Header />}
 
-        
-      <Suspense fallback={<Loading /> }>
+
+      <Suspense fallback={<Loading />}>
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='/newsfeed' element={<NewsFeed />} />
-          <Route path='/chat-room' element={<ChatRoom />} />
-          <Route path='/' element={navigate('/newsfeed')} />
+          <Route path='/chat-room' element={<ChatRoom socket={socket} />} />
+          <Route path='/' element={<Homepage />} />
         </Routes>
-       </Suspense>
+      </Suspense>
     </>
   )
 }

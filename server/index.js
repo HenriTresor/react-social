@@ -78,19 +78,29 @@ app.use((err, req, res, next) => {
 let onlineUsers = []
 io.on('connection', (socket) => {
     console.log(`${socket.id}`);
-    
+
     socket.on('add user', user => {
         console.log(user);
         onlineUsers.push({ ...user, socketId: socket.id });
     })
 
-    socket.emit('online users', onlineUsers)
+    setInterval(() => {
+        socket.emit('online users', onlineUsers)
+    }, 1000)
+
+    socket.on('show is typing', user => {
+        let receiver = onlineUsers?.find(onlineUser => onlineUser?._id === user?._id)
+        if (receiver) {
+            socket.to(receiver?.socketId).emit('is-typing')
+        }
+    })
     socket.on('add message', message => {
         // console.log(message);
-        let receiver = onlineUsers.find(user => user.user._id === message.receiver._id)
+
+        let receiver = onlineUsers.find(user => user?._id === message?.receiver?._id)
         if (receiver) {
             console.log('reciver', receiver);
-            socket.to(receiver.userId).emit('new message', message)
+            socket.to(receiver.socketId).emit('new message', message)
         }
     })
     socket.on('disconnect', () => {

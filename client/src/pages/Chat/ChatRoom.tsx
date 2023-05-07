@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer } from 'react'
 import './ChatRoom.css'
 import {
-    Box, Typography, Avatar, TextField, Button
+    Box, Typography, Avatar, TextField, Button, Badge
 } from '@mui/material'
 
 import {
@@ -29,7 +29,7 @@ const msgReducer = (state, action) => {
             return state
     }
 }
-const ChatRoom = () => {
+const ChatRoom = ({ socket }) => {
 
     const scrollRef = React.useRef(null)
     const [messages, setMessages] = useState([])
@@ -71,35 +71,143 @@ const ChatRoom = () => {
     const sendMsg = async () => {
 
         msgDispatch({ type: 'SENDING' })
+      
         try {
 
+         
             const res = await fetch(`${rootLink}/api/messages/addmsg`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ sender: user?._id, receiver: currentChat?._id, message })
             })
-            console.log('clicked');
+            // console.log('clicked');
             const data = await res.json()
-            console.log(data);
+            // console.log(data);
+            
+            msgDispatch({ type: 'SENT' })
+            const msg = {
+                message: { text: message },
+                users: [user, currentChat],
+                receiver: currentChat,
+                sender: user,
+                createdAt: new Date(Date.now())
+            }
+            setMessage('')
             setMessages(prev => {
-                return [...prev, { message: { text: message }, users: [user, currentChat], receiver: currentChat,  sender: user, createdAt: new Date(Date.now()) }]
+                return [...prev, msg]
             })
+          
+            if (socket?.current) {
+                socket.current.emit('add message', msg)
+            }
+         
         } catch (error) {
             console.log(error);
 
             msgDispatch({ type: 'SENDING_ERROR' })
         }
     }
+
+
+    useEffect(() => {
+        if (socket?.current) {
+            socket.current.on('new message', msg => {
+                setMessages(prev => {
+                    return [...prev, msg]
+                })
+            })
+        }
+    }, [socket])
+
+    const keyDown = (event: KeyboardEvent) => {
+        if (event.key === 'Enter') {
+            sendMsg()
+        }
+    }
     return (
         <Box
             className='body-container'
         >
-            <Box sx={{ minHeight: '78dvh' }}>
-                <Typography>
-                    Online contacts
-                </Typography>
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                flexGrow: 0.2,
+                width: '50%'
+
+            }}>
+                <Box sx={{ width: '100%' }}>
+                    <Typography>
+                        Online contacts
+                    </Typography>
+                    <Box sx={{
+                        display: 'flex',
+                        width: '100%',
+                        overflowX: 'auto',
+                        gap: 2, p: .1, mt: 1,
+                        float: 'left'
+                    }}>
+                        {
+                            onlineUsers?.map(onlineUser => {
+                                if (onlineUser?._id === user?._id) return null
+                                onlineUser?.friends?.map((friend => {
+                                   if(friend?._id !== user?._id) return null
+                               }))
+                                return (
+                                    <Box onClick={()=>setCurrentChat(onlineUser)} sx={{ display: 'flex', cursor:'pointer', flexDirection: 'column', alignItems: 'center' }}>
+                                        <Badge
+                                            variant='dot'
+                                            color='success'
+
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'right',
+                                            }}
+                                        >
+                                            <Avatar
+                                                src={onlineUser.profile}
+                                            />
+                                        </Badge>
+                                        <Typography>
+                                            {onlineUser?.names?.split(' ')[0].slice(0, 5)} ...
+                                        </Typography>
+                                    </Box>
+                                )
+                            })
+                        }
+                    </Box>
+                </Box>
+                <Box sx={{ overflowY: 'auto', height: '100%', mt: 5 }}>
+                    <Box sx={{display:'flex', alignItems:'center', mb:2, justifyContent:'space-between'}}>
+                        <Typography>
+                            All contacts
+                        </Typography>
+                        <Button variant='contained'>+</Button>
+                 </Box>
+
+                    <Box sx={{display:'flex', flexDirection:'column'}}>
+                        {
+                            user?.friends?.map(friend => {
+                                return (
+                                    <Badge
+                                        color={onlineUsers?.find(user => user?._id === friend?._id) ? 'success' : 'default'}
+                                        anchorOrigin={{
+                                            vertical: 'bottom',
+                                            horizontal: '',
+                                        }}
+                                        variant='dot'>
+                                        <div style={{width:'100%'}}  onClick={() => setCurrentChat(friend)}>
+                                            <Contact {...friend}
+                                                key={friend?._id}
+                                            />
+                                        </div>
+                                    </Badge>
+                                )
+                            })
+                        }
+                   </Box>
+                </Box>
             </Box>
-            <Box sx={{ flexGrow: 0.7, display: 'flex', flexDirection: 'column', ml: 1, mr: 1, boxShadow: '0px 0px 30px rgb(0,0,0,.1)', background: 'white', minHeight: '78dvh' }}>
+            <Box sx={{ flexGrow: 0.7, display: 'flex', width: '100%', flexDirection: 'column', ml: 1, mr: 1, boxShadow: '0px 0px 30px rgb(0,0,0,.1)', background: 'white', minHeight: '78dvh' }}>
                 {
                     currentChat ? (
                         <>
@@ -110,9 +218,14 @@ const ChatRoom = () => {
                                     src={currentChat?.profile}
                                 />
 
-                                <Typography>
-                                    {currentChat && currentChat?.names}
-                                </Typography>
+                                <Box>
+                                    <Typography>
+                                        {currentChat && currentChat?.names}
+                                    </Typography>
+                                    <Typography variant='body2'>
+                                        {onlineUsers?.find(user => user?._id === currentChat?._id) ? 'active' : 'away'}
+                                    </Typography>
+                              </Box>
                             </Box>
                             <Box
                                 sx={{ flexGrow: 1, p: 1, height: '10dvh' }}
@@ -155,47 +268,36 @@ const ChatRoom = () => {
                             </Box>
                             <Box sx={{ p: 1, display: 'flex', gap: 2 }}>
                                 <TextField
+                                    onKeyDown={keyDown}
+                                    
                                     fullWidth
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
                                     placeholder={` hi, ${currentChat?.names}!`}
                                 />
                                 <Button variant='contained'
+                                    disabled={!message || sending}
                                     onClick={sendMsg}
                                 >
                                     <SendRounded />
                                 </Button>
                             </Box>
                         </>
-                    ) :(
-                            <Box
-                            sx={{display:'grid', placeContent:'center', height:'100%', textAlign:'center'}}
-                            >
-                                <Typography>
-                                    Hey, {user?.names},
-                                </Typography>
-                                <Typography>
-                                    Select a chat to start !
-                                </Typography>
+                    ) : (
+                        <Box
+                            sx={{ display: 'grid', placeContent: 'center', height: '100%', textAlign: 'center' }}
+                        >
+                            <Typography>
+                                Hey, {user?.names},
+                            </Typography>
+                            <Typography>
+                                Select a chat to start !
+                            </Typography>
                         </Box>
                     )
-              }
-            </Box>
-            <Box sx={{ minHeight: '78dvh' }}>
-                <Typography>
-                    All contacts
-                </Typography>
-
-                {
-                    user?.friends?.map(friend => {
-                        return <div onClick={() => setCurrentChat(friend)}>
-                            <Contact {...friend}
-                                key={friend?._id}
-                            />
-                        </div>
-                    })
                 }
             </Box>
+
         </Box>
     )
 }
