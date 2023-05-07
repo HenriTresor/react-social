@@ -2,7 +2,7 @@
     position: sticky;
     /* background: rgba(230, 230, 230, 0.606); */
     width: 30%;
-    top:1em;
+    top:7em;
     /* box-shadow: inset 0px 0px 30px rgba(128, 128, 128, 0.424); */
     padding: 1em;
     color: rgb(58, 58, 58);
@@ -16,4 +16,33 @@
     .aside{
         display: none;
     }
+}
+
+.new-post-modal{
+    /* display: inline; */
+    padding: 0.5em;
+    border: none !important;
+}
+
+.new-post-modal textarea{
+    resize: vertical;
+    padding: 1em;
+}
+
+.new-post-modal textarea:focus{
+        outline: 1px solid grey;
+}
+
+.new-post-modal input{
+    display: none;
+}
+
+.new-post-modal label{
+    padding: .5em;
+    background: lightgrey;
+    margin-top: 2em;
+    border-radius: 10px;
+    text-align: center;
+    color: rgb(71, 71, 71);
+    cursor: pointer;
 }

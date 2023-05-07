@@ -1,8 +1,9 @@
 .post{
     box-shadow: 0px 0px 40px rgba(128, 128, 128, 0.275);
-    width: 50vw;
+    width: 40vw;
     background: white;
     margin-bottom: 2em;
+    border-radius: 1em;
     place-self: center;
 }
 

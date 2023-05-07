@@ -84,9 +84,10 @@ io.on('connection', (socket) => {
         onlineUsers.push({ ...user, socketId: socket.id });
     })
 
+    // socket.emit('online users', onlineUsers)
     setInterval(() => {
         socket.emit('online users', onlineUsers)
-    }, 1000)
+    }, 3000)
 
     socket.on('show is typing', user => {
         let receiver = onlineUsers?.find(onlineUser => onlineUser?._id === user?._id)

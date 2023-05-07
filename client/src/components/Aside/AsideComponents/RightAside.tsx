@@ -8,6 +8,7 @@ import {
 import Contact from '../../Contact/Contact'
 import { author } from '../../Post/Post'
 import Loading from '../../Loading/Loading'
+import { Link } from 'react-router-dom'
 
 const RightAside = ({ allUsers }) => {
     console.log('all users', allUsers);
@@ -27,20 +28,35 @@ const RightAside = ({ allUsers }) => {
                 </Box>
                 {
                     isLoading ? <Loading /> : (
-                        <Box
-                            sx={{ background: 'white', p: 1, width: '100%' }}
-                        >
-                            <Box
-                                sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
-                            >
-                                <Avatar />
-                                usernames
-                            </Box>
-                            <Box sx={{ display: 'flex', mt: 3, justifyContent: 'space-around' }}>
-                                <Button variant='contained'>confirm</Button>
-                                <Button>delete</Button>
-                            </Box>
-                        </Box>
+                        <>
+                            {
+                                user?.friendRequests?.map(request => {
+                                    return (
+                                        <Link to={`/profile/${request?._id}`}>
+                                            <Box
+                                                sx={{ background: 'white', p: 1, width: '100%' }}
+                                            >
+                                                <Box
+                                                    sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
+                                                >
+                                                    <Avatar
+                                                        src={request?.profile}
+                                                    />
+                                                    <Typography>
+                                                        {request?.names}
+                                                    </Typography>
+                                                </Box>
+                                                <Box sx={{ display: 'flex', mt: 3, justifyContent: 'space-around' }}>
+                                                    <Button variant='contained'>confirm</Button>
+                                                    <Button>delete</Button>
+                                                </Box>
+                                            </Box>
+                                        </Link>
+                                    )
+                                })
+                            }
+                        </>
+
                     )
                 }
 
@@ -55,7 +71,9 @@ const RightAside = ({ allUsers }) => {
                         !isLoading ? user?.friends?.map((friend: author) => {
 
                             return (
-                                <Contact {...friend} key={friend?._id} />
+                                <Link to={`/profile/${friend?._id}`}>
+                                    <Contact {...friend} key={friend?._id} />
+                                </Link>
                             )
                         }) : <Loading />
                     }
@@ -76,7 +94,9 @@ const RightAside = ({ allUsers }) => {
                                 if (user?.friends[i]._id === newUser?._id) return
                             }
                             return (
-                                <Contact {...newUser} key={newUser?._id} />
+                                <Link to={`/profile/${newUser?._id}`}>
+                                    <Contact {...newUser} key={newUser?._id} />
+                                </Link>
                             )
                         }) : <Loading />
                     }

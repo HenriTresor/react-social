@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useReducer } from 'react'
 import './ChatRoom.css'
 import {
-    Box, Typography, Avatar, TextField, Button, Badge
+    Box, Typography, Avatar, TextField, Button, Badge,
+    IconButton
 } from '@mui/material'
 
+
 import {
-    SendRounded
+    SendRounded, Menu, MenuOpen
 } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 import Contact from '../../components/Contact/Contact'
@@ -32,6 +34,7 @@ const msgReducer = (state, action) => {
 }
 const ChatRoom = ({ socket }) => {
 
+    // const [activeClass, setActiveClass] = useState(false)
     const scrollRef = React.useRef(null)
     const [messages, setMessages] = useState([])
     const [{ sending, sendingErr }, msgDispatch] = useReducer<any>(msgReducer, {
@@ -137,13 +140,20 @@ const ChatRoom = ({ socket }) => {
         <Box
             className='body-container'
         >
+            {/* <div className="hamburger">
+                <IconButton
+                    
+                ><Menu /></IconButton>
+            </div> */}
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
                 flexGrow: 0.2,
                 width: '50%'
 
-            }}>
+            }}
+                className='left-panel'
+            >
                 <Box sx={{ width: '100%' }}>
                     <Typography>
                         Online contacts
