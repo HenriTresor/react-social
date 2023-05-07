@@ -14,6 +14,7 @@ import { action, state } from '../Login/Login'
 import axios from 'axios'
 import { rootLink } from '../../utils/links'
 import { options } from '../../hooks/useDateFormatter'
+import addNotification from 'react-push-notification'
 
 const msgReducer = (state, action) => {
 
@@ -71,10 +72,10 @@ const ChatRoom = ({ socket }) => {
     const sendMsg = async () => {
 
         msgDispatch({ type: 'SENDING' })
-      
+
         try {
 
-         
+
             const res = await fetch(`${rootLink}/api/messages/addmsg`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -83,7 +84,7 @@ const ChatRoom = ({ socket }) => {
             // console.log('clicked');
             const data = await res.json()
             // console.log(data);
-            
+
             msgDispatch({ type: 'SENT' })
             const msg = {
                 message: { text: message },
@@ -96,11 +97,11 @@ const ChatRoom = ({ socket }) => {
             setMessages(prev => {
                 return [...prev, msg]
             })
-          
+
             if (socket?.current) {
                 socket.current.emit('add message', msg)
             }
-         
+
         } catch (error) {
             console.log(error);
 
@@ -114,6 +115,14 @@ const ChatRoom = ({ socket }) => {
             socket.current.on('new message', msg => {
                 setMessages(prev => {
                     return [...prev, msg]
+                })
+
+                addNotification({
+                    title: 'new message',
+                    subtitle: `${msg?.sender?.names} messaged you`,
+                    theme: 'darkblue',
+                    message: msg?.message?.text.slice(0, 100),
+                    native: true
                 })
             })
         }
@@ -150,10 +159,10 @@ const ChatRoom = ({ socket }) => {
                             onlineUsers?.map(onlineUser => {
                                 if (onlineUser?._id === user?._id) return null
                                 onlineUser?.friends?.map((friend => {
-                                   if(friend?._id !== user?._id) return null
-                               }))
+                                    if (friend?._id !== user?._id) return null
+                                }))
                                 return (
-                                    <Box onClick={()=>setCurrentChat(onlineUser)} sx={{ display: 'flex', cursor:'pointer', flexDirection: 'column', alignItems: 'center' }}>
+                                    <Box onClick={() => setCurrentChat(onlineUser)} sx={{ display: 'flex', cursor: 'pointer', flexDirection: 'column', alignItems: 'center' }}>
                                         <Badge
                                             variant='dot'
                                             color='success'
@@ -177,14 +186,14 @@ const ChatRoom = ({ socket }) => {
                     </Box>
                 </Box>
                 <Box sx={{ overflowY: 'auto', height: '100%', mt: 5 }}>
-                    <Box sx={{display:'flex', alignItems:'center', mb:2, justifyContent:'space-between'}}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2, justifyContent: 'space-between' }}>
                         <Typography>
                             All contacts
                         </Typography>
                         <Button variant='contained'>+</Button>
-                 </Box>
+                    </Box>
 
-                    <Box sx={{display:'flex', flexDirection:'column'}}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                         {
                             user?.friends?.map(friend => {
                                 return (
@@ -195,7 +204,7 @@ const ChatRoom = ({ socket }) => {
                                             horizontal: '',
                                         }}
                                         variant='dot'>
-                                        <div style={{width:'100%'}}  onClick={() => setCurrentChat(friend)}>
+                                        <div style={{ width: '100%' }} onClick={() => setCurrentChat(friend)}>
                                             <Contact {...friend}
                                                 key={friend?._id}
                                             />
@@ -204,7 +213,7 @@ const ChatRoom = ({ socket }) => {
                                 )
                             })
                         }
-                   </Box>
+                    </Box>
                 </Box>
             </Box>
             <Box sx={{ flexGrow: 0.7, display: 'flex', width: '100%', flexDirection: 'column', ml: 1, mr: 1, boxShadow: '0px 0px 30px rgb(0,0,0,.1)', background: 'white', minHeight: '78dvh' }}>
@@ -225,7 +234,7 @@ const ChatRoom = ({ socket }) => {
                                     <Typography variant='body2'>
                                         {onlineUsers?.find(user => user?._id === currentChat?._id) ? 'active' : 'away'}
                                     </Typography>
-                              </Box>
+                                </Box>
                             </Box>
                             <Box
                                 sx={{ flexGrow: 1, p: 1, height: '10dvh' }}
@@ -269,7 +278,7 @@ const ChatRoom = ({ socket }) => {
                             <Box sx={{ p: 1, display: 'flex', gap: 2 }}>
                                 <TextField
                                     onKeyDown={keyDown}
-                                    
+
                                     fullWidth
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}

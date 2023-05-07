@@ -52,9 +52,11 @@ const Header = () => {
             <Chat />
           </Button>
        </NavLink>
-        <Avatar
-          src={user?.profile}
-        />
+        <NavLink to={`/profile/${user?._id}`}>
+          <Avatar
+            src={user?.profile}
+          />
+        </NavLink>
       </Box>
     </Box>
   )

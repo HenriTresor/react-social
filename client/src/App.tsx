@@ -14,11 +14,11 @@ import Homepage from './pages/Homepage/Homepage.js'
 
 const Signup = lazy(() => import('./pages/Signup/Signup'))
 const Login = lazy(() => import('./pages/Login/Login'))
-const Profile = lazy(() => import('./pages/Profile'))
+const Profile = lazy(() => import('./pages/Profile/Profile.js'))
 const NewsFeed = lazy(() => import('./pages/NewsFeed/NewsFeed'))
 const ChatRoom = lazy(() => import('./pages/Chat/ChatRoom'))
 
-const App: FC = ( ) => {
+const App: FC = () => {
 
   const { data } = useFetch(`${rootLink}/api/users/me/profile`, localStorage.getItem('access_token'))
   const dispatch = useDispatch()
@@ -29,7 +29,7 @@ const App: FC = ( ) => {
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
-      socket.current = io('http://localhost:8080')
+      socket.current = io('https://sociala-server-gxvy.onrender.com')
     }
   }, [])
 
@@ -44,7 +44,7 @@ const App: FC = ( ) => {
       socket.current?.on('online users', users => {
         dispatch(getOnlineUsers({ onlineUsers: users }))
       })
-       }
+    }
   }, [socket?.current])
   useEffect(() => {
     if (!localStorage.getItem('access_token')) return navigate('/login')
@@ -56,7 +56,7 @@ const App: FC = ( ) => {
     }
   }, [data])
 
-  
+
   return (
     <>
       {isLoggedIn && <Header />}
@@ -66,7 +66,7 @@ const App: FC = ( ) => {
         <Routes>
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
-          <Route path='/profile' element={<Profile />} />
+          <Route path='/profile/:id' element={<Profile />} />
           <Route path='/newsfeed' element={<NewsFeed />} />
           <Route path='/chat-room' element={<ChatRoom socket={socket} />} />
           <Route path='/' element={<Homepage />} />

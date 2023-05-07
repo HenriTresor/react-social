@@ -36,11 +36,21 @@
 @media screen and (max-width:600px) {
       .header > *{
         padding: 0;
+        gap:0;
+
+    }
+
+   
+    .header *{
+        /* margin: 0; */
+        padding: 0em;
     }
 
     .header{
+
             padding: 1em;
         justify-content: center;
+        flex-direction: column;
     }
     .header #header-title{
         font-size: 0.9rem;
@@ -49,7 +59,8 @@
 
 
 .active{
-    border-radius:10em ;
-    margin: 0 1em;
-  background: rgba(95, 95, 171, 0.204);
+    border-radius:1em ;
+    /* margin: 0 1em; */
+  background: rgba(95, 95, 171, 0.121);
+  color: black;
 }
