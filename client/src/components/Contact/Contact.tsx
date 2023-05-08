@@ -4,6 +4,7 @@ import { Avatar, Typography } from '@mui/material'
 import { NestCamWiredStand } from '@mui/icons-material'
 import './Contact.css'
 const Contact = (friend: author) => {
+  
   return (
     <div className='contact'>
       <Avatar
@@ -12,6 +13,8 @@ const Contact = (friend: author) => {
       <Typography>
         {friend?.names}
       </Typography>
+      
+      {/* {allUsers?.map(user => user?._id === friend?._id) ? 'f' : 'f'} */}
     </div>
   )
 }
