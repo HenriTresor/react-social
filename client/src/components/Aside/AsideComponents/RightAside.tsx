@@ -23,7 +23,7 @@ const RightAside = ({ allUsers }) => {
             allUsers = allUsers.filter(user => user._id !== requestId)
         }
     }
-
+2
     const handleAcceptRequest = async (requesterId) => {
         const res = await confirmRequest(user?._id, requesterId)
         if (res.status) {
@@ -49,10 +49,10 @@ const RightAside = ({ allUsers }) => {
                                 user?.friendRequests?.map(request => {
                                     return (
                                         <>
-                                            <Link to={`/profile/${request?._id}`}>
                                                 <Box
-                                                    sx={{ background: 'white', p: 1, width: '100%' }}
+                                                    sx={{ background: 'white', p: 1, mt:1, width: '100%' }}
                                                 >
+                                            <Link to={`/profile/${request?._id}`}>
                                                     <Box
                                                         sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
                                                     >
@@ -63,7 +63,6 @@ const RightAside = ({ allUsers }) => {
                                                             {request?.names}
                                                         </Typography>
                                                     </Box>
-                                                </Box>
                                             </Link>
                                             <Box sx={{ display: 'flex', mt: 3, justifyContent: 'space-around' }}>
                                                 <Button
@@ -71,6 +70,7 @@ const RightAside = ({ allUsers }) => {
                                                     variant='contained'>confirm</Button>
                                                 <Button>delete</Button>
                                             </Box>
+                                        </Box>
                                         </>
                                     )
                                 })
@@ -117,16 +117,27 @@ const RightAside = ({ allUsers }) => {
                                 if (user?.sentRequests[i]._id === newUser?._id) return
                             }
                             return (
-                                <>
+                                <Box sx={{mt:2}}>
                                     <Link to={`/profile/${newUser?._id}`}>
                                         <Contact  {...newUser} key={newUser?._id} />
                                     </Link>
-                                    <Button
-                                        disabled={newUser?.friendRequests?.find(request => request?._id === user?._id)}
-                                        onClick={() => handleFriendRequest(newUser?._id)}
-                                        variant='contained'
-                                    >add friend</Button>
-                                </>
+                                    {
+                                        user?.friendRequests?.find(request => request?._id === newUser?._id) ? (
+                                            <Button
+                                                disabled={newUser?.friends?.find(request => request?._id === user?._id)}
+                                                onClick={() => handleAcceptRequest(newUser?._id)}
+                                                variant='contained'
+                                            >accept request</Button>
+                                        ) : (
+                                            <Button
+                                                disabled={newUser?.friendRequests?.find(request => request?._id === user?._id)}
+                                                onClick={() => handleFriendRequest(newUser?._id)}
+                                                variant='outlined'
+                                            >add friend</Button>
+                                        )
+                                    }
+                                    
+                                </Box>
                             )
                         }) : <Loading />
                     }

@@ -61,7 +61,11 @@ const Profile: FC = () => {
                                     textTransform: 'capitalize',
                                 }}>
                                 {data?.user?.names}
-                            </Typography>
+                                </Typography>
+                                
+                                <Typography>
+                                    {data?.user?.email}
+                                </Typography>
 
                             <Box sx={{ mt: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Typography color='grey'>
