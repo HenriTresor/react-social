@@ -30,15 +30,16 @@
     border-radius: 10px;
 }
 .message.sender .text{
-    background: rgb(122, 120, 120);
+    background: rgba(136, 136, 136, 0.824);
 }
 
 .message.receiver .text{
-    background: rgba(79, 166, 220, 0.881);
+    background: rgba(67, 141, 187, 0.881);
 }
 
 .chat-body{
     height: 100%;
+    /* border-radius: 20px; */
     overflow-y: auto;
 }
 

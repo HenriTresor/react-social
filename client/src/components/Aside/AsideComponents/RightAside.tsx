@@ -1,5 +1,5 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
     Button,
     Box,
@@ -11,24 +11,25 @@ import Loading from '../../Loading/Loading'
 import { Link } from 'react-router-dom'
 import { Add } from '@mui/icons-material'
 import { confirmRequest, sendFriendRequest } from '../../../utils/functions'
+import { addRequest, confirmRequest as cr } from '../../../redux/AuthSlice'
 
 const RightAside = ({ allUsers }) => {
     // console.log('all users', allUsers);
 
     const { user, isLoading } = useSelector((state) => state.auth)
+    const dispatch = useDispatch()
 
-    const handleFriendRequest = async (requestId) => {
-        const res = await sendFriendRequest(user?._id, requestId)
+
+    const handleFriendRequest = async (request) => {
+        const res = await sendFriendRequest(user?._id, request?._id)
         if (res.status) {
-            allUsers = allUsers.filter(user => user._id !== requestId)
+            dispatch(addRequest({ user: request }))
         }
     }
-2
+    2
     const handleAcceptRequest = async (requesterId) => {
         const res = await confirmRequest(user?._id, requesterId)
-        if (res.status) {
-            allUsers = allUsers.filter(user => user._id !== requesterId)
-        }
+        return res.status
     }
     return (
         <>
@@ -49,10 +50,10 @@ const RightAside = ({ allUsers }) => {
                                 user?.friendRequests?.map(request => {
                                     return (
                                         <>
-                                                <Box
-                                                    sx={{ background: 'white', p: 1, mt:1, width: '100%' }}
-                                                >
-                                            <Link to={`/profile/${request?._id}`}>
+                                            <Box
+                                                sx={{ background: 'white', p: 1, mt: 1, width: '100%' }}
+                                            >
+                                                <Link to={`/profile/${request?._id}`}>
                                                     <Box
                                                         sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
                                                     >
@@ -63,14 +64,14 @@ const RightAside = ({ allUsers }) => {
                                                             {request?.names}
                                                         </Typography>
                                                     </Box>
-                                            </Link>
-                                            <Box sx={{ display: 'flex', mt: 3, justifyContent: 'space-around' }}>
-                                                <Button
-                                                    onClick={()=>handleAcceptRequest(request?._id)}
-                                                    variant='contained'>confirm</Button>
-                                                <Button>delete</Button>
+                                                </Link>
+                                                <Box sx={{ display: 'flex', mt: 3, justifyContent: 'space-around' }}>
+                                                    <Button
+                                                        onClick={() => handleAcceptRequest(request?._id)}
+                                                        variant='contained'>confirm</Button>
+                                                    <Button>delete</Button>
+                                                </Box>
                                             </Box>
-                                        </Box>
                                         </>
                                     )
                                 })
@@ -117,26 +118,33 @@ const RightAside = ({ allUsers }) => {
                                 if (user?.sentRequests[i]._id === newUser?._id) return
                             }
                             return (
-                                <Box sx={{mt:2}}>
+                                <Box sx={{ mt: 2 }}>
                                     <Link to={`/profile/${newUser?._id}`}>
                                         <Contact  {...newUser} key={newUser?._id} />
                                     </Link>
                                     {
                                         user?.friendRequests?.find(request => request?._id === newUser?._id) ? (
                                             <Button
-                                                disabled={newUser?.friends?.find(request => request?._id === user?._id)}
-                                                onClick={() => handleAcceptRequest(newUser?._id)}
+                                                // disabled={}
+                                                onClick={() => handleAcceptRequest(newUser)}
                                                 variant='contained'
-                                            >accept request</Button>
+                                            >
+                                               accept request
+                                            </Button>
                                         ) : (
                                             <Button
-                                                disabled={newUser?.friendRequests?.find(request => request?._id === user?._id)}
-                                                onClick={() => handleFriendRequest(newUser?._id)}
+                                                // disabled={handleFriendRequest}
+                                                onClick={() => handleFriendRequest(newUser)}
                                                 variant='outlined'
-                                            >add friend</Button>
+                                            >
+                                                    {
+                                                        console.log(user.sentRequests)
+                                                        // user?.sentRequests?.find(request=> request?._id === newUser?._id) ? 'sent' :'send friend request'
+                                               }
+                                            </Button>
                                         )
                                     }
-                                    
+
                                 </Box>
                             )
                         }) : <Loading />

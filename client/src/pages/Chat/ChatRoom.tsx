@@ -230,12 +230,12 @@ const ChatRoom = ({ socket }) => {
                     </Box>
                 </Box>
             </Box>
-            <Box sx={{ flexGrow: 0.7, display: 'flex', width: '100%', flexDirection: 'column', ml: 1, mr: 1, boxShadow: '0px 0px 30px rgb(0,0,0,.1)', background: 'white', minHeight: '78dvh' }}>
+            <Box sx={{ flexGrow: 0.7, display: 'flex', borderRadius:3, width: '100%', flexDirection: 'column', ml: 1, mr: 1, boxShadow: '0px 0px 30px rgb(0,0,0,.1)', background: 'white', minHeight: '78dvh' }}>
                 {
                     currentChat ? (
                         <>
                             <Box
-                                sx={{ p: 1, display: 'flex', borderBottom: '1px solid', alignItems: 'center', gap: 2 }}
+                                sx={{ p: 1, display: 'flex' ,borderBottom: '1px solid', alignItems: 'center', gap: 2 }}
                             >
                                 <Avatar
                                     src={currentChat?.profile}
