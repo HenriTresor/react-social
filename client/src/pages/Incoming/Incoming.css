@@ -1,0 +1,7 @@
+.incoming-div{
+    min-height: 100dvh;
+    display: grid;
+    place-content: center;
+    text-align: center;
+    font-size: 1.5em;
+}

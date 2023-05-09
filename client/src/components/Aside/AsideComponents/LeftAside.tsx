@@ -16,6 +16,7 @@ import Loading from '../../Loading/Loading'
 import { createPost } from '../../../utils/functions'
 import Modal from '../../modals/Modal'
 import { useRef, useState } from 'react'
+import {Link} from 'react-router-dom'
 
 const LeftAside = () => {
     const { user, isLoading } = useSelector(state => state.auth)
@@ -47,46 +48,54 @@ const LeftAside = () => {
                                 />
                             </Box>
                             <ListItem sx={{ width: '100%' }}>
-                                <ListItemButton>
-                                    <ListItemAvatar>
-                                        <Avatar
-                                            src={user?.profile}
-                                        />
-                                    </ListItemAvatar>
-                                    <ListItemText>
-                                        {user?.names?.split(' ')[0] || 'usernames'}
-                                    </ListItemText>
-                                </ListItemButton>
+                                <Link to={`/profile/${user?._id}`}>
+                                    <ListItemButton>
+                                        <ListItemAvatar>
+                                            <Avatar
+                                                src={user?.profile}
+                                            />
+                                        </ListItemAvatar>
+                                        <ListItemText>
+                                            {user?.names?.split(' ')[0] || 'usernames'}
+                                        </ListItemText>
+                                    </ListItemButton>
+                                </Link>
                             </ListItem>
                             <ListItem>
-                                <ListItemButton>
-                                    <ListItemAvatar>
-                                        <People />
-                                    </ListItemAvatar>
-                                    <ListItemText>
-                                        Friends
-                                    </ListItemText>
-                                </ListItemButton>
+                                <Link to='/people'>
+                                    <ListItemButton>
+                                        <ListItemAvatar>
+                                            <People />
+                                        </ListItemAvatar>
+                                        <ListItemText>
+                                            Friends
+                                        </ListItemText>
+                                    </ListItemButton>
+                                </Link>
                             </ListItem>
                             <ListItem>
-                                <ListItemButton>
-                                    <ListItemAvatar>
-                                        <PagesRounded />
-                                    </ListItemAvatar>
-                                    <ListItemText>
-                                        Pages
-                                    </ListItemText>
-                                </ListItemButton>
+                                <Link to='/pages'>
+                                    <ListItemButton>
+                                        <ListItemAvatar>
+                                            <PagesRounded />
+                                        </ListItemAvatar>
+                                        <ListItemText>
+                                            Pages
+                                        </ListItemText>
+                                    </ListItemButton>
+                                </Link>
                             </ListItem>
                             <ListItem>
-                                <ListItemButton>
-                                    <ListItemAvatar>
-                                        <MessageSharp />
-                                    </ListItemAvatar>
-                                    <ListItemText>
-                                        Messages
-                                    </ListItemText>
-                                </ListItemButton>
+                                <Link to='/chat-room'>
+                                    <ListItemButton>
+                                        <ListItemAvatar>
+                                            <MessageSharp />
+                                        </ListItemAvatar>
+                                        <ListItemText>
+                                            Messages
+                                        </ListItemText>
+                                    </ListItemButton>
+                                </Link>
                             </ListItem>
                         </>
                     )

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, lazy, Suspense } from 'react'
+import React, { FC, useEffect, lazy, Suspense, useState } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import useFetch from './hooks/useFetch'
@@ -9,6 +9,8 @@ import { io } from 'socket.io-client'
 import { getOnlineUsers } from './redux/Sockets.js'
 import Loading from './components/Loading/Loading.js'
 import Homepage from './pages/Homepage/Homepage.js'
+import People from './pages/People/People.jsx'
+import Incoming from './pages/Incoming/Incoming.js'
 // import Loading from './components/Loading/Loading.js'
 // import ChatRoom from './pages/Chat/ChatRoom'
 
@@ -26,10 +28,21 @@ const App: FC = () => {
   const socket = React.useRef(null)
   const { user, isLoggedIn } = useSelector(state => state.auth)
   const { onlineUsers } = useSelector(state => state.sockets)
+  const { data: allUsers } = useFetch(`${rootLink}/api/users`, localStorage.getItem('access_token'))
+  const { data: postsData, isLoading, error } = useFetch(`${rootLink}/api/posts`, localStorage.getItem('access_token'))
+  const [posts, setPosts] = useState([])
+
+
+  useEffect(() => {
+    if (postsData?.status) {
+      setPosts(postsData?.posts)
+    }
+  }, [postsData])
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
-      socket.current = io('https://sociala-server-gxvy.onrender.com')
+      // socket.current = io('https://sociala-server-gxvy.onrender.com')
+      socket.current = io('http://localhost:8080')
     }
   }, [])
 
@@ -45,7 +58,7 @@ const App: FC = () => {
         dispatch(getOnlineUsers({ onlineUsers: users }))
       })
     }
-  }, [socket?.current])
+  }, [socket])
   useEffect(() => {
     if (!localStorage.getItem('access_token')) return navigate('/login')
   }, [])
@@ -67,8 +80,10 @@ const App: FC = () => {
           <Route path='/login' element={<Login />} />
           <Route path='/signup' element={<Signup />} />
           <Route path='/profile/:id' element={<Profile />} />
-          <Route path='/newsfeed' element={<NewsFeed />} />
+          <Route path='/newsfeed' element={<NewsFeed allUsers={allUsers} posts={posts} isLoading={isLoading } />} />
           <Route path='/chat-room' element={<ChatRoom socket={socket} />} />
+          <Route path='/people' element={<People allUsers={allUsers} />} />
+          <Route path='/pages' element={<Incoming />} />
           <Route path='/' element={<Homepage />} />
         </Routes>
       </Suspense>

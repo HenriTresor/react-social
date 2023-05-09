@@ -166,13 +166,15 @@ const ChatRoom = ({ socket }) => {
                         float: 'left'
                     }}>
                         {
-                            onlineUsers?.map(onlineUser => {
-                                if (onlineUser?._id === user?._id) return null
-                                onlineUser?.friends?.map((friend => {
-                                    if (friend?._id !== user?._id) return null
-                                }))
-                                return (
-                                    <Box onClick={() => setCurrentChat(onlineUser)} sx={{ display: 'flex', cursor: 'pointer', flexDirection: 'column', alignItems: 'center' }}>
+                            !onlineUsers && 'loading'
+                        }
+                        {
+
+
+                            user?.friends?.map((friend) => {
+
+                                return onlineUsers?.find(user => friend?._id === user?._id) ? (
+                                    <Box onClick={() => setCurrentChat(friend)} sx={{ display: 'flex', cursor: 'pointer', flexDirection: 'column', alignItems: 'center' }}>
                                         <Badge
                                             variant='dot'
                                             color='success'
@@ -183,16 +185,18 @@ const ChatRoom = ({ socket }) => {
                                             }}
                                         >
                                             <Avatar
-                                                src={onlineUser.profile}
+                                                src={friend.profile}
                                             />
                                         </Badge>
                                         <Typography>
-                                            {onlineUser?.names?.split(' ')[0].slice(0, 5)} ...
+                                            {friend?.names?.split(' ')[0].slice(0, 5)} ...
                                         </Typography>
                                     </Box>
-                                )
+                                ) : null
                             })
                         }
+
+
                     </Box>
                 </Box>
                 <Box sx={{ overflowY: 'auto', height: '100%', mt: 5 }}>

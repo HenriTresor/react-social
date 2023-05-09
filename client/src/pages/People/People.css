@@ -1,0 +1,5 @@
+.people-container{
+    flex-direction: column !important;
+    gap:2em;
+    margin-top: 5em;
+}

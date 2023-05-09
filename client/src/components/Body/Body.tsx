@@ -11,19 +11,11 @@ import RightAside from '../Aside/AsideComponents/RightAside.js'
 import { useSelector } from 'react-redux'
 import Loading from '../Loading/Loading.js'
 
-const Body = () => {
-  const { data, isLoading, error } = useFetch(`${rootLink}/api/posts`)
-  const [posts, setPosts] = useState([])
-  const { data: allUsers } = useFetch(`${rootLink}/api/users`)
-
+const Body = ({allUsers, posts, isLoading}) => {
+ 
   
   // const { } = useSelector((state) => state.auth)
 
-  useEffect(() => {
-    if (data?.status) {
-      setPosts(data.posts)
-    }
-  }, [data])
 
   return (
     <div

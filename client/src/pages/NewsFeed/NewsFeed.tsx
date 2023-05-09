@@ -4,10 +4,10 @@ import Header from "../../components/Header/Header"
 
 
 
-const NewsFeed = () => {
+const NewsFeed = ({allUsers, posts, isLoading}) => {
     return (
         <>
-           <Body />
+            <Body allUsers={allUsers} posts={posts} isLoading={ isLoading} />
         </>
     )
 }

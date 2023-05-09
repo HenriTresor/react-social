@@ -7,8 +7,7 @@ const SocketsSlice = createSlice({
     },
     reducers: {
         getOnlineUsers: (state, action) => {
-            console.log('acrion',action);
-            
+            // console.log('acrion',action);
             state.onlineUsers = action.payload.onlineUsers
         }
     }
