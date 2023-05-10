@@ -99,13 +99,13 @@ const SinglePost = () => {
                                     <Box
                                         sx={{ mt: 1, display: 'flex', flexDirection: 'column', gap: 5, p: 3 }}
                                     >
-                                        <Link to={`/posts/${post?._id}`}>
+                                      
                                             <Typography
-                                                sx={{ cursor: 'pointer' }}
+                                                
                                             >
                                                 {post?.post_content?.text}
                                             </Typography>
-                                        </Link>
+                                      
                                         {
                                             post?.post_content?.image && (<img
                                                 src={post?.post_content?.image}
