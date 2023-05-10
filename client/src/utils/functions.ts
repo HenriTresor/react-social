@@ -56,3 +56,18 @@ export const likePost = async (userId, postId) => {
     };
   }
 };
+
+export const addComment = async (userId, postId, comment) => {
+  try {
+    const res = await axios.post(`${rootLink}/api/posts/${postId}/comments`, {
+      userId: userId,
+      comment: comment,
+    });
+
+    return res.data;
+  } catch (error) {
+    return {
+      message: error.response.data.message,
+    };
+  }
+};

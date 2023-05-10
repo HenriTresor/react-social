@@ -8,7 +8,7 @@ import './Post.css'
 import { CommentBankSharp, MoreVertRounded, Share, ThumbUpAltSharp } from '@mui/icons-material'
 import { likePost } from '../../utils/functions'
 import { useSelector } from 'react-redux'
-
+import {Link} from 'react-router-dom'
 export interface author {
     createdAt: Date
     email: string
@@ -38,7 +38,7 @@ interface props {
 const Post = ({ _id, author, createdAt, post_comments, post_likes, post_content }: props) => {
 
     const { formattedDate } = useDateFormatter(createdAt);
-    const { user } = useSelector(state => state.auth)
+    const { user } = useSelector(state => state?.auth)
     const handleLikePost = async () => {
         const res = await likePost(user?._id, _id)
         alert(res.message)
@@ -85,7 +85,13 @@ const Post = ({ _id, author, createdAt, post_comments, post_likes, post_content 
                 <Box
                     sx={{ mt: 1, display: 'flex', flexDirection: 'column', gap: 5, p: 3 }}
                 >
-                    {post_content?.text}
+                    <Link to={`/posts/${_id}`}>
+                        <Typography
+                            sx={{ cursor: 'pointer' }}
+                        >
+                            {post_content?.text}
+                        </Typography>
+                    </Link>
                     {
                         post_content?.image && (<img
                             src={post_content?.image}

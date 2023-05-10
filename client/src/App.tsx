@@ -11,6 +11,7 @@ import Loading from './components/Loading/Loading.js'
 import Homepage from './pages/Homepage/Homepage.js'
 import People from './pages/People/People.jsx'
 import Incoming from './pages/Incoming/Incoming.js'
+import SinglePost from './pages/SinglePost/SinglePost.jsx'
 // import Loading from './components/Loading/Loading.js'
 // import ChatRoom from './pages/Chat/ChatRoom'
 
@@ -84,6 +85,7 @@ const App: FC = () => {
           <Route path='/chat-room' element={<ChatRoom socket={socket} />} />
           <Route path='/people' element={<People allUsers={allUsers} />} />
           <Route path='/pages' element={<Incoming />} />
+          <Route path='/posts/:id' element={<SinglePost />} />
           <Route path='/' element={<Homepage />} />
         </Routes>
       </Suspense>
