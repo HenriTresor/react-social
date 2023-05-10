@@ -12,6 +12,7 @@ export const createPost = async (author, post_content) => {
     return data;
   } catch (error) {
     console.log(error);
+    return error.message;
   }
 };
 
@@ -24,6 +25,7 @@ export const sendFriendRequest = async (userId: string, requestId: string) => {
     return res.data;
   } catch (error) {
     console.log(error);
+    return error.message;
   }
 };
 
@@ -35,5 +37,22 @@ export const confirmRequest = async (userId, requesterId) => {
     return res.data;
   } catch (error) {
     console.log(error);
+    return error.message;
+  }
+};
+
+export const likePost = async (userId, postId) => {
+  try {
+    const res = await axios.post(`${rootLink}/api/posts/like`, {
+      userId,
+      postId,
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    return {
+      message: error.response.data.message,
+    };
   }
 };

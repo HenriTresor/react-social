@@ -104,7 +104,7 @@ export const likePost = async (req, res, next) => {
         if (!post) return res.status(404).json({ status: false, message: 'post was not found' })
 
         // check if user doesn't already like the post
-        if (post?.post_likes?.includes(userId)) return res.status(400).json({ status: false, message: 'user already likes the page' })
+        if (post?.post_likes?.includes(userId)) return res.status(409).json({ status: false, message: 'user already likes the post' })
 
         await Post.updateOne({ _id: post?._id }, {
             $push: {

@@ -7,9 +7,8 @@ import {
 } from '@mui/material'
 
 import {
-    People,
-    PagesRounded,
-    MessageSharp
+    MessageSharp,
+    ExploreRounded
 } from '@mui/icons-material'
 import { useSelector } from 'react-redux'
 import Loading from '../../Loading/Loading'
@@ -62,29 +61,17 @@ const LeftAside = () => {
                                 </Link>
                             </ListItem>
                             <ListItem>
-                                <Link to='/people'>
+                                <Link to='#'>
                                     <ListItemButton>
                                         <ListItemAvatar>
-                                            <People />
+                                            <ExploreRounded />
                                         </ListItemAvatar>
                                         <ListItemText>
-                                            Friends
+                                            Explore
                                         </ListItemText>
                                     </ListItemButton>
                                 </Link>
-                            </ListItem>
-                            <ListItem>
-                                <Link to='/pages'>
-                                    <ListItemButton>
-                                        <ListItemAvatar>
-                                            <PagesRounded />
-                                        </ListItemAvatar>
-                                        <ListItemText>
-                                            Pages
-                                        </ListItemText>
-                                    </ListItemButton>
-                                </Link>
-                            </ListItem>
+                                </ListItem>
                             <ListItem>
                                 <Link to='/chat-room'>
                                     <ListItemButton>

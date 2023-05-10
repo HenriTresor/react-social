@@ -27,9 +27,11 @@ const RightAside = ({ allUsers }) => {
         }
     }
     2
-    const handleAcceptRequest = async (requesterId) => {
-        const res = await confirmRequest(user?._id, requesterId)
-        return res.status
+    const handleAcceptRequest = async (requester) => {
+        const res = await confirmRequest(user?._id, requester?._id)
+        if (res.status) {
+            dispatch(cr({ user: requester }))
+        }
     }
     return (
         <>
@@ -67,7 +69,7 @@ const RightAside = ({ allUsers }) => {
                                                 </Link>
                                                 <Box sx={{ display: 'flex', mt: 3, justifyContent: 'space-around' }}>
                                                     <Button
-                                                        onClick={() => handleAcceptRequest(request?._id)}
+                                                        onClick={() => handleAcceptRequest(request)}
                                                         variant='contained'>confirm</Button>
                                                     <Button>delete</Button>
                                                 </Box>
@@ -129,18 +131,19 @@ const RightAside = ({ allUsers }) => {
                                                 onClick={() => handleAcceptRequest(newUser)}
                                                 variant='contained'
                                             >
-                                               accept request
+                                                {
+                                                    user?.friends?.find(friend => friend?._id === newUser?._id) ?  'accepted' : 'accept'
+                                              }
                                             </Button>
                                         ) : (
                                             <Button
                                                 // disabled={handleFriendRequest}
                                                 onClick={() => handleFriendRequest(newUser)}
                                                 variant='outlined'
-                                            >
+                                                >
                                                     {
-                                                        console.log(user.sentRequests)
-                                                        // user?.sentRequests?.find(request=> request?._id === newUser?._id) ? 'sent' :'send friend request'
-                                               }
+                                                        user?.sentRequests?.find(friend => friend?._id === newUser?._id) ? 'request sent' : 'add friend'
+                                                    }
                                             </Button>
                                         )
                                     }

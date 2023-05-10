@@ -21,13 +21,21 @@ const AuthSlice = createSlice({
     confirmRequest: (state, action) => {
       // state = {.`..state, user: {...state.user, friends:state.user?.friends?.push(action.payload.user)}}
 
-        state.user.friendRequests = state.user.friendRequests?.filter(request => request?._id !== action.payload.user?._id)
+      state.user.friendRequests = state.user.friendRequests?.filter(
+        (request) => request?._id !== action.payload.user?._id
+      );
 
-      state.user.friends = state.user?.friends.push(action.payload.user);
-      },
-      addRequest: (state, action) => {
-        state.user.sentRequests = state.user?.sentRequests?.push(action.payload.user)
-    }
+      state.user.friends = [
+        ...state.user.friends,
+        { ...action?.payload?.user },
+      ];
+    },
+    addRequest: (state, action) => {
+      state.user.sentRequests = [
+        ...state.user.sentRequests,
+        { ...action.payload.user },
+      ];
+    },
   },
 });
 
