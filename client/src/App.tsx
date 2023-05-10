@@ -42,8 +42,8 @@ const App: FC = () => {
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
-      // socket.current = io('https://sociala-server-gxvy.onrender.com')
-      socket.current = io('http://localhost:8080')
+      socket.current = io('https://sociala-server-gxvy.onrender.com')
+      // socket.current = io('http://localhost:8080')
     }
   }, [])
 
