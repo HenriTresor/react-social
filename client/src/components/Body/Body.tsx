@@ -16,6 +16,9 @@ const Body = ({allUsers, posts, isLoading}) => {
   
   // const { } = useSelector((state) => state.auth)
 
+  useEffect(() => {
+    document.title = 'newsfeed'
+  },[])
 
   return (
     <div

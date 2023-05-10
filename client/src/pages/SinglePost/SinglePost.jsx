@@ -16,9 +16,10 @@ import '../../components/Post/Post.css'
 import { options } from '../../hooks/useDateFormatter'
 import './SinglePost.css'
 
-const SinglePost = () => {
+const SinglePost = ({ socket }) => {
     const { id } = useParams()
     const { user } = useSelector(state => state.auth)
+    // const { onlineUsers } = useSelector(state => state.sockets)
     const [post, setPost] = useState()
     const { data, isLoading, error } = useFetch(`${rootLink}/api/posts/${id}`)
     const { formattedDate } = useDateFormatter(post?.createdAt);
@@ -32,6 +33,8 @@ const SinglePost = () => {
         const res = await addComment(user?._id, post?._id, comment)
         alert(res.message)
         if (res.status) {
+
+            socket.current?.emit('add comment', {post, comment})
             setPost(prev => {
                 return {
                     ...prev,
@@ -43,12 +46,20 @@ const SinglePost = () => {
                                 text: comment,
                                 date: new Date(Date.now())
                             }
-                        
+
                         }]
                 }
             })
         }
     }
+
+    useEffect(() => {
+        if (socket.current) {
+            socket.current.on('comment added', obj => {
+                alert(JSON.stringify(obj))
+            })
+        }
+    },[socket])
     return (
         <div
             className='post-container'
@@ -99,13 +110,13 @@ const SinglePost = () => {
                                     <Box
                                         sx={{ mt: 1, display: 'flex', flexDirection: 'column', gap: 5, p: 3 }}
                                     >
-                                      
-                                            <Typography
-                                                
-                                            >
-                                                {post?.post_content?.text}
-                                            </Typography>
-                                      
+
+                                        <Typography
+
+                                        >
+                                            {post?.post_content?.text}
+                                        </Typography>
+
                                         {
                                             post?.post_content?.image && (<img
                                                 src={post?.post_content?.image}

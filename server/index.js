@@ -100,8 +100,15 @@ io.on('connection', (socket) => {
 
         let receiver = onlineUsers.find(user => user?._id === message?.receiver?._id)
         if (receiver) {
-            console.log('reciver', receiver);
             socket.to(receiver.socketId).emit('new message', message)
+        }
+    })
+
+    socket.on('add comment', ({ post, comment }) => {
+        console.log(post, comment);
+        let author = onlineUsers.find(user => user?._id === post?.author?._id)
+        if (author) {
+            socket.to(author.socketId).emit('comment added', { post, comment })
         }
     })
     socket.on('disconnect', () => {

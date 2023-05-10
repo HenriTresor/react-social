@@ -24,6 +24,10 @@ const Profile: FC = () => {
     useEffect(() => {
         !isLoggedIn && navigate('/login')
     }, [isLoggedIn])
+
+    useEffect(() => {
+        document.title = data?.user ? `Profiles - ${data?.user?.names}` : 'Loading...'
+    },[data])
     return (
         <Container>
 

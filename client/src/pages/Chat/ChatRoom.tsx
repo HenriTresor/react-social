@@ -136,6 +136,10 @@ const ChatRoom = ({ socket }) => {
             sendMsg()
         }
     }
+
+    useEffect(() => {
+        document.title = currentChat ? currentChat.names  : 'Sociala - chat room'
+    },[currentChat])
     return (
         <Box
             className='body-container'

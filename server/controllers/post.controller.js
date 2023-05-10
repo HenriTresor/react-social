@@ -125,7 +125,7 @@ export const commentOnPosts = async (req, res, next) => {
 
     try {
         let { userId, comment } = req.body
-        console.log(req.body);
+        // console.log(req.body);
         let { postId } = req.params
 
         if (!userId || !comment || !postId) return res.status(400).json({ status: false, message: 'fill in the required fields' })

@@ -42,8 +42,8 @@ const App: FC = () => {
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
-      socket.current = io('https://sociala-server-gxvy.onrender.com')
-      // socket.current = io('http://localhost:8080')
+      // socket.current = io('https://sociala-server-gxvy.onrender.com')
+      socket.current = io('http://localhost:8080')
     }
   }, [])
 
@@ -85,7 +85,7 @@ const App: FC = () => {
           <Route path='/chat-room' element={<ChatRoom socket={socket} />} />
           <Route path='/people' element={<People allUsers={allUsers} />} />
           <Route path='/pages' element={<Incoming />} />
-          <Route path='/posts/:id' element={<SinglePost />} />
+          <Route path='/posts/:id' element={<SinglePost socket={socket} />} />
           <Route path='/' element={<Homepage />} />
         </Routes>
       </Suspense>
