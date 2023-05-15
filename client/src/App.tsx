@@ -35,6 +35,10 @@ const App: FC = () => {
 
 
   useEffect(() => {
+    localStorage.getItem('access_token') && localStorage.removeItem('access_token')
+  }, [])
+  
+  useEffect(() => {
     if (postsData?.status) {
       setPosts(postsData?.posts)
     }

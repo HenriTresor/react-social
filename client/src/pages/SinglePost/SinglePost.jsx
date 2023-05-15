@@ -181,7 +181,7 @@ const SinglePost = ({ socket }) => {
                                                     src={comment?.user?.profile}
                                                 />
                                                 <Card
-                                                    sx={{ p: 1, mb: 1, flexGrow: 1, p: 2 }}
+                                                    sx={{ p: 1, mb: 1, flexGrow: 1 }}
                                                     variant='outlined'
                                                 >
                                                     <Box>
