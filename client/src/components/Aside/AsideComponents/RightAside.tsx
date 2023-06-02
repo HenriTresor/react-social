@@ -120,8 +120,8 @@ const RightAside = ({ allUsers }) => {
                                 if (user?.sentRequests[i]._id === newUser?._id) return
                             }
                             return (
-                                <Box sx={{ mt: 2 }}>
-                                    <Link to={`/profile/${newUser?._id}`}>
+                                <Box sx={{ mt: 2, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                                    <Link to={`/profile/${newUser?._id}`} style={{width:'100%'}}>
                                         <Contact  {...newUser} key={newUser?._id} />
                                     </Link>
                                     {
@@ -136,15 +136,15 @@ const RightAside = ({ allUsers }) => {
                                               }
                                             </Button>
                                         ) : (
-                                            <Button
+                                            <button
                                                 // disabled={handleFriendRequest}
                                                 onClick={() => handleFriendRequest(newUser)}
-                                                variant='outlined'
+                                                    style={{ padding: 1, cursor: 'pointer', background: 'none', border: '4px solid rgba(221, 247, 255)', color:'rgba(0, 247, 255)'}}
                                                 >
                                                     {
-                                                        user?.sentRequests?.find(friend => friend?._id === newUser?._id) ? 'request sent' : 'add friend'
+                                                        user?.sentRequests?.find(friend => friend?._id === newUser?._id) ? 'request sent' : <Add />
                                                     }
-                                            </Button>
+                                            </button>
                                         )
                                     }
 

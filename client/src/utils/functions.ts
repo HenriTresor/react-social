@@ -71,3 +71,8 @@ export const addComment = async (userId, postId, comment) => {
     };
   }
 };
+
+
+export function uploadImage(): void {
+  return
+}

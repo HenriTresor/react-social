@@ -14,7 +14,7 @@ const AuthSlice = createSlice({
       state.isLoggedIn = true;
       state.isLoading = false;
     },
-    logout: function (state, action) {
+    logout: function (state) {
       state.user = null;
       state.isLoggedIn = false;
     },
