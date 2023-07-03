@@ -5,7 +5,6 @@ import { createToken } from "../utils/jwt.js";
 export const login = async (req, res, next) => {
     try {
         let { email, password } = req.body
-        console.log(req.body);
 
         let user = await User.findOne({ email })
             .populate('friends')

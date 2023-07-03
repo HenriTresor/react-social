@@ -46,20 +46,22 @@ const App: FC = () => {
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
+      console.log('access toen available');
+      
       socket.current = io('https://sociala-server-gxvy.onrender.com')
       // socket.current = io('http://localhost:8080')
     }
-  }, [])
+  }, [user, socket])
 
   useEffect(() => {
     if (socket.current && user) {
       socket.current.emit('add user', user)
     }
-  }, [socket.current, user])
+  }, [socket, user])
 
   useEffect(() => {
     if (socket.current) {
-      socket.current?.on('online users', users => {
+      socket.current?.on('online users', (users: any) => {
         dispatch(getOnlineUsers({ onlineUsers: users }))
       })
     }

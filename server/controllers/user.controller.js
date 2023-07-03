@@ -57,6 +57,7 @@ export const getAllUsers = async (req, res, next) => {
         next(err)
     }
 }
+
 export const getUser = async (req, res, next) => {
     try {
         let { id } = req.params
