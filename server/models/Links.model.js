@@ -15,7 +15,7 @@ const LinkSchema = new mongoose.Schema(
                     ref: 'users'
                 },
                 message: {
-                    text: String
+                    text: String 
                 }
             }
         ]

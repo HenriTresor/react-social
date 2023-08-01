@@ -19,4 +19,17 @@ export const createLink = async (req, res, next) => {
         console.log('error creating link', error.message)
         res.status(500).json({ status: false, message: 'error occurred' })
     }
-} 
+}
+
+export const getUserLinks = async (req, res, next) => {
+    try {
+
+        let { userId } = req.params
+
+        let links = await Link.find({ users: userId }).populate('users').populate('messages.sender')
+        res.status(200).json({ status: true, message: 'links found', links })
+    } catch (error) {
+        console.log('error getting user links', error.message)
+        res.status(500).json({ status: false, message: 'error occurred' })
+    }
+}
