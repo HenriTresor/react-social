@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 import { connection } from './configs/db.config.js'
 import userRouter from './routes/user.route.js'
 import friendsRouter from './routes/friends.route.js'
-import messageRouter from './routes/message.route.js'
+import LinksRouter from './routes/Links.router.js'
 import pageRouter from './routes/page.route.js'
 import authRouter from './routes/auth.route.js'
 import postRoute from './routes/post.route.js'
@@ -60,7 +60,7 @@ const rootRoute = '/api'
 
 app.use(`${rootRoute}/users`, userRouter)
 app.use(`${rootRoute}/friends`, friendsRouter)
-app.use(`${rootRoute}/messages`, messageRouter)
+app.use(`${rootRoute}/links`, LinksRouter)
 app.use(`${rootRoute}/pages`, pageRouter)
 app.use(`${rootRoute}/auth`, authRouter)
 app.use(`${rootRoute}/posts`, postRoute)
@@ -76,13 +76,13 @@ app.use((err, req, res, next) => {
 })
 
 
-let onlineUsers = []
+global.onlineUsers = []
 io.on('connection', (socket) => {
     console.log(`${socket.id}`);
 
     socket.on('add user', user => {
         console.log(user);
-        onlineUsers.push({ ...user, socketId: socket.id });
+        onlineUsers = [...onlineUsers, user]
     })
 
     // socket.emit('online users', onlineUsers)
