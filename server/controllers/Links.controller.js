@@ -1,4 +1,6 @@
+
 import Link from "../models/Links.model.js";
+import User from "../models/User.model.js";
 
 export const createLink = async (req, res, next) => {
 
@@ -25,8 +27,7 @@ export const getUserLinks = async (req, res, next) => {
     try {
 
         let { userId } = req.params
-
-        let links = await Link.find({ users: userId }).populate('users').populate('messages.sender')
+        let links = await Link.find({  }).populate('users').populate('messages.sender')
         res.status(200).json({ status: true, message: 'links found', links })
     } catch (error) {
         console.log('error getting user links', error.message)

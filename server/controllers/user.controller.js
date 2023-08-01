@@ -100,6 +100,7 @@ export const deleteUser = async (req, res, next) => {
 export const getUserProfile = async (req, res, next) => {
     try {
         let { userId } = req
+        console.log(userId)
         let currentUser = await User.findById(userId).select('-password')
             .populate('friends')
             .populate('friendRequests')

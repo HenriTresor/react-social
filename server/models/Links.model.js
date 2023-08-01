@@ -12,10 +12,11 @@ const LinkSchema = new mongoose.Schema(
             {
                 sender: {
                     type: mongoose.Schema.Types.ObjectId,
-                    ref: 'users'
+                    ref: 'users',
+                    default: 'bot'
                 },
                 message: {
-                    text: String 
+                    text: String
                 }
             }
         ]
@@ -25,6 +26,6 @@ const LinkSchema = new mongoose.Schema(
     }
 )
 
-const Link = mongoose.model('message', LinkSchema)
+const Link = mongoose.model('links', LinkSchema)
 
 export default Link
