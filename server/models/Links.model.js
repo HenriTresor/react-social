@@ -13,10 +13,13 @@ const LinkSchema = new mongoose.Schema(
                 sender: {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: 'users',
-                    default: 'bot'
                 },
                 message: {
                     text: String
+                },
+                receiver: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'users',
                 }
             }
         ]
