@@ -26,7 +26,13 @@ export const getUserLinks = async (req, res, next) => {
     try {
 
         let { userId } = req.params
-        let links = await Link.find({}).populate('users').populate('messages.sender')
+        let links = await Link.find({}).populate('users').populate({
+            path: 'messages',
+            populate: {
+                path: 'sender',
+                model:'users'
+            }
+        })
         res.status(200).json({ status: true, message: 'links found', links })
     } catch (error) {
         console.log('error getting user links', error.message)
